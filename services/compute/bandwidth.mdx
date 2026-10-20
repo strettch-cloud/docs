@@ -1,0 +1,103 @@
+---
+title: "Bandwidth Allowances and Billing"
+sidebarTitle: "Bandwidth"
+description: "Learn how outbound internet traffic from SC Compute is measured, how each team's pooled monthly allowance works, what traffic above it costs, and where to see your usage."
+---
+
+Every compute comes with a monthly allowance of outbound internet traffic. The allowances of all the computes in a team are added together into one pool, and you only pay for traffic above that pool.
+
+## What Is Measured
+
+Bandwidth is the **outbound internet traffic** sent by your computes: data leaving our network for the internet, such as responses your applications send to visitors and files they download from you.
+
+These are **not** counted and are always free:
+
+- **Inbound traffic**, such as uploads to your computes and packages you download onto them.
+- **Traffic between your computes**, and any traffic that stays inside our network.
+
+Traffic is measured on the server that hosts your compute, not inside the compute, so it is counted the same way whatever runs on it.
+
+## Allowance per Specification
+
+Each specification includes a monthly allowance:
+
+| vCPU | RAM | Monthly allowance |
+|------|-----|-------------------|
+| 1 | 512 MB | 115 GB |
+| 1 | 1 GB | 235 GB |
+| 1 | 2 GB | 470 GB |
+| 2 | 4 GB | 900 GB |
+| 4 | 8 GB | 1,800 GB |
+| 8 | 16 GB | 3,600 GB |
+| 16 | 32 GB | 7,200 GB |
+
+The allowance for each specification is also shown in the **Bandwidth** column when you create a compute. 1 GB is 1,000,000,000 bytes.
+
+## How the Team Allowance Works
+
+**The allowance is pooled per team.** Every compute adds its allowance to one team-wide amount, and your bill depends on the team's total traffic against that amount. One busy compute can use the allowance of quieter ones.
+
+**Part of a month counts for part of the allowance.** A compute adds its allowance for the share of the month it exists. For example, a 1 vCPU / 2 GB compute created halfway through a 30-day month adds about 235 GB, not 470 GB. A compute you destroy keeps the share it built up until it was destroyed.
+
+**Stopped computes still count.** A stopped compute is still billed, so it keeps adding to the allowance.
+
+**Upsizing gives you the bigger allowance for that whole month.** If you upsize a compute, the new specification's allowance applies from the start of the month you upsized in. Past months are not changed.
+
+**Months follow UTC.** A month starts at 00:00 UTC on the 1st, which is 02:00 in Kigali.
+
+## Price
+
+Traffic above your team's allowance costs **38 RWF per GB**.
+
+## How It Is Charged
+
+Bandwidth is charged the same way as your computes: daily, from your credits first and then your balance.
+
+- **Each day**, we work out your team's usage for the month so far, take away the team allowance and what you have already been charged this month, and charge the rest.
+- **Charges are in steps of 0.01 GB**, rounded down. Anything below that carries over to the next day, so nothing is charged twice and nothing is lost.
+- **On your monthly invoice**, bandwidth has its own **Bandwidth** section with one line, **Extra Bandwidth Usage**, showing the GB above your allowance, the price per GB and the amount.
+
+If your team stays within its allowance, there is no bandwidth charge and no bandwidth line on the invoice.
+
+## Where to See Your Usage
+
+**For the whole team:** go to **Team Settings > Billing > Overview** and open the **Bandwidth** tab. For the selected month it shows:
+
+- the team's usage against its allowance;
+- the cost of any usage above the allowance, and the price per GB;
+- **Usage breakdown**: each compute's usage against the allowance it adds to the team.
+
+**For one compute:** open the compute and find the **Network** chart. It shows the compute's live public and private traffic, inbound and outbound. Below the chart, **Outbound bandwidth usage this month** shows the total for the month, with a link to your team's usage.
+
+<Info>
+Monthly usage covers full days, up to the end of the previous day in UTC, so today's traffic is added tomorrow. The **Network** chart shows live traffic, so the two can differ during the day.
+</Info>
+
+<Warning>
+A compute using more than its own allowance in the usage breakdown is not charged on its own. Charges only apply when the **team's** total goes above the **team's** allowance.
+</Warning>
+
+## Frequently Asked Questions
+
+<AccordionGroup>
+  <Accordion title="Do I pay for traffic coming into my computes?">
+    No. Only outbound internet traffic counts. Inbound traffic is always free.
+  </Accordion>
+  <Accordion title="Is traffic between my computes counted?">
+    No. Traffic that stays inside our network, including traffic between your computes, is free and does not use your allowance.
+  </Accordion>
+  <Accordion title="Does unused allowance carry over to the next month?">
+    No. Each month starts with a new allowance based on the computes in your team that month.
+  </Accordion>
+  <Accordion title="How do I get a bigger allowance?">
+    Upsize a compute or add computes to your team. A bigger specification gives the bigger allowance for the whole month you upsize in.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Next Steps
+
+- [See how invoices work](/faqs/invoices)
+- [Monitor your compute](/guides/computes)
+- [Learn about compute specifications and billing states](/services/compute/overview)

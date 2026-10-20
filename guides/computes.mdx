@@ -230,7 +230,7 @@ Your compute includes five real-time performance graphs that help you understand
 | **Memory** | Memory usage over time | Consistently high usage (>90%) indicates you need more RAM |
 | **CPU Usage** | Processing power utilization (user jobs and system processes) | Sustained high CPU (>80%) suggests you need more CPU cores |
 | **Disk I/O** | Read and write operations in MB/s | High I/O wait times can slow down applications |
-| **Network** | Inbound and outbound traffic (packets) | Unexpected spikes may indicate traffic anomalies |
+| **Network** | Public and private traffic, inbound and outbound (KB/s) | Unexpected spikes may indicate traffic anomalies |
 | **Load** | System load average (number of processes waiting for CPU) | Load higher than CPU count suggests resource contention |
 
 ### Time Range Options
@@ -244,6 +244,12 @@ View graphs for different time periods to understand short-term issues or long-t
 - **30 days** - Monthly patterns and capacity planning
 
 Hover over any graph to see exact metrics at specific points in time.
+
+### Outbound Bandwidth This Month
+
+Below the **Network** chart, **Outbound bandwidth usage this month** shows how much internet traffic the compute has sent this month, up to the end of the previous day in UTC. **View team usage** opens your team's bandwidth usage, where each compute's usage is shown against the allowance it adds to the team.
+
+Charges only apply when the whole team goes above its pooled allowance, so one compute using more than its own allowance is not a charge on its own. See [Bandwidth](/services/compute/bandwidth) for how the allowance and charges work.
 
 ### SC Metrics Agent
 

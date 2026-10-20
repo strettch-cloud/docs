@@ -52,6 +52,7 @@
             "pages": [
               "services/compute/overview",
               "guides/computes",
+              "services/compute/bandwidth",
               "services/compute/ssh-keys",
               {
                 "group": "Application Images",
