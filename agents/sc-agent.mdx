@@ -225,11 +225,11 @@ The console requires two ports to function:
 
 <CodeGroup>
 ```bash Check if ports are listening
-sudo netstat -tuln | grep -E ':(22|60124)'
+sudo ss --listening --numeric --tcp --udp | grep --extended-regexp ':(22|60124)\b'
 ```
 </CodeGroup>
 
-**Expected:** You should see port 22 (TCP) and port 60124 (UDP) listed as `LISTEN`
+**Expected:** port 22 listed as `LISTEN` (TCP) and port 60124 listed as `UNCONN` (UDP).
 
 If ports are blocked by your firewall, allow them:
 <CodeGroup>
