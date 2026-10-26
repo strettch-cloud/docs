@@ -40,6 +40,37 @@ Use these slugs for the `region`, `image`, and `specification` fields in your re
 
 ---
 
+### User Data
+
+Pass your own [cloud-init](https://cloudinit.readthedocs.io/) configuration in `userData` to set up the instance on its first boot: install packages, write files, create users or run a script. Send a `#cloud-config` file or a shell script starting with `#!`. It works with every image.
+
+- Encode it as standard base64, on one line.
+- It can be at most 32 KiB after decoding.
+- It's optional. Leave it out and the instance is created as usual.
+
+```bash
+USER_DATA=$(printf '#cloud-config\npackages:\n  - nginx\n' | base64 | tr -d '\n')
+
+curl -X POST https://api.strettch.cloud/api/v1/computes \
+  -H "Authorization: Bearer $STRETTCH_API_KEY" \
+  -H "Content-Type: application/json" \
+  -H "Idempotency-Key: $(uuidgen)" \
+  -d '{
+    "hostName": "web-01",
+    "image": "UBUNTU-24.04",
+    "region": "KGL-1",
+    "specification": "S-1C-1G",
+    "publicKeys": ["ssh-ed25519 AAAA... you@laptop"],
+    "userData": "'"$USER_DATA"'"
+  }'
+```
+
+<Note>
+  The instance receives the data exactly as you sent it. Where your cloud-config and Strettch Cloud's defaults set the same key, your value wins.
+</Note>
+
+---
+
 ### Response Error Codes
 
 If the request fails, the `code` field in the error response will contain one of the following.
