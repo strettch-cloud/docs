@@ -1,6 +1,6 @@
 # Working in this repo
 
-Instructions for any coding agent. Claude Code reads this through `CLAUDE.md`.
+Instructions for any coding agent.
 
 ## This repository is public
 
