@@ -1047,6 +1047,12 @@
               "web"
             ]
           },
+          "userData": {
+            "description": "Optional cloud-init user data: a #cloud-config file or a shell script starting with #!, base64 encoded, at most 32 KiB after decoding. The instance receives it unchanged on its first boot.",
+            "type": "string",
+            "contentEncoding": "base64",
+            "example": "I2Nsb3VkLWNvbmZpZwpwYWNrYWdlczoKICAtIG5naW54Cg=="
+          },
           "withPublicIp": {
             "type": "boolean",
             "example": true
