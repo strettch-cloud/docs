@@ -1,0 +1,116 @@
+---
+title: "Tax Receipts (EBM)"
+sidebarTitle: "Receipts"
+description: "Generate RRA-compliant EBM tax receipts for your paid Strettch Cloud invoices. Set up your entity details once, then download a receipt in a few clicks."
+---
+
+In Rwanda, the Rwanda Revenue Authority (RRA) requires businesses to issue tax receipts through the Electronic Billing Machine (EBM) system. Strettch Cloud is integrated with RRA's EBM, so you can generate an official, tax-valid **receipt** for any paid invoice. It's proof of payment you can use for your own tax reporting and expense records.
+
+Tax-receipt support **currently covers Rwanda (RRA/EBM)**. Support for additional countries' tax systems is on our roadmap.
+
+<Note>
+Your monthly [invoice](/faqs/invoices) is your billing statement. An **EBM receipt** is the tax-compliant receipt for a payment you've made, generated on demand from a paid invoice.
+</Note>
+
+## Before you start: add your entity details
+
+Before you can generate receipts, add your **Entity Profile**, the legal details that appear on every receipt. Go to **Team Settings → General**, find the **Entity Profile** section, and click **Add Details**.
+
+<Frame>
+  <img src="/images/billing/entity-profile-section.jpeg" style={{ borderRadius: '0.2rem' }} />
+</Frame>
+
+You'll provide:
+
+* **Country**
+* **TIN** (Tax Identification Number): optional, for registered Rwandan businesses
+* **Company Name**
+* **Province**
+* **Street Address**
+
+<Frame>
+  <img src="/images/billing/entity-profile-modal.png" style={{ borderRadius: '0.2rem' }} />
+</Frame>
+
+<Note>
+Only team **owners** and **admins** can add or edit entity details.
+</Note>
+
+<Tabs>
+  <Tab title="Registered Rwandan business (with TIN)">
+    Enter your **9-digit TIN**. We validate it with RRA in real time and automatically fill in your **Company Name** and **Province** from the official record, so you only need to add your **Street Address**.
+
+    <Warning>
+    **Currently, Rwandan TINs are supported.** A TIN that isn't 9 digits, or that RRA doesn't recognise, won't be accepted. Support for other countries' tax IDs is on our roadmap.
+    </Warning>
+  </Tab>
+  <Tab title="No TIN">
+    You can still set up your profile. Just fill in your **Country**, **Company Name**, **Province**, and **Street Address** manually, and leave the TIN field empty.
+
+    Without a TIN, your receipts are automatically registered against the **team owner's phone number** used held on the platform.
+  </Tab>
+</Tabs>
+
+## Generate a receipt
+
+<Steps>
+  <Step title="Open your invoices">
+    Go to **Team Settings → Billing → Invoices**.
+  </Step>
+  <Step title="Choose a paid invoice">
+    Receipts are available for invoices that have been **paid**. Click the **Receipt** action on the invoice row.
+
+    <Frame>
+      <img src="/images/billing/receipt-invoice-action.png" style={{ borderRadius: '0.2rem' }} />
+    </Frame>
+  </Step>
+  <Step title="Complete your entity details (first time only)">
+    If you haven't set up your Entity Profile yet, you'll be asked to add your company details first. Click **Add Details**, complete the form, and you'll be brought back to your invoices to continue.
+  </Step>
+  <Step title="Enter your purchase code (registered businesses only)">
+    If your entity has a **TIN**, we'll ask for a **6-character RRA purchase code** to authorise the receipt against your TIN. Enter it and confirm.
+
+    <Frame>
+      <img src="/images/billing/purchase-code-modal.png" style={{ borderRadius: '0.2rem' }} />
+    </Frame>
+
+    If your entity has **no TIN**, the receipt is generated automatically, so you can skip this step.
+  </Step>
+  <Step title="Download">
+    Your receipt downloads as a **PDF**. It's saved from then on, so the next time you click the receipt action, it downloads instantly.
+  </Step>
+</Steps>
+
+## Purchase codes
+
+If your business is registered with a TIN, RRA requires a **purchase code** to issue a receipt against that TIN.
+
+* It's exactly **6 characters**.
+* You obtain it from the RRA portal. In the receipt dialog, use the **"How do I get a purchase code?"** link for a direct route.
+
+<Warning>
+Purchase codes only apply to entities that have a TIN. If your Entity Profile has no TIN, you won't be asked for one, and your receipt is generated automatically.
+</Warning>
+
+## Frequently asked questions
+
+<AccordionGroup>
+  <Accordion title="Why isn't there a receipt option on an invoice?">
+    Receipts are only available for invoices that have been **paid**. Some invoices may also not be eligible for an EBM receipt. In that case, no receipt action is shown.
+  </Accordion>
+  <Accordion title="Can I get a receipt without a TIN?">
+    Yes. The TIN is optional. Once your entity details are complete, a receipt is generated automatically for entities without a TIN, with no purchase code required. In this case the receipt is registered against the **team owner's phone number** used held on the platform.
+  </Accordion>
+  <Accordion title="My TIN won't validate.">
+    **Currently, only Rwandan TINs are supported.** They must be **9 digits** and are checked against RRA as you type (support for more countries is on our roadmap). Double-check the number. If it's a valid Rwandan TIN and still fails, [contact support](/support).
+  </Accordion>
+  <Accordion title="Who can generate receipts and edit entity details?">
+    **Any team member** can generate and download receipts from the Invoices tab. Only team **owners** and **admins**, however, can add or edit the **Entity Profile** (the company details that appear on your receipts).
+  </Accordion>
+  <Accordion title="Why isn't a receipt generated when I top up my balance?">
+    A top-up simply adds **credit to your team's wallet**. It isn't a purchase of cloud services in itself, so there's no taxable supply to issue an EBM receipt for yet. EBM receipts are tied to the **actual services you consume**, which are totalled on your **monthly invoice**. That's why receipts are generated from a paid invoice, not from a top-up.
+  </Accordion>
+  <Accordion title="What's the difference between an invoice and a receipt?">
+    An [invoice](/faqs/invoices) is your monthly billing statement for the charges in a cycle. An **EBM receipt** is the RRA-compliant tax receipt for a payment, generated on demand.
+  </Accordion>
+</AccordionGroup>
