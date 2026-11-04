@@ -437,6 +437,113 @@
             }
           }
         }
+      },
+      "patch": {
+        "summary": "Update a compute instance",
+        "description": "Updates a compute instance's host name and/or tags. Both fields are optional; send only the ones you want to change, and any field you omit is left unchanged.",
+        "tags": [
+          "Computes"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Compute ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ComputeUpdateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/APIResponse"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/ComputeResponse"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Possible codes: BAD_REQUEST",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Possible codes: UNAUTHORIZED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Possible codes: FORBIDDEN, TEAM_SUSPENDED, TEAM_PAST_DUE",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Possible codes: RESOURCE_NOT_FOUND",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/computes/{id}/reboot": {
@@ -1105,6 +1212,27 @@
           "updatedAt": {
             "type": "string",
             "example": "2024-01-15T10:05:00Z"
+          }
+        }
+      },
+      "ComputeUpdateRequest": {
+        "type": "object",
+        "properties": {
+          "hostName": {
+            "description": "New host name for the compute instance.",
+            "type": "string",
+            "example": "my-server-02"
+          },
+          "tags": {
+            "description": "Replacement set of tags for the compute instance. The provided list replaces the existing tags entirely.",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "production",
+              "web"
+            ]
           }
         }
       },
