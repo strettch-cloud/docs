@@ -1,0 +1,42 @@
+---
+title: 'Update Compute Instance'
+openapi: '/api-reference/openapi.json PATCH /computes/{id}'
+---
+
+### Request Reference
+
+Both fields are optional. Send only the ones you want to change; any field you
+omit is left unchanged.
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `hostName` | string | New host name for the compute instance. |
+| `tags` | string[] | Replacement set of tags. The list you send replaces the existing tags entirely. |
+
+---
+
+### Response Error Codes
+
+If the request fails, the `code` field in the error response will contain one of the following.
+
+<Tabs>
+  <Tab title="Standard">
+    | Code | Status | Description |
+    | :--- | :---: | :--- |
+    | `BAD_REQUEST` | 400 | The request was invalid or malformed. |
+    | `UNAUTHORIZED` | 401 | Authentication failed or was not provided. |
+    | `FORBIDDEN` | 403 | You do not have permission to perform this action. |
+    | `RESOURCE_NOT_FOUND` | 404 | The specified compute instance was not found. |
+    | `INTERNAL_SERVER_ERROR` | 500 | An unexpected error occurred on our end. |
+  </Tab>
+  <Tab title="Billing & Team">
+    <Warning>
+      These errors block all resource operations. Resolve your team's billing status before retrying.
+    </Warning>
+
+    | Code | Status | Description |
+    | :--- | :---: | :--- |
+    | `TEAM_SUSPENDED` | 403 | Team is suspended due to an outstanding payment. |
+    | `TEAM_PAST_DUE` | 403 | Team has an outstanding balance that must be settled first. |
+  </Tab>
+</Tabs>

@@ -107,6 +107,7 @@
               "api-reference/endpoint/list-computes",
               "api-reference/endpoint/create-compute",
               "api-reference/endpoint/get-compute",
+              "api-reference/endpoint/update-compute",
               "api-reference/endpoint/delete-compute",
               "api-reference/endpoint/reboot-compute",
               "api-reference/endpoint/start-compute",
