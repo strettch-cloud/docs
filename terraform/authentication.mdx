@@ -24,6 +24,14 @@ provider "strettchcloud" {
 }
 ```
 
+<Tip>
+  Typing the key as an argument records it in your shell history. To avoid that, read it interactively instead:
+
+  ```bash
+  read -rs STRETTCH_CLOUD_API_KEY && export STRETTCH_CLOUD_API_KEY
+  ```
+</Tip>
+
 You *can* set it inline with the `api_key` argument, but only if the value comes from a variable or secret store — never a literal in version control:
 
 ```hcl
@@ -36,6 +44,10 @@ provider "strettchcloud" {
   api_key = var.strettchcloud_api_key
 }
 ```
+
+<Warning>
+  A saved plan (`terraform plan -out=...`) stores input variable values in **cleartext**, even when marked `sensitive`. Anyone who can read the plan file can recover the key — so prefer the environment variable for automation, and protect any plan artifacts you keep.
+</Warning>
 
 <Warning>
   Never commit your API key. Treat it like a password: use an environment variable or a secrets manager, and rotate it if it is ever exposed.
@@ -52,4 +64,8 @@ env:
 
 ## On HCP Terraform
 
-Set `STRETTCH_CLOUD_API_KEY` as a **sensitive** workspace environment variable so it is masked in logs and state.
+Set `STRETTCH_CLOUD_API_KEY` as a **sensitive** workspace environment variable. It is then write-only — it cannot be read back through the UI or API, and it is kept out of your configuration and state.
+
+<Note>
+  Log redaction is best-effort, not a guarantee. Verbose logging such as `TF_LOG=TRACE` can print environment variables, so avoid it in shared or recorded runs.
+</Note>
