@@ -1,0 +1,55 @@
+---
+title: "Authentication"
+sidebarTitle: "Authentication"
+description: "Authenticate the Strettch Cloud Terraform provider with an API key, locally and in CI."
+---
+
+The provider authenticates with a Strettch Cloud **API key**, sent as a bearer token on every request.
+
+## Create an API key
+
+Generate an API key in the [Strettch Cloud console](https://cloud.strettch.com/p/settings/api-keys). Keep it somewhere safe — it acts with the same [permissions](/services/teams/overview#team-roles-and-permissions) as the member who created it.
+
+## Provide the key
+
+The recommended way is the `STRETTCH_CLOUD_API_KEY` environment variable, so the key never lands in your configuration files:
+
+```bash
+export STRETTCH_CLOUD_API_KEY="<your api key>"
+```
+
+```hcl main.tf
+provider "strettchcloud" {
+  # api_key is read from STRETTCH_CLOUD_API_KEY
+}
+```
+
+You *can* set it inline with the `api_key` argument, but only if the value comes from a variable or secret store — never a literal in version control:
+
+```hcl
+variable "strettchcloud_api_key" {
+  type      = string
+  sensitive = true
+}
+
+provider "strettchcloud" {
+  api_key = var.strettchcloud_api_key
+}
+```
+
+<Warning>
+  Never commit your API key. Treat it like a password: use an environment variable or a secrets manager, and rotate it if it is ever exposed.
+</Warning>
+
+## In CI/CD
+
+Store the key as a secret in your CI system and expose it as `STRETTCH_CLOUD_API_KEY` for the plan/apply steps. For example, in GitHub Actions:
+
+```yaml
+env:
+  STRETTCH_CLOUD_API_KEY: ${{ secrets.STRETTCH_CLOUD_API_KEY }}
+```
+
+## On HCP Terraform
+
+Set `STRETTCH_CLOUD_API_KEY` as a **sensitive** workspace environment variable so it is masked in logs and state.

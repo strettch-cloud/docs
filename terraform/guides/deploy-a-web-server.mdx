@@ -1,0 +1,147 @@
+---
+title: "Deploy a web server"
+sidebarTitle: "Deploy a web server"
+description: "Provision a compute instance with Terraform, then install Nginx and serve a page — end to end."
+---
+
+A complete walkthrough: define a compute instance in Terraform, apply it, connect over SSH, and serve a web page with Nginx.
+
+<Note>
+  New to the provider? Run through the [Quickstart](/terraform/quickstart) and [Authentication](/terraform/authentication) first — this guide assumes Terraform is installed and `STRETTCH_CLOUD_API_KEY` is set.
+</Note>
+
+## What you'll build
+
+- A compute instance with a public IP
+- SSH access with your own key
+- Nginx serving a page over HTTP
+
+<Steps>
+  <Step title="Set up the project">
+    Create a new directory with three files:
+
+    <CodeGroup>
+    ```hcl main.tf
+    terraform {
+      required_providers {
+        strettchcloud = {
+          source  = "strettch-cloud/strettchcloud"
+          version = "~> 1.0"
+        }
+      }
+    }
+
+    provider "strettchcloud" {
+      # api_key is read from STRETTCH_CLOUD_API_KEY
+    }
+
+    resource "strettchcloud_compute" "web" {
+      host_name      = "web-01"
+      image          = "UBUNTU-24.04"
+      region         = "KGL-1"
+      specification  = "S-1C-1G"
+      public_keys    = [var.ssh_public_key]
+      with_public_ip = true
+      tags           = ["web", "demo"]
+    }
+    ```
+
+    ```hcl variables.tf
+    variable "ssh_public_key" {
+      description = "Your SSH public key (contents of e.g. ~/.ssh/id_ed25519.pub)."
+      type        = string
+    }
+    ```
+
+    ```hcl outputs.tf
+    output "public_ip" {
+      value = strettchcloud_compute.web.ipv4
+    }
+    ```
+    </CodeGroup>
+  </Step>
+
+  <Step title="Provide your credentials">
+    Set your API key and keep your SSH public key handy:
+
+    ```bash
+    export STRETTCH_CLOUD_API_KEY="<your api key>"
+    ```
+
+    <Tip>
+      Don't have an SSH key yet? Generate one with `ssh-keygen`, then your public key is at `~/.ssh/id_ed25519.pub`. See [SSH Keys](/services/compute/ssh-keys) for the full walkthrough.
+    </Tip>
+  </Step>
+
+  <Step title="Initialize and apply">
+    Download the provider and create the instance, passing your public key in:
+
+    ```bash
+    terraform init
+    terraform apply -var="ssh_public_key=$(cat ~/.ssh/id_ed25519.pub)"
+    ```
+
+    Review the plan, type `yes`, and Terraform prints the `public_ip` when the instance is up.
+  </Step>
+
+  <Step title="Connect over SSH">
+    Strettch Cloud exposes SSH on port **222**. Connect as `root`:
+
+    ```bash
+    ssh root@$(terraform output -raw public_ip) -p 222
+    ```
+  </Step>
+
+  <Step title="Install Nginx">
+    On the instance, install and start Nginx:
+
+    ```bash
+    apt update && apt install -y nginx
+    ```
+
+    Replace the default page with your own:
+
+    ```bash
+    echo "<h1>Hello from Strettch Cloud 🚀</h1>" > /var/www/html/index.html
+    ```
+  </Step>
+
+  <Step title="Verify">
+    Open `http://<your-public-ip>` in a browser — you'll see your page. Your web server is live, defined entirely in Terraform.
+  </Step>
+
+  <Step title="Tear it down">
+    When you're finished, destroy everything you created:
+
+    ```bash
+    terraform destroy -var="ssh_public_key=$(cat ~/.ssh/id_ed25519.pub)"
+    ```
+  </Step>
+</Steps>
+
+---
+
+## Make it repeatable
+
+Because the whole server is now described in code, you can:
+
+- **Version it** — commit `main.tf`, `variables.tf`, and `outputs.tf` to Git.
+- **Review changes** — run `terraform plan` before every change to see exactly what will happen.
+- **Reproduce it** — apply the same files to stand up an identical instance any time, or for a second environment.
+
+<Tip>
+  Avoid hardcoding `image`, `region`, or `specification`. Look them up as data sources instead — see [Look up catalog values](/terraform/quickstart#look-up-catalog-values) in the Quickstart.
+</Tip>
+
+---
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Resources & data sources" icon="layer-group" href="/terraform/resources">
+    The full catalog of what the provider can manage.
+  </Card>
+  <Card title="Full reference" icon="book-open" href="https://registry.terraform.io/providers/strettch-cloud/strettchcloud/latest/docs">
+    Every argument and attribute on the Terraform Registry.
+  </Card>
+</CardGroup>
