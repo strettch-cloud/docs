@@ -142,6 +142,32 @@
         ]
       },
       {
+        "tab": "Terraform",
+        "icon": "cubes",
+        "groups": [
+          {
+            "group": "Get Started",
+            "pages": [
+              "terraform/overview",
+              "terraform/quickstart",
+              "terraform/authentication"
+            ]
+          },
+          {
+            "group": "Guides",
+            "pages": [
+              "terraform/guides/deploy-a-web-server"
+            ]
+          },
+          {
+            "group": "Reference",
+            "pages": [
+              "terraform/resources"
+            ]
+          }
+        ]
+      },
+      {
         "tab": "Changelog",
         "icon": "clock-rotate-left",
         "groups": [

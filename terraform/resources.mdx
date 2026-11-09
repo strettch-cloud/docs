@@ -1,0 +1,43 @@
+---
+title: "Resources & Data Sources"
+sidebarTitle: "Resources & Data Sources"
+description: "The resources, data sources, and actions the Strettch Cloud Terraform provider supports."
+---
+
+Each entry links to its full reference — every argument, attribute, and example — on the [Terraform Registry](https://registry.terraform.io/providers/strettch-cloud/strettchcloud/latest/docs).
+
+## Resources
+
+Resources create and manage infrastructure.
+
+| Resource | What it manages |
+| --- | --- |
+| [`strettchcloud_compute`](https://registry.terraform.io/providers/strettch-cloud/strettchcloud/latest/docs/resources/compute) | A compute instance (virtual machine) — create, update, resize, reboot, and destroy. |
+
+## Data sources
+
+Data sources read existing values so you don't hardcode slugs that may change.
+
+| Data source | What it returns |
+| --- | --- |
+| [`strettchcloud_compute`](https://registry.terraform.io/providers/strettch-cloud/strettchcloud/latest/docs/data-sources/compute) | Look up a single compute instance by id. |
+| [`strettchcloud_image`](https://registry.terraform.io/providers/strettch-cloud/strettchcloud/latest/docs/data-sources/image) | Find one OS image by filter. |
+| [`strettchcloud_images`](https://registry.terraform.io/providers/strettch-cloud/strettchcloud/latest/docs/data-sources/images) | List every OS image in the catalog. |
+| [`strettchcloud_region`](https://registry.terraform.io/providers/strettch-cloud/strettchcloud/latest/docs/data-sources/region) | Find one region by slug. |
+| [`strettchcloud_regions`](https://registry.terraform.io/providers/strettch-cloud/strettchcloud/latest/docs/data-sources/regions) | List every region in the catalog. |
+| [`strettchcloud_specification`](https://registry.terraform.io/providers/strettch-cloud/strettchcloud/latest/docs/data-sources/specification) | Find one specification by filter (slug or size). |
+| [`strettchcloud_specifications`](https://registry.terraform.io/providers/strettch-cloud/strettchcloud/latest/docs/data-sources/specifications) | List every specification in the catalog. |
+
+## Actions
+
+Actions run one-off operations (Terraform 1.14+).
+
+| Action | What it does |
+| --- | --- |
+| [`strettchcloud_compute_reboot`](https://registry.terraform.io/providers/strettch-cloud/strettchcloud/latest/docs/actions/compute_reboot) | Reboot a running compute, on demand or from a lifecycle event. |
+
+---
+
+<Card title="Browse the full reference" icon="book-open" href="https://registry.terraform.io/providers/strettch-cloud/strettchcloud/latest/docs">
+  Every argument, attribute, import syntax, and example on the Terraform Registry — always in sync with the provider version you're using.
+</Card>

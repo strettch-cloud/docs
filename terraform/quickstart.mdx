@@ -1,0 +1,154 @@
+---
+title: "Terraform Quickstart"
+sidebarTitle: "Quickstart"
+description: "Install the Strettch Cloud Terraform provider, authenticate, and deploy your first compute instance as code."
+---
+
+This guide takes you from nothing to a running compute instance, managed entirely by Terraform.
+
+<Steps>
+  <Step title="Install Terraform">
+    Install Terraform from the [official downloads](https://developer.hashicorp.com/terraform/install) if you don't have it yet, then confirm it's on your path:
+
+    ```bash
+    terraform version
+    ```
+  </Step>
+
+  <Step title="Create an API key">
+    In the [Strettch Cloud console](https://cloud.strettch.com/p/settings/api-keys), create an API key, then expose it to Terraform:
+
+    ```bash
+    export STRETTCH_CLOUD_API_KEY="<your api key>"
+    ```
+
+    <Warning>
+      Treat the key like a password. Never commit it to version control; in CI, store it as a secret.
+    </Warning>
+  </Step>
+
+  <Step title="Configure the provider">
+    Create a `main.tf` and declare the provider:
+
+    ```hcl main.tf
+    terraform {
+      required_providers {
+        strettchcloud = {
+          source  = "strettch-cloud/strettchcloud"
+          version = "~> 1.0"
+        }
+      }
+    }
+
+    provider "strettchcloud" {
+      # api_key is read from STRETTCH_CLOUD_API_KEY
+    }
+    ```
+  </Step>
+
+  <Step title="Define your first compute">
+    Add a compute instance and output its public IP:
+
+    ```hcl main.tf
+    resource "strettchcloud_compute" "web" {
+      host_name      = "web-01"
+      image          = "UBUNTU-24.04"
+      region         = "KGL-1"
+      specification  = "S-1C-1G"
+      public_keys    = ["ssh-ed25519 AAAA... you@example.com"]
+      with_public_ip = true
+      tags           = ["production", "web"]
+    }
+
+    output "public_ip" {
+      value = strettchcloud_compute.web.ipv4
+    }
+    ```
+
+    <Tip>
+      Replace `public_keys` with your own SSH public key so you can log in once the instance is up.
+    </Tip>
+  </Step>
+
+  <Step title="Initialize and apply">
+    Download the provider, preview the plan, then create the instance:
+
+    ```bash
+    terraform init
+    terraform plan
+    terraform apply
+    ```
+
+    Terraform prints the `public_ip` output when the apply completes — SSH in with the key you provided.
+  </Step>
+
+  <Step title="Clean up">
+    When you're done, tear everything down:
+
+    ```bash
+    terraform destroy
+    ```
+  </Step>
+</Steps>
+
+---
+
+## Look up catalog values
+
+Rather than pinning an image, region, or size to a slug that might change, look them up as data sources and reference the result:
+
+<CodeGroup>
+```hcl Images
+data "strettchcloud_images" "all" {}
+
+output "image_slugs" {
+  value = data.strettchcloud_images.all.images[*].image
+}
+```
+
+```hcl Regions
+data "strettchcloud_regions" "all" {}
+
+output "region_slugs" {
+  value = data.strettchcloud_regions.all.regions[*].region
+}
+```
+
+```hcl Specifications
+data "strettchcloud_specifications" "all" {}
+
+output "spec_slugs" {
+  value = data.strettchcloud_specifications.all.specifications[*].specification
+}
+```
+</CodeGroup>
+
+You can also fetch a single entry — for example, pick a specification by size without hardcoding its slug:
+
+```hcl
+data "strettchcloud_specification" "medium" {
+  vcpus     = 2
+  memory_mb = 4096
+}
+
+resource "strettchcloud_compute" "app" {
+  host_name     = "app-01"
+  image         = "UBUNTU-24.04"
+  region        = "KGL-1"
+  specification = data.strettchcloud_specification.medium.specification
+  public_keys   = ["ssh-ed25519 AAAA... you@example.com"]
+}
+```
+
+---
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Full reference" icon="book-open" href="https://registry.terraform.io/providers/strettch-cloud/strettchcloud/latest/docs">
+    Every resource, data source, and argument on the Terraform Registry.
+  </Card>
+  <Card title="Reboot on demand" icon="rotate-right" href="https://registry.terraform.io/providers/strettch-cloud/strettchcloud/latest/docs/actions/compute_reboot">
+    Trigger a reboot from the command line or a lifecycle event (Terraform 1.14+).
+  </Card>
+</CardGroup>
