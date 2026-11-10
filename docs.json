@@ -150,7 +150,8 @@
             "pages": [
               "terraform/overview",
               "terraform/quickstart",
-              "terraform/authentication"
+              "terraform/authentication",
+              "terraform/ai-skill"
             ]
           },
           {
