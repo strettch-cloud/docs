@@ -92,6 +92,7 @@ Body:
 | `publicKeys` | string[] | Yes (min 1) | SSH public keys for access |
 | `withPublicIp` | boolean | No | Allocate a public IP address |
 | `tags` | string[] | No | Labels for the instance |
+| `userData` | string (base64) | No | cloud-init user data (`#cloud-config` or a `#!` script), at most 32 KiB decoded |
 
 ### Upsize Compute Request (PATCH /computes/{id}/upsize)
 
