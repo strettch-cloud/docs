@@ -104,6 +104,7 @@
             "group": "Getting Started",
             "pages": [
               "api-reference/introduction",
+              "api-reference/create-an-api-key",
               "api-reference/ai-skill"
             ]
           },
@@ -200,6 +201,18 @@
     {
       "source": "/guides/computes",
       "destination": "/services/compute/overview"
+    },
+    {
+      "source": "/guides/domains",
+      "destination": "/services/dns/managing-dns"
+    },
+    {
+      "source": "/guides/teams",
+      "destination": "/services/teams/managing-teams"
+    },
+    {
+      "source": "/services/dns/temp",
+      "destination": "/services/dns/overview"
     }
   ],
   "logo": {
