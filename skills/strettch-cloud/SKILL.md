@@ -326,9 +326,9 @@ curl -s -X DELETE https://api.strettch.cloud/api/v1/computes/{id} \
   -H "Authorization: Bearer $API_KEY"
 ```
 
-## Instance Metadata (from inside an instance)
+## Compute Metadata (from inside a compute)
 
-Code running on an instance can read that instance's own details from `http://169.254.169.254`, with no API key. Every request needs the header `Metadata-Flavor: StrettchCloud`; without it the answer is `403 METADATA_FLAVOR_REQUIRED`. It is not reachable from outside the instance. `instance-id` is not the compute `id` of this API. More than a short burst of requests gets `429` with `Retry-After: 1`, so read `metadata.json` once rather than field by field.
+Code running on a compute can read that compute's own details from `http://169.254.169.254`, with no API key. Every request needs the header `Metadata-Flavor: StrettchCloud`; without it the answer is `403 METADATA_FLAVOR_REQUIRED`. It is not reachable from outside the compute. `instance-id` is not the compute `id` of this API. The limit is a burst of 10 requests, then 6 a second; past it the answer is `429` with `Retry-After: 1`, so read `metadata.json` once rather than field by field.
 
 | Method | Path | Returns |
 |--------|------|---------|
