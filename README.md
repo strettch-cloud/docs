@@ -1,44 +1,27 @@
 # Strettch Cloud docs
 
-Use the starter kit to get your docs deployed and ready to customize.
+The source of [docs.cloud.strettch.com](https://docs.cloud.strettch.com), built with [Mintlify](https://mintlify.com).
 
-Click the green **Use this template** button at the top of this repo to copy the Mintlify starter kit. The starter kit contains examples with
+## Writing a page
 
-- Guide pages
-- Navigation
-- Customizations
-- API reference pages
-- Use of popular components
+The rules for writing a page are in [AGENTS.md](AGENTS.md), under "Writing a page". Read them before you write or edit a page.
 
-**[Follow the full quickstart guide](https://starter.mintlify.com/quickstart)**
+## Preview your changes
 
-## Development
-
-Install the [Mintlify CLI](https://www.npmjs.com/package/mint) to preview your documentation changes locally. To install, use the following command:
+Install the [Mintlify CLI](https://www.npmjs.com/package/mint):
 
 ```
 npm i -g mint
 ```
 
-Run the following command at the root of your documentation, where your `docs.json` is located:
+Run it in the folder that holds `docs.json`:
 
 ```
 mint dev
 ```
 
-View your local preview at `http://localhost:3000`.
+The preview is at `http://localhost:3000`. To check for broken links, run `mint broken-links`.
 
-## Publishing changes
+## Publishing
 
-Install our GitHub app from your [dashboard](https://dashboard.mintlify.com/settings/organization/github-app) to propagate changes from your repo to your deployment. Changes are deployed to production automatically after pushing to the default branch.
-
-## Need help?
-
-### Troubleshooting
-
-- If your dev environment isn't running: Run `mint update` to ensure you have the most recent version of the CLI.
-- If a page loads as a 404: Make sure you are running in a folder with a valid `docs.json`.
-
-### Resources
-- [Mintlify documentation](https://mintlify.com/docs)
-- [Mintlify community](https://mintlify.com/community)
+Changes are published when they are merged into the default branch.
