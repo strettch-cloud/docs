@@ -1,5 +1,6 @@
 /* The page description stays in the page head for search engines and link previews.
-   It is not shown under the title. */
-#header > div.prose {
+   It is not shown under the title, except on API endpoint pages, where it is the
+   one-line summary of the endpoint. */
+#header:has(+ #content) > div.prose {
   display: none;
 }
