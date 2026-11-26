@@ -326,6 +326,18 @@ curl -s -X DELETE https://api.strettch.cloud/api/v1/computes/{id} \
   -H "Authorization: Bearer $API_KEY"
 ```
 
+## Instance Metadata (from inside an instance)
+
+Code running on an instance can read that instance's own details from `http://169.254.169.254`, with no API key. Every request needs the header `Metadata-Flavor: StrettchCloud`; without it the answer is `403 METADATA_FLAVOR_REQUIRED`. It is not reachable from outside the instance. `instance-id` is not the compute `id` of this API. More than a short burst of requests gets `429` with `Retry-After: 1`, so read `metadata.json` once rather than field by field.
+
+| Method | Path | Returns |
+|--------|------|---------|
+| GET | `/v1/metadata.json` | `instance-id`, `hostname`, `team-id`, `region`, `public-keys`, `network-config` (cloud-init network config v2; interfaces `public0`, `private0`) |
+| GET | `/v1/metadata/<field>` | One field as plain text, e.g. `/v1/metadata/network-config/ethernets/public0/addresses/0` |
+| GET | `/v1/user-data` | The `userData` sent at create, decoded; `404 USER_DATA_NOT_SET` if none |
+
+Full reference: https://docs.cloud.strettch.com/services/compute/metadata
+
 ## Important Notes
 
 - **Billing:** Compute instances are billed on a pay-as-you-go basis. Stopped instances still incur charges. Only deleting an instance stops billing.
