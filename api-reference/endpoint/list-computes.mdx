@@ -1,14 +1,10 @@
 ---
-title: 'List Compute Instances'
+title: 'List computes'
 openapi: '/api-reference/openapi.json GET /computes'
 ---
 
-### Response Error Codes
+The result comes in pages. See [Pagination](/api-reference/introduction#pagination).
 
-If the request fails, the `code` field in the error response will contain one of the following.
+### Errors
 
-| Code | Status | Description |
-| :--- | :---: | :--- |
-| `UNAUTHORIZED` | 401 | Authentication failed or was not provided. |
-| `TOO_MANY_REQUESTS` | 429 | You have exceeded the rate limit. |
-| `INTERNAL_SERVER_ERROR` | 500 | An unexpected error occurred on our end. |
+This endpoint returns only the common codes, such as `UNAUTHORIZED` and `TOO_MANY_REQUESTS`. See [Error codes](/api-reference/introduction#error-codes).
