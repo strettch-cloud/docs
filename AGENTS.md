@@ -54,7 +54,7 @@ The Bandwidth page is the model for tone. Example: "Stopped computes still count
 4. **Describe a choice. Do not list what is in it.** See the section below.
 5. **Give the number when the reader needs it and no screen shows it.** An honest approximate time is a fact, so keep it: "about a minute". Do not put "fast" or "affordable" where a number belongs.
 6. **Say the cost before the step.** If a step costs money, causes downtime or cannot be undone, say so before the reader does it.
-7. **At most two callout boxes per page.** A warning box is for three things: getting locked out, losing data, and a charge the reader would not expect, such as billing that continues after a compute is turned off. If the page has one of these, it gets a box. A normal price, such as a public IP being billed separately, is a plain sentence.
+7. **At most two callout boxes per page.** A warning box is for four things: getting locked out, losing data, exposing a secret, and a charge the reader would not expect, such as billing that continues after a compute is turned off. If the page has one of these, it gets a box. A normal price, such as a public IP being billed separately, is a plain sentence.
 8. **Document what works today.** No "coming soon", "on our roadmap" or "in the future". No explanation of how we built it or what our providers do. See "This repository is public" above.
 9. **Do not teach what is not ours.** No general advice on firewalls, caching or database tuning. Link to the tool's own docs.
 10. **Headings say what the section answers.** Sentence case: "How the team allowance works". No heading that is only a label, like "Overview" on a page already titled Overview.
