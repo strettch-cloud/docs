@@ -1,50 +1,48 @@
 ---
-title: "How to Pay Your Strettch Cloud Bill"
+title: "Paying your bill"
 sidebarTitle: "Paying Your Bill"
-description: "Add a payment method, manage automatic monthly charges, settle outstanding invoices, and resolve failed payments for your Strettch Cloud team."
+description: "Strettch Cloud is prepaid: how to top up, how credits and funds are spent, when usage is charged, and what happens when your team runs out."
 ---
 
-## How does billing work?
-Strettch Cloud operates on a prepaid credit system. You add funds to your team's wallet, and your resource usage is deducted from this balance daily.
+Strettch Cloud is prepaid. You top up your team, and each day we take the previous day's usage from your credits first, then from your funds.
 
+Every team pays for itself, with its own credits and funds.
 
-## How is usage calculated?
-We track your resource usage (like Virtual Machines) continuously.
+## Credits and funds
 
+A team holds two amounts, and they are never added together.
 
-* **Compute (VMs):** Usage is calculated daily for the previous day. We bill by the hour. If you use a VM for part of an hour, it is rounded up to the full hour.
+- **Funds** are the money you topped up.
+- **Credits** are amounts we add to a team: promotions, refunds, referral rewards, rewards for a long-term commitment, and compensation after an incident. A credit can have an expiry date.
 
+Credits are spent first, starting with the credit that expires soonest. Your funds are used when the credits run out.
 
-* **Public IPs:** Billed monthly. If you hold a public IP at any point during the month, you are charged the monthly fee.
+The number at the top of the dashboard shows your credits, labelled **Credits**, while you have any. After that it shows your funds, labelled **Balance**. **Team Settings** > **Billing** > **Overview** shows both, and the **Credits** tab lists each credit with its expiry date and how much of it is used.
 
-We currently accept payment using credit cards (Visa, MasterCard, American Express, UnionPay), debit cards. We also support direct debit from banks.
+## How to top up
 
-## How do I pay?
+Click **Top Up** at the top of the dashboard, enter an amount in RWF and click **Continue**. The smallest top-up is RWF 1,000. A payment window opens and shows the ways you can pay, such as mobile money and bank cards. Follow its steps.
 
-You can make a manual payment on the **Billing tab** of the **Settings** page. Your current balance is always listed at the top of the page, next to a top-up button. The text of the button varies if the balance is overdue or if you’re making an early payment.
+When the payment is confirmed, your funds go up. Every top-up, with its status, is listed in **Team Settings** > **Billing** > **Transactions**.
 
-<Frame>
-     <img src="/images/billing/topup.png" style={{ borderRadius: '0.2rem' }} />
-    </Frame>
+## What is charged, and when
 
-Click the topu-up button to open a payment modal. In the Payment Amount section, you can select from any past due balance, estimated costs for the current billing period, or a custom amount.
+Once a day we charge the previous day's usage:
 
-<Frame>
-     <img src="/images/billing/topup-modal.png" style={{ borderRadius: '0.2rem' }} />
-    </Frame>
+- **Computes** are charged by the hour, for as long as they exist. See [What you pay in each state](/services/compute/overview#what-you-pay-in-each-state).
+- **Public IPs** are charged by the calendar month. See [What a public IP costs](/services/compute/public-ips-and-the-private-network#what-a-public-ip-costs).
+- **Bandwidth** is charged only above your team's allowance. See [Bandwidth](/services/compute/bandwidth).
 
-After you enter the amount you want to pay. Once the payment is confirmed, your balance will be updated immediately.
+At the start of each month you get an [invoice](/faqs/invoices) that lists the charges of the month before.
 
-## When is my balance updated?
+## What happens when your team runs out
 
-* **Top-ups:** Your balance increases as soon as we receive payment confirmation from IremboPay.
+When usage is charged and your credits and funds do not cover it, your team owes the difference, and the month's invoice stays unpaid.
 
-* **Usage Charges:** Your balance is debited once every 24 hours for the previous day's usage.
+<Warning>
+  If an invoice stays unpaid, we first turn your computes off, and later destroy them. Destroyed computes and their data cannot be brought back. Before each step we email every member of the team with the date it will happen.
+</Warning>
 
-## What happens if my balance runs out?
-If your balance is insufficient:
-* **Past Due:** You will receive a reminder email.
+While your team owes money, you cannot create new computes. After your computes are turned off, the dashboard asks you to top up at least the amount you owe before you can use it again.
 
-* **Suspension:** If payment is not made, your resources may be suspended.
-
-* **Termination:** Continued non-payment may lead to resource termination. We recommend keeping a positive balance to avoid service interruption.
+To get a warning earlier, turn on **Low Balance Alert** in **Team Settings** > **Billing** > **Overview** and set an amount. We email every member of the team when your funds fall below it. An Owner or an Admin can set it.
