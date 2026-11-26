@@ -1,22 +1,22 @@
 ---
 title: 'AI Skill'
-description: 'Load a single skill file that gives Claude, Cursor, and other AI coding assistants complete context on the Strettch Cloud Terraform provider for one-shot infrastructure as code.'
+description: 'Give Claude, Cursor and other AI coding assistants a skill file that describes the Strettch Cloud Terraform provider.'
 icon: 'wand-magic-sparkles'
 ---
 
-Give your AI coding assistant complete knowledge of the Strettch Cloud Terraform provider so it can write correct configuration in one shot.
+The skill file describes the Strettch Cloud Terraform provider to an AI coding assistant, so the assistant can write Terraform files for it.
 
-## Install via skills.sh
+## Install with skills.sh
 
-The fastest way for any [skills.sh](https://skills.sh)-compatible agent (Claude Code, Cursor, Codex, OpenCode, Goose, and more):
+For any agent that works with [skills.sh](https://skills.sh), such as Claude Code, Cursor, Codex, OpenCode and Goose:
 
 ```bash
 npx skills add strettch-cloud/docs
 ```
 
-This picks up every Strettch Cloud skill, including the Terraform provider.
+This installs every Strettch Cloud skill, including the one for the Terraform provider.
 
-## Download manually
+## Download the file
 
 <Card title="Download SKILL.md" icon="download" href="https://raw.githubusercontent.com/strettch-cloud/docs/main/skills/strettch-cloud-terraform/SKILL.md">
   Paste the contents into your AI assistant's context or system prompt.
@@ -26,6 +26,4 @@ This picks up every Strettch Cloud skill, including the Terraform provider.
 curl -O https://raw.githubusercontent.com/strettch-cloud/docs/main/skills/strettch-cloud-terraform/SKILL.md
 ```
 
-<Note>
-  Compatible with any AI tool that supports the [Agent Skills](https://agentskills.io) format or accepts context files.
-</Note>
+The file works with any AI tool that supports the [Agent Skills](https://agentskills.io) format or accepts context files.
