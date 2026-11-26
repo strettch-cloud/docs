@@ -124,14 +124,14 @@ Body:
   "meta": {
     "total": 42,
     "page": 1,
-    "limit": 20
+    "limit": 10
   },
   "requestId": "f47ac10b-...",
   "timestamp": "2024-01-15T10:00:00Z"
 }
 ```
 
-Pagination query params: `page` (default: 1), `limit` (default: 20, max: 100)
+Pagination query params: `page` (default: 1), `limit` (default: 10)
 
 ### Error Response
 
@@ -203,9 +203,9 @@ Pagination query params: `page` (default: 1), `limit` (default: 20, max: 100)
 | `VALIDATION_ERROR` | 400 | Request body failed validation |
 | `MALFORMED_JSON` | 400 | Invalid JSON in request body |
 | `INVALID_IDEMPOTENCY_KEY` | 400 | Idempotency key is not a valid UUID v4 |
+| `INSUFFICIENT_BALANCE` | 400 | Team has insufficient credits |
 | `UNAUTHORIZED` | 401 | API key is missing, malformed, or revoked |
 | `FORBIDDEN` | 403 | Insufficient permissions for this action |
-| `INSUFFICIENT_BALANCE` | 403 | Team has insufficient credits |
 | `TEAM_SUSPENDED` | 403 | Team account is suspended |
 | `TEAM_PAST_DUE` | 403 | Team has overdue payments |
 | `TEAM_TERMINATED` | 403 | Team account is terminated |
