@@ -1,148 +1,80 @@
 ---
 title: "SC Metrics Agent"
-description: "Install the SC Metrics Agent to collect CPU, memory, disk, and network metrics from your compute instances and view usage graphs in the dashboard."
+description: "The SC Metrics Agent runs on a compute and sends the values behind the compute graphs. How to install, manage and repair it."
 ---
 
-The SC Metrics Agent is a lightweight, open-source utility that collects system-level metrics from your computes and forwards them to Strettch Cloud. It enables monitoring features including usage graphs, resource tracking, and performance analytics.
+The SC Metrics Agent is a small program on your compute that reads its CPU, memory, disk, network and load, and sends the values to Strettch Cloud. The [compute graphs](/services/compute/compute-graphs) are drawn from them. The agent is installed on every compute you create, and its [source code is on GitHub](https://github.com/strettch-cloud/sc-metrics-agent).
 
-**Supported Systems:** Ubuntu 20.04+, Debian 8+
+**Supported systems:** Ubuntu 20.04 and newer, Debian 8 and newer.
 
-View the [source code on GitHub](https://github.com/strettch-cloud/sc-metrics-agent)
+The graphs appear on the compute's **Monitoring** tab within a few minutes after you create a compute.
 
-## Automatic Installation
+## Install the agent yourself
 
-The SC Metrics Agent installs automatically when you create a new compute instance. No action needed—just wait a few minutes after creation, then view your metrics from the dashboard's Graphs tab.
+You need this only if the agent was removed from a compute.
 
-## Manual Installation
-
-Need to install the agent on an existing instance? Here's how:
-
-### Quick Install (Recommended)
-
-Run this single command to install the agent:
-
-<CodeGroup>
-```bash Install the agent
+```bash
 curl -sSL https://repo.cloud.strettch.com/metrics/install.sh | sudo bash
 ```
-</CodeGroup>
 
-The script will automatically detect your OS, set up repositories, and install the agent:
+The script finds your system, adds the Strettch Cloud package repository and installs the `sc-metrics-agent` package. To read the script before you run it:
 
-```
---- Installing sc-metrics-agent for noble ---
--> Cleaning up old repository configurations...
-   -> Updating package lists
-   -> Installing prerequisites
-   -> Downloading GPG key
-   -> Adding repository
-   -> Updating package index
-   -> Installing sc-metrics-agent
-...
-Setting up sc-metrics-agent (3.17.1) ...
-Configuring SC-Metrics-Agent...
-ℹ️  Creating required directories...
-ℹ️  Configuring metrics collection...
-✅ Metrics agent configured successfully
-ℹ️  Enabling sc-metrics-agent.service...
-✅ sc-metrics-agent.service enabled
-ℹ️  Starting services...
-✅ sc-metrics-agent.service started successfully
-
-╔═════════════════════════════════════════╗
-║ SC-Metrics-Agent Installation Complete  ║
-╚═════════════════════════════════════════╝
-
-Service Status:
-  • Main Service: active
-  • Auto-Update:  active
-
-✅ sc-metrics-agent installed successfully!
-```
-
-### Review Before Installing
-
-Prefer to inspect the script first? Download and review it:
-
-<CodeGroup>
-```bash Review the install script
+```bash
 curl -sSL https://repo.cloud.strettch.com/metrics/install.sh
 ```
-</CodeGroup>
 
-### Verify Installation
+Then check that the agent runs:
 
-Check that the agent is running:
-
-<CodeGroup>
-```bash Check agent status
+```bash
 systemctl status sc-metrics-agent
 ```
-</CodeGroup>
 
-You should see `Active: active (running)`:
+You should see this line:
 
-```
-● sc-metrics-agent.service - Strettch Cloud Metrics Agent
-     Loaded: loaded (/etc/systemd/system/sc-metrics-agent.service; enabled; preset: enabled)
-     Active: active (running) since Tue 2025-10-14 10:15:30 UTC; 45s ago
-       Docs: https://docs.cloud.strettch.com/agents/sc-metrics-agent
-   Main PID: 578620 (sc-metrics-agen)
-      Tasks: 6 (limit: 9435)
-     Memory: 2.1M (peak: 2.5M)
-        CPU: 38ms
-     CGroup: /system.slice/sc-metrics-agent.service
-             └─578620 /usr/bin/sc-metrics-agent
+```text
+Active: active (running)
 ```
 
-View your metrics from the dashboard's Graphs tab within a few minutes.
+The graphs fill in within a few minutes.
 
-To check the installed agent version:
+## Manage the agent
 
 <CodeGroup>
-```bash Check version
-dpkg -l | grep sc-metrics-agent
-```
-</CodeGroup>
-
-## Managing the Agent
-
-### Basic Commands
-
-<CodeGroup>
-```bash Start the agent
-sudo systemctl start sc-metrics-agent
-```
-
-```bash Stop the agent
-sudo systemctl stop sc-metrics-agent
-```
-
-```bash Restart the agent
-sudo systemctl restart sc-metrics-agent
-```
-
 ```bash Check status
 systemctl status sc-metrics-agent
 ```
-</CodeGroup>
 
-### Auto-Start on Boot
+```bash Restart
+sudo systemctl restart sc-metrics-agent
+```
 
-<CodeGroup>
-```bash Enable auto-start
+```bash Stop
+sudo systemctl stop sc-metrics-agent
+```
+
+```bash Start
+sudo systemctl start sc-metrics-agent
+```
+
+```bash Start at boot
 sudo systemctl enable sc-metrics-agent
 ```
 
-```bash Disable auto-start
+```bash Do not start at boot
 sudo systemctl disable sc-metrics-agent
 ```
 </CodeGroup>
 
-## Viewing Logs
+To see which version is installed:
+
+```bash
+dpkg -l | grep sc-metrics-agent
+```
+
+## Read the logs
 
 <CodeGroup>
-```bash Live logs
+```bash Live
 sudo journalctl -u sc-metrics-agent -f
 ```
 
@@ -157,85 +89,63 @@ sudo journalctl -u sc-metrics-agent -n 100
 
 ## Updates
 
-The agent updates automatically. You can also trigger updates manually:
+The agent updates itself. To update it now:
 
-<CodeGroup>
-```bash Check for and install updates
+```bash
 sudo systemctl start sc-metrics-agent-updater
 ```
 
-```bash View update logs
+To follow the update:
+
+```bash
 sudo journalctl -u sc-metrics-agent-updater -f
 ```
-</CodeGroup>
 
-## Uninstalling
+## Uninstall the agent
 
-To completely remove the agent:
+Without the agent, the compute graphs stay empty.
 
-<CodeGroup>
-```bash Uninstall the agent
+```bash
 sudo apt-get purge sc-metrics-agent
 ```
-</CodeGroup>
 
-The uninstall process will stop all services and remove the agent:
+## The graphs are empty
 
-```
-Reading package lists... Done
-Building dependency tree... Done
-The following packages will be REMOVED:
-  sc-metrics-agent*
-After this operation, 6,823 kB disk space will be freed.
-Do you want to continue? [Y/n] Y
-...
-Removing sc-metrics-agent (3.17.1) ...
-Removing SC-Metrics-Agent (keeping configuration)...
-Stopping sc-metrics-agent-update-scheduler.timer...
-Stopping sc-metrics-agent.service...
-Disabling sc-metrics-agent-update-scheduler.timer...
-Disabling sc-metrics-agent.service...
-SC-Metrics-Agent removed (configuration preserved in /etc/sc-metrics-agent)
-Purging configuration files for sc-metrics-agent (3.17.1) ...
+[Connect to the compute](/services/compute/connect-to-a-compute) and go through these checks in order.
+
+**1. Is the agent running?**
+
+```bash
+systemctl status sc-metrics-agent
 ```
 
-**Note:** After uninstalling, metrics collection and usage graphs will be unavailable.
+You should see `Active: active (running)`.
 
-## Troubleshooting
+- If you see `inactive (dead)` or `failed`, restart the agent:
 
-### Metrics Not Showing?
+  ```bash
+  sudo systemctl restart sc-metrics-agent
+  ```
 
-1. Verify the agent is running:
-   <CodeGroup>
-   ```bash
-   systemctl status sc-metrics-agent
-   ```
-   </CodeGroup>
+- If you see `could not be found`, the agent is not installed. [Install it](#install-the-agent-yourself).
 
-2. Check recent logs:
-   <CodeGroup>
-   ```bash
-   sudo journalctl -u sc-metrics-agent -n 50
-   ```
-   </CodeGroup>
+**2. Does the agent report errors?**
 
-3. Restart the service:
-   <CodeGroup>
-   ```bash
-   sudo systemctl restart sc-metrics-agent
-   ```
-   </CodeGroup>
+```bash
+sudo journalctl -u sc-metrics-agent -n 50
+```
 
-4. Wait a few minutes for metrics to appear in the dashboard
+**3. Look at the graphs again**
 
-### Need Help?
+Wait a few minutes, then open the **Monitoring** tab.
 
-Contact support at [cloud@strettch.com](mailto:cloud@strettch.com) with:
-- Output from `systemctl status sc-metrics-agent`
-- Recent logs: `journalctl -u sc-metrics-agent -n 100`
-- Your compute instance ID
-- Description of the issue
+**If the graphs are still empty**, email [cloud@strettch.com](mailto:cloud@strettch.com) with:
+
+- the name of the compute;
+- the output of `systemctl status sc-metrics-agent`;
+- the output of `sudo journalctl -u sc-metrics-agent -n 100`;
+- what you see on the **Monitoring** tab.
 
 ## Security
 
-The agent uses encrypted communication to securely transmit metrics data to Strettch Cloud. It runs with minimal privileges and updates automatically for security patches.
+The agent encrypts the values it sends to Strettch Cloud. It runs with only the privileges it needs.
