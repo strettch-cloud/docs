@@ -1,144 +1,48 @@
 ---
 title: "Strettch Cloud Platform Overview"
 sidebarTitle: "Platform Overview"
-description: "Why Strettch Cloud — Africa-first cloud infrastructure offering low-latency compute, predictable local-currency pricing, and data sovereignty for builders."
+description: "What Strettch Cloud is, what you can run on it, where it runs and how you pay for it."
 ---
 
-## Building Internet Applications in Africa
+Strettch Cloud is a cloud platform that runs in Rwanda. You rent computes, host the DNS of your domains and manage both with your team, and you pay in Rwandan francs.
 
-If you are building digital products in Africa, you face challenges that developers in other regions rarely encounter. Your application might feel slow despite being well-optimized. Your cloud bills might change unpredictably due to currency fluctuations. Compliance with local data protection laws might require working with unreliable providers.
+Strettch is pronounced like "stretch". Strettch Cloud is a product of [strettch.com](https://strettch.com/).
 
-Strettch Cloud addresses these challenges.
+## What you can use
 
-## What Strettch Cloud Provides
+- **[SC Compute](/services/compute/overview)**: virtual machines that run Linux. You reach them over SSH or from a terminal in your browser. The price of each specification is shown when you create a compute.
+- **[DNS](/services/dns/overview)**: hosting for the DNS records of a domain you own.
+- **[Teams](/services/teams/overview)**: every compute and domain belongs to a team. You invite people, give each one a role, and each team has its own bill.
+- **[API](/api-reference/introduction)** and **[Terraform](/terraform/overview)**: create and manage computes from your own code.
 
-Strettch Cloud is an Infrastructure-as-a-Service (IaaS) platform that provides cloud computing across Africa. We offer compute instances, DNS management, and networking—similar to AWS or DigitalOcean—but with infrastructure located in African countries.
+## Why it runs in Rwanda
 
-All backed by local hosting, local currency billing, and local support.
+### Your users are closer
 
-<Note>
-The name "Strettch" (pronounced /stretʧ/, like "stretch") represents our core belief: there's always more on the other side of "good enough." The double 'tt' is intentional—it emphasizes that extra push, the additional effort most stop short of. When you think you've done enough, stretching just a bit more often reveals what separates the exceptional from the average. Strettch Cloud is a product of [strettch.com](https://strettch.com/), built on this philosophy of continuous improvement.
-</Note>
+The closest region of the large cloud providers is in South Africa. From Rwanda, a request to the nearest AWS region, in Cape Town, takes about 110 ms, and up to 200 ms when the network is busy. An application makes many requests to load one page, so the delay adds up.
 
----
+Strettch Cloud runs in Rwanda, which brings this down to 10 to 30 ms.
 
-## Problems Strettch Cloud Solves
+### You pay in your own currency
 
-African businesses have two main options for cloud infrastructure: global providers like AWS and Google Cloud, or local providers. Both options create significant problems.
+If you earn in Rwandan francs and pay for cloud in US dollars, your bill changes with the exchange rate. When the rate went from 1,200 to 1,500 RWF per dollar, a bill of 20,000 dollars a year went from 24 million to 30 million RWF with no change in usage.
 
-Global providers offer reliable infrastructure but introduce high latency and currency risk. Local providers eliminate latency but often deliver unreliable service at premium prices.
+Strettch Cloud prices and bills in Rwandan francs (RWF).
 
-### Reducing Latency for Better User Experience
+### Your data stays in the country
 
-High latency makes applications feel slow and frustrates users. The closest AWS region to many African countries is in Cape Town, South Africa. From Rwanda, this creates around 110ms of delay on every request, with latency sometimes peaking to 200ms during network congestion.
+Some data must be stored inside the country by law. Computes on Strettch Cloud run in Rwanda, so what you store on them stays in Rwanda.
 
-```bash
-# Ping from Rwanda to AWS Cape Town (the closest AWS region)
-root@docs-compute:~# ping -c 5 13.247.110.111
-PING 13.247.110.111 (13.247.110.111) 56(84) bytes of data.
-64 bytes from 13.247.110.111: icmp_seq=1 ttl=40 time=111 ms
-64 bytes from 13.247.110.111: icmp_seq=2 ttl=40 time=110 ms
-64 bytes from 13.247.110.111: icmp_seq=3 ttl=40 time=110 ms
-64 bytes from 13.247.110.111: icmp_seq=4 ttl=40 time=110 ms
-64 bytes from 13.247.110.111: icmp_seq=5 ttl=40 time=111 ms
+## Where it runs
 
---- 13.247.110.111 ping statistics ---
-5 packets transmitted, 5 received, 0% packet loss, time 4006ms
-rtt min/avg/max/mdev = 110.341/110.479/110.578/0.079 ms
-```
+Strettch Cloud has one region, Kigali, in Rwanda.
 
-Modern applications make hundreds of requests per page load. At 110ms per request (and higher during peak times), these delays compound into a noticeably slow user experience. Countries like Rwanda, Ghana, and Kenya have no nearby cloud infrastructure.
+## How you pay
 
-**Our Solution:**
-Strettch Cloud operates infrastructure in African countries, starting with Rwanda. This reduces latency to 10-30ms. Your users get the responsive experience they expect.
+Billing is prepaid. You top up your team in Rwandan francs, and each day's usage is taken from what you have. See [Paying your bill](/faqs/paying-your-bill).
 
-### Eliminating Currency Risk from Cloud Bills
+## Next steps
 
-Running a business in local currency while paying cloud bills in USD creates financial uncertainty. Currency fluctuations directly impact your operating costs.
-
-In Rwanda, the exchange rate moved from 1,200 RWF per USD to 1,500 RWF per USD. A business with a $20,000 annual cloud bill saw costs increase from 24 million RWF to 30 million RWF. This is a 6 million RWF increase with no change in usage.
-
-**Our Solution:**
-Strettch Cloud bills in local currency. In Rwanda, you pay in Rwandan Francs (RWF). You can use local payment methods including mobile money. Your budget stays predictable because cloud costs are not exposed to currency fluctuations.
-
-### Simplifying Data Sovereignty Compliance
-
-Many African countries require that certain data be stored within national borders. Meeting these requirements with global cloud providers is complex and expensive.
-
-Local providers keep data in-country but often deliver unreliable service. Simple requests like creating DNS records can take a week. Some providers offer only 98% uptime compared to the industry standard of 99.9%. Manual processes create bottlenecks. Costs are often 2-3x higher than global alternatives.
-
-**Our Solution:**
-Strettch Cloud hosts infrastructure in African countries, so your data stays local automatically. You remain compliant with data sovereignty requirements without sacrificing reliability or control. Our infrastructure is automated, designed for high availability, and priced affordably.
-
-### Enabling Multi-Country Operations
-
-Expanding across multiple African countries means navigating different regulations, providers, and compliance requirements in each location.
-
-Operating in 5 African countries typically requires contracting with 5 different local providers, managing 5 separate infrastructures, dealing with 5 different billing systems, and coordinating with 5 local teams. This complexity creates massive overhead and uncertainty.
-
-**Our Solution:**
-Strettch Cloud provides a unified platform across African countries. As we expand to new regions, you will be able to deploy infrastructure in multiple countries through a single interface. One platform handles multi-country compliance, billing, and operations.
-
----
-
-## What You Can Build
-
-### Running Applications and Websites
-
-Deploy virtual machines (compute instances) to run your applications, websites, APIs, and databases. Choose from multiple instance sizes and Linux distributions. Access your instances via SSH or web console.
-
-Pricing starts at 3,999 RWF per month (approximately $2.76 USD).
-
-[Learn more about Compute →](/services/compute/overview)
-
-### Managing Your Domains
-
-Point your domains to your infrastructure using our DNS management system. We support all standard DNS record types including A, AAAA, CNAME, MX, TXT, and NS records. DNS changes propagate quickly.
-
-[Learn more about DNS →](/services/dns/overview)
-
-### Collaborating with Your Team
-
-Organize your cloud resources by team. Invite team members and assign roles (Owner, Admin, Member). Each team has its own billing and resource management.
-
-[Learn more about Teams →](/services/teams)
-
----
-
-## Where Strettch Cloud Operates
-
-### Current Region
-
-Strettch Cloud currently operates in Rwanda 🇷🇼 (MTN data center). We are expanding to additional African countries.
-
-### Payment Options
-
-In Rwanda, you can pay in Rwandan Francs (RWF) using:
-- Mobile Money (MTN Mobile Money, Airtel Money)
-- Bank Transfer
-- Credit/Debit Cards
-
-Additional currencies will be supported as we expand to new countries.
-
-[View pricing details →](/faqs/paying-your-bill)
-
----
-
-## Next Steps
-
-Ready to start using Strettch Cloud? Here is what to do next:
-
-<CardGroup cols={2}>
-  <Card title="Create Your First Instance" icon="rocket" href="/getting-started/quickstart">
-    Follow our quickstart guide to deploy a compute instance in minutes
-  </Card>
-  <Card title="Explore Services" icon="server" href="/services/compute/overview">
-    Learn about compute, DNS, and team management capabilities
-  </Card>
-  <Card title="Understand Pricing" icon="dollar-sign" href="/faqs/paying-your-bill">
-    Review our pricing and payment options
-  </Card>
-  <Card title="Get Support" icon="life-ring" href="/support">
-    Contact our local support team for assistance
-  </Card>
-</CardGroup>
+- [Create your first compute](/getting-started/quickstart)
+- [Read the core concepts](/core-concepts)
+- [See how to reach support](/support)

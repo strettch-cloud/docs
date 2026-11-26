@@ -1,7 +1,7 @@
 ---
 title: "Strettch Cloud Documentation"
 sidebarTitle: "Introduction"
-description: "Get started with Strettch Cloud — the African-first cloud platform for affordable compute instances, managed DNS, and developer-friendly infrastructure."
+description: "Guides and reference for Strettch Cloud: computes, DNS, teams, billing, the API and Terraform."
 mode: "custom"
 ---
 
@@ -39,13 +39,13 @@ export const HeroCard = ({ title, description, href, children }) => {
     </h1>
 
     <div className="max-w-xl mx-auto px-4 mt-4 text-lg text-center text-gray-500 dark:text-zinc-500">
-      Get started with Strettch Cloud, infrastructure built for scale and affordability
+      Guides and reference for computes, DNS, teams, billing, the API and Terraform
     </div>
 
     <div className="px-6 lg:px-0 mt-12 lg:mt-24 grid sm:grid-cols-2 gap-x-6 gap-y-4">
       <HeroCard
         title="Quickstart"
-        description="Deploy your first compute in 2 minutes"
+        description="Create your first compute and open a terminal on it"
         href="/getting-started/quickstart"
       >
         <img src="/images/home/light/rocket.png" className="block dark:hidden" alt="Quickstart" />
@@ -53,18 +53,18 @@ export const HeroCard = ({ title, description, href, children }) => {
       </HeroCard>
 
       <HeroCard
-        title="Compute (VMs)"
-        description="Create, manage, resize, and troubleshoot computes"
-        href="/guides/computes"
+        title="Compute"
+        description="Create, connect to, upsize and destroy computes"
+        href="/services/compute/overview"
       >
-        <img src="/images/home/light/compute.png" className="block dark:hidden" alt="Compute (VMs)" />
-        <img src="/images/home/dark/compute.png" className="hidden dark:block" alt="Compute (VMs)" />
+        <img src="/images/home/light/compute.png" className="block dark:hidden" alt="Compute" />
+        <img src="/images/home/dark/compute.png" className="hidden dark:block" alt="Compute" />
       </HeroCard>
 
       <HeroCard
         title="Domains & DNS"
-        description="Manage domains and DNS records"
-        href="/guides/domains"
+        description="Add a domain and manage its DNS records"
+        href="/services/dns/overview"
       >
         <img src="/images/home/light/dns.png" className="block dark:hidden" alt="Domains & DNS" />
         <img src="/images/home/dark/dns.png" className="hidden dark:block" alt="Domains & DNS" />
@@ -72,7 +72,7 @@ export const HeroCard = ({ title, description, href, children }) => {
 
       <HeroCard
         title="Support"
-        description="Get help and contact our team"
+        description="How to reach our team"
         href="/support"
       >
         <img src="/images/home/light/support.png" className="block dark:hidden" alt="Support" />
