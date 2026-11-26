@@ -1,7 +1,7 @@
 ---
 title: "Paying your bill"
 sidebarTitle: "Paying Your Bill"
-description: "Strettch Cloud is prepaid: how to top up, how credits and funds are spent, when usage is charged, and what happens when your team runs out."
+description: "How to top up, how credits and funds are spent, when usage is charged, and the dates on which an unpaid team is suspended and its computes are destroyed."
 ---
 
 Strettch Cloud is prepaid. You top up your team, and each day we take the previous day's usage from your credits first, then from your funds.
@@ -37,12 +37,36 @@ At the start of each month you get an [invoice](/faqs/invoices) that lists the c
 
 ## What happens when your team runs out
 
-When usage is charged and your credits and funds do not cover it, your team owes the difference, and the month's invoice stays unpaid.
+When usage is charged and your credits and funds do not cover it, your team owes the difference. Nothing is turned off straight away. The steps follow the calendar, and each one happens only if the invoice is still unpaid on that day.
+
+| Date | What happens |
+|---|---|
+| The 1st of the next month | The invoice for the month arrives and is **UNPAID**. Your team cannot create new computes, but you can still manage the ones you have. |
+| The 15th | Your team is suspended. We turn off every compute in the team. |
+| The 29th | We destroy every compute in the team, with all the data on its disks. |
+
+The dates are UTC dates. A February with 28 days has no 29th, so the computes are destroyed on 1 March. If a step cannot run on its day, we try again on each of the next two days.
+
+For example, your team runs out on 20 November. The November invoice arrives on 1 December and is unpaid. We turn your computes off on 15 December and destroy them on 29 December. Paying what you owe at any time before 29 December keeps your computes.
 
 <Warning>
-  If an invoice stays unpaid, we first turn your computes off, and later destroy them. Destroyed computes and their data cannot be brought back. Before each step we email every member of the team with the date it will happen.
+  Destroyed computes and their data cannot be brought back. If your team is suspended, back up what you need before the 29th.
 </Warning>
 
-While your team owes money, you cannot create new computes. After your computes are turned off, the dashboard asks you to top up at least the amount you owe before you can use it again.
+### How you are told
+
+We email every member of the team before each step. The email says how many days are left. Before the 15th it says your services will be suspended. After the 15th it says your resources are scheduled for deletion, and we also send it by SMS to members with a Rwandan phone number.
+
+### What suspended means
+
+- Your computes are off, so everything that runs on them is offline.
+- You still pay for them while they are off, so the amount you owe keeps growing. See [What you pay in each state](/services/compute/overview#what-you-pay-in-each-state).
+- The dashboard asks you to top up at least the amount you owe before you can use it again. In the API, only `GET` requests work.
+
+### How to keep your computes
+
+Top up at least the amount you owe. The dashboard shows the amount. When the payment is confirmed, the invoice is paid and no further step happens.
+
+If your computes were already turned off, turn each one on again from its page. See [Turn a compute off and on](/services/compute/turn-a-compute-off-and-on).
 
 To get a warning earlier, turn on **Low Balance Alert** in **Team Settings** > **Billing** > **Overview** and set an amount. We email every member of the team when your funds fall below it. An Owner or an Admin can set it.

@@ -81,6 +81,8 @@ State a value only when both of these are true: the reader needs it to act, and 
 
 Exact lists of allowed values belong on reference pages, generated from the source where we can.
 
+**Billing deadlines are always stated.** The days on which an unpaid team is suspended and its computes are destroyed are written out in full on Paying Your Bill, even though they can change. People plan around those dates and lose data if they get them wrong. When the product changes them, that page changes the same day.
+
 A list stays when the page explains each item and the screen does not. The table of compute graphs is an example: the screen shows the graphs, and the page says what to watch for in each one.
 
 Two more things go stale the same way:
@@ -193,6 +195,7 @@ Rule 1 only works if everyone knows where a fact lives. Add a row when a new fac
 | A public IP is billed separately, and when you need one | Public IPs and the private network |
 | What each role can do | Teams overview |
 | How to pay, and the payment methods | Paying Your Bill |
+| When an unpaid team is suspended and when its computes are destroyed | Paying Your Bill |
 | What credits and funds are, and that credits are spent first | Paying Your Bill |
 | Bandwidth allowance and charges | Bandwidth |
 | API rate limit, pagination, error format | API Introduction |
