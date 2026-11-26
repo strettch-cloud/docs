@@ -1,41 +1,35 @@
 ---
-title: "Audit Logs"
-description: "View team audit logs in Strettch Cloud to see who created, modified, or deleted compute instances and DNS records, with timestamps and actor details."
+title: "Activity logs"
+sidebarTitle: "Activity Logs"
+description: "See who did what in your Strettch Cloud team, and when, and export the activity logs."
 ---
 
-## What are audit logs?
+The activity logs record what happens in a team: who did what, to which resource, and when. Each team has its own logs.
 
-Audit logs give you a record of actions taken within your team. Each entry shows what happened and when, so you can track changes and understand the state of your team's resources over time.
+## Where the activity logs are
 
-Logs are scoped to the current team. Switching teams shows the audit log for that team only.
+Go to **Team Settings** > **Activity Logs**. Every member of the team can read them.
 
----
+Each entry is one sentence that says who did what. Click an entry to see its details: the actor, the action, the resource, the outcome, where the request came from and when.
 
-## Accessing audit logs
+Use **Search logs** to find entries.
 
-Go to your team's dashboard and open the **Audit Logs** tab. Entries are listed in reverse chronological order — most recent first.
+## What is logged
 
-Each entry shows:
+| Area | Examples |
+|---|---|
+| **Sign-ins** | A member logged in or out, or a login failed |
+| **Computes** | A compute was created, turned off, rebooted, upsized or destroyed |
+| **DNS** | A domain was added or removed, a record was added or deleted |
+| **SSH keys** | A key was added, edited or deleted |
+| **API keys** | A key was generated or deleted |
+| **Members** | A member was invited or removed, a role was changed |
+| **Ownership** | Ownership was transferred |
+| **Team** | The team was renamed, its settings were changed |
+| **Billing** | Funds were added, an invoice was created, credits were received |
 
-- **Who did What** — a plain-English description of what happened (e.g., "You joined Team Engineering Team")
-- **Time** — how long ago the action occurred, grouped by date
+## Export the activity logs
 
----
+You need to be an Owner or an Admin.
 
-## What gets logged
-
-| Category | Example actions |
-|----------|----------------|
-| **Compute** | Instance created, instance restarted, instance deleted |
-| **DNS** | DNS record created, DNS record updated, DNS record deleted |
-| **SSH keys** | SSH key added, SSH key updated, SSH key deleted |
-| **API keys** | API key created, API key revoked, API key deleted |
-| **Team membership** | Member invited, member removed, role changed |
-| **Team ownership** | Ownership transferred to another member |
-| **Team details** | Team name changed, team settings updated |
-
----
-
-<Note>
-  **Need help?** Contact our [support team](mailto:cloud@strettch.com) or visit [cloud.strettch.com](https://cloud.strettch.com).
-</Note>
+Click **Export**, choose a format and a period, and click **Export Logs**.

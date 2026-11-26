@@ -1,62 +1,65 @@
 ---
-title: "Strettch Cloud DNS Overview"
+title: "Strettch Cloud DNS overview"
 sidebarTitle: "Overview"
-description: "How Strettch Cloud DNS works, including nameservers, supported record types, propagation speed, and how to host authoritative DNS for your domains."
+description: "How Strettch Cloud DNS hosts the records of a domain you own: nameservers, record types, TTL, how fast changes take effect, and the rule for subdomains."
 ---
 
-## What is Strettch Cloud DNS?
+Strettch Cloud DNS hosts the DNS records of a domain you already own. You point the domain to our nameservers at the company where you registered it, and from then on you manage its records in the dashboard.
 
-Strettch Cloud DNS is a managed DNS service that lets you host and manage DNS records for your domains. It provides enterprise-grade performance with fast propagation across the global network.
+We do not sell domain names. Buy the domain from a registrar first, then [add it to your team](/services/dns/managing-dns#add-a-domain).
 
-When you use Strettch Cloud DNS, you point your domain to our nameservers (`ns1.strettch.com` and `ns2.strettch.com`). From that point, you manage all DNS records directly through the Strettch Cloud dashboard.
+## Our nameservers
 
-## Understanding DNS Basics
+Every domain on Strettch Cloud uses the same two nameservers:
 
-### What are Nameservers?
-
-Nameservers are servers that store DNS records and respond to DNS queries. They tell the internet where to find your website, email servers, and other services.
-
-When you use Strettch Cloud DNS, you configure your domain registrar to use our nameservers:
 - `ns1.strettch.com`
 - `ns2.strettch.com`
 
-### What are DNS Records?
+A domain works with our DNS only while your registrar lists these two as its nameservers.
 
-DNS records are instructions that map domain names to IP addresses or other values. Each record type serves a specific purpose:
+## How long a new domain takes to become active
 
-| Record Type | Purpose | Example |
-| ----------- | ------- | ------- |
-| **A** | Maps domain to IPv4 address | `example.com` → `192.0.2.1` |
-| **AAAA** | Maps domain to IPv6 address | `example.com` → `2001:0db8:85a3::8a2e:0370:7334` |
-| **CNAME** | Creates alias from one domain to another | `blog.example.com` → `example.com` |
-| **MX** | Specifies mail servers for domain | `example.com` → `mail.example.com` |
-| **TXT** | Stores text information (verification, SPF, DKIM) | Domain verification strings, email policies |
-| **SRV** | Defines location of services | SIP, XMPP, and other service endpoints |
-| **NS** | Delegates subdomain to other nameservers | `api.example.com` → external DNS provider |
+After you set our nameservers at your registrar and activate the domain, it takes between 3 minutes and 24 hours before the rest of the internet follows the change. The time depends on your registrar.
 
-### What is DNS Propagation?
+The **Domains** list shows where each domain stands:
 
-DNS propagation is the time it takes for DNS changes to update across all DNS servers on the internet. Traditional DNS changes can take 24-48 hours to propagate globally.
+| Status | What it means |
+|---|---|
+| **ACTIVATING...** | We do not see our nameservers on the domain yet |
+| **ACTIVE** | The domain uses our nameservers and its records are served |
+| **INACTIVE** | After 24 hours we still do not see our nameservers. Check them at your registrar |
 
-With Strettch Cloud DNS, changes are fast on our nameservers. However, clients may still cache old records based on the TTL (Time To Live) value you set.
+A domain that is still not active after 14 days is removed from your team. You can add it again.
 
-### What is TTL?
+## Record types
 
-TTL (Time To Live) is the duration in seconds that DNS records are cached by DNS resolvers. A lower TTL means changes propagate faster but increases DNS queries. A higher TTL reduces queries but delays change propagation.
+| Type | What it does | Example |
+|---|---|---|
+| **A** | Points a name to an IPv4 address | `example.com` to `192.0.2.1` |
+| **AAAA** | Points a name to an IPv6 address | `example.com` to `2001:db8::1` |
+| **CNAME** | Makes one name an alias of another | `blog.example.com` to `example.com` |
+| **MX** | Names the mail server of a domain | `example.com` to `mail.example.com` |
+| **TXT** | Holds text, such as a verification string or an SPF or DMARC policy | `v=DMARC1; p=none` |
+| **NS** | Hands a subdomain over to other nameservers | `api.example.com` to another DNS provider |
+| **SRV** | Says where a service runs | `_sip._tcp.example.com` |
+| **CAA** | Says which certificate authorities may issue certificates for the domain | `letsencrypt.org` |
 
-Default TTL on Strettch Cloud DNS is 60 seconds, which balances performance with flexibility for updates.
+## TTL and how fast a change takes effect
 
-## Next Steps
+A record change is on our nameservers immediately. Other resolvers keep the old value until its TTL runs out.
 
-<CardGroup cols={2}>
-  <Card title="Managing DNS" icon="gear" href="/services/dns/managing-dns">
-    Learn how to register domains, add nameservers, and manage DNS records
-  </Card>
-  <Card title="SC Compute" icon="server" href="/services/compute/overview">
-    Deploy applications that your DNS records can point to
-  </Card>
-</CardGroup>
+The TTL of a record is the number of seconds a resolver may keep the answer. The form fills in 3600 seconds, which is one hour, and accepts 60 to 86400 seconds. Before a change that you may need to undo quickly, add the record with a low TTL.
 
-<Note>
-  **Need help?** Contact our [support team](mailto:cloud@strettch.com) or visit [cloud.strettch.com](https://cloud.strettch.com).
-</Note>
+## Subdomains
+
+To use a subdomain such as `api.example.com`, add a record for it to `example.com`. You do not add the subdomain as a domain of its own.
+
+You cannot add `project.example.com` as its own domain on Strettch Cloud while `example.com` is also on our nameservers. Two other setups work:
+
+- **The parent is on Strettch Cloud, the subdomain elsewhere.** Add NS records for `project` to `example.com` that point to the other provider's nameservers.
+- **The parent is elsewhere, the subdomain on Strettch Cloud.** Add `project.example.com` as a domain here, and at the provider of `example.com` add NS records for `project` that point to `ns1.strettch.com` and `ns2.strettch.com`.
+
+## Next steps
+
+- [Add a domain and manage its records](/services/dns/managing-dns)
+- [Change your nameservers at your domain provider](/services/dns/dns-provider-guides)

@@ -1,69 +1,73 @@
 ---
 title: "Coolify"
-description: "Deploy a private Coolify instance to run apps, databases, and services on your own infrastructure, preinstalled on a Strettch Cloud Compute."
+description: "What is on the Coolify application image, how to run its setup, and how to manage and secure it on a Strettch Cloud compute."
 ---
-## Overview
 
-Coolify is a self-hostable PaaS used to deploy apps, databases, and services on your own infrastructure through a web dashboard.
+Coolify is a self-hosted platform for deploying applications, databases and services from a web dashboard.
 
-This image comes with Coolify installed but switched off: the web port stays closed until you run setup, so nobody can claim the admin account before you do. Setup takes about three minutes and runs the first time you log in.
+On this image Coolify is installed but switched off. Its web port stays closed until you run setup, so nobody can claim the admin account before you do. Setup runs the first time you log in and takes about three minutes.
 
 ## What is on this image
 
-Everything below sits on top of a stock Ubuntu 24.04 server.
+Everything below is installed on Ubuntu 24.04.
 
 | Software | What it does |
 |---|---|
-| Coolify | The platform, plus the Postgres and Redis containers it runs on |
-| Docker and Compose | Runs Coolify and whatever you deploy with it |
-| `ufw` | Firewall, already configured (see Security below) |
-| `fail2ban` | Blocks IPs that keep failing SSH logins |
-| `unattended-upgrades` | Applies Ubuntu security updates on its own |
-| `sc-console-agent` | Runs the browser console in the Strettch Cloud dashboard |
-| `sc-metrics-agent` | Sends CPU, memory, and disk metrics to your dashboard |
+| Coolify | The platform, with the Postgres and Redis containers it runs on |
+| Docker and Compose | Run Coolify and whatever you deploy with it |
+| `ufw` | Firewall, already configured. See [Security](#security) |
+| `fail2ban` | Blocks IP addresses that keep failing SSH logins |
+| `unattended-upgrades` | Installs Ubuntu security updates automatically |
+| SC Agent (`sc-console-agent`) | Runs the [web console](/agents/sc-agent) |
+| SC Metrics Agent (`sc-metrics-agent`) | Sends the values for the [compute graphs](/services/compute/compute-graphs) |
 
 ## 1. Connect
 
-Once your Compute is running, SSH in as root:
+When the compute is running, connect over SSH as `root`, with the root password or the SSH key you chose when you created it:
 
 ```bash
-ssh root@YOUR_COMPUTE_IP
+ssh root@YOUR_COMPUTE_IP -p 222
 ```
 
-The root password and SSH key are in the Strettch Cloud console. Setup starts automatically when you log in. If you would rather work from the browser console, run `/opt/sc/coolify/setup.sh` there instead.
+Setup starts when you log in. If you use the [web console](/services/compute/connect-to-a-compute#open-the-web-console) instead, start setup yourself:
+
+```bash
+/opt/sc/coolify/setup.sh
+```
 
 ## 2. Answer three questions
 
 Setup asks for:
 
-- **Admin email**: This is what you will log in.
-- **Domain name**: This is optional and you can leave it blank since Coolify uses your Compute's IP
-- **SMTP**: This is also optional. Answer `n` and add it later from the UI whenever you want
+- **Admin email**: the email you will log in to Coolify with.
+- **Domain name**: optional. Leave it empty and Coolify uses the IP address of the compute.
+- **SMTP**: optional. Answer `n`. You can add it later in Coolify.
 
-Coolify generates the admin password for you and prints it at the end. Everything else it handles on its own.
+Coolify creates the admin password and prints it at the end.
 
 ## 3. Log in
 
-Setup prints your URL, email, and password when it finishes. Open the URL:
+When setup finishes, it prints your URL, email and password. Open the URL:
 
 ```
 http://YOUR_COMPUTE_IP:8000
 ```
 
-If your Compute has a public IP, use that one, you will find it in the console. When required any login details use the previous email and password you entered in your compute. 
+Use the public IP of the compute, which is on its page in the dashboard. Log in with the email and the password that setup printed.
 
 <Warning>
-  Copy the password into your password manager, then delete the server's copy:
+  Setup also saves the password in a file on the compute. Copy the password into your password manager, then delete the file:
+
   ```bash
   rm /root/.sc-credentials
   ```
 </Warning>
 
-Coolify has its own onboarding after this follow what it shows you, since the steps change between releases. Its documentation lives at [coolify.io/docs](https://coolify.io/docs).
+Coolify then takes you through its own first steps. They change between releases, so follow what Coolify shows. Its documentation is at [coolify.io/docs](https://coolify.io/docs).
 
 ## 4. Add a domain and HTTPS
 
-Optional, but worth doing if you have a domain. Point an A record at your Compute's public IP, then set the domain in Coolify. It requests a certificate for you automatically, and ports 80 and 443 are already open.
+This step is optional. Point an A record at the public IP of the compute, then set the domain in Coolify. Coolify requests a certificate for it. Ports 80 and 443 are already open.
 
 ## Managing it
 
@@ -71,19 +75,19 @@ Optional, but worth doing if you have a domain. Point an A record at your Comput
 |---|---|
 | `/opt/sc/coolify/info.sh` | Prints your URL and admin email again |
 | `/opt/sc/coolify/status.sh` | Shows whether Coolify is running, which ports are open, and disk usage |
-| `/opt/sc/coolify/debug.sh` | Collects logs for support, with secrets stripped out |
+| `/opt/sc/coolify/debug.sh` | Collects logs for support, with secrets removed |
 
 ## Security
 
-The firewall allows SSH, HTTP, HTTPS, the Coolify UI, and the Strettch Cloud agent. Everything else coming in is blocked.
+The firewall allows SSH, HTTP, HTTPS, the Coolify dashboard and the SC Agent. It blocks every other incoming connection.
 
-`fail2ban` watches SSH however ten failed logins ban an IP for six hours, with longer bans for repeat offenders, up to a week.
+`fail2ban` watches SSH. Ten failed logins block an IP address for six hours. An address that keeps failing is blocked for longer, up to a week.
+
+To see both:
 
 ```bash
 fail2ban-client status sshd
 ufw status
 ```
 
-<Note>
-  If you cancel setup partway through or mistype something, nothing is exposed. Log in again and it starts over.
-</Note>
+If you cancel setup or mistype an answer, nothing is exposed. Log in again and setup starts over.

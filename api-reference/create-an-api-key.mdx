@@ -1,0 +1,50 @@
+---
+title: 'Create an API key'
+description: 'Generate an API key in the Strettch Cloud dashboard, use it in a request, and delete it when you no longer need it.'
+---
+
+An API key acts for one team, with your role in that team. Any member can generate keys, and you see only the keys you generated yourself.
+
+<Steps>
+  <Step title="Open the API keys of the team">
+    In the dashboard, switch to the team the key is for. Go to **Team Settings** > **API Keys** and click **Generate API Key**.
+  </Step>
+
+  <Step title="Name the key and choose when it expires">
+    In **Name**, type what the key is for, such as `terraform` or `ci`.
+
+    In **Expiration**, choose how long the key stays valid. A shorter period limits the damage if the key leaks. Every key expires, so plan to replace it.
+  </Step>
+
+  <Step title="Generate the key">
+    Click **Generate API Key**.
+  </Step>
+
+  <Step title="Copy the key">
+    <Warning>
+      The key is shown only on this page, only now. Copy it and store it in a password manager or a secret store before you leave the page. If you lose it, generate a new key.
+    </Warning>
+  </Step>
+</Steps>
+
+## Check that the key works
+
+Put the key in an environment variable and list the regions:
+
+```bash
+export STRETTCH_API_KEY="YOUR_API_KEY"
+
+curl -s https://api.strettch.cloud/api/v1/regions \
+  -H "Authorization: Bearer $STRETTCH_API_KEY"
+```
+
+The answer starts with `"success": true`. If you get `401` with the code `UNAUTHORIZED`, check that you copied the whole key.
+
+## Delete a key
+
+To stop a key from working, go to **Team Settings** > **API Keys**, open the menu on the key's row and click **Delete**. Requests with that key are refused from then on.
+
+## Next steps
+
+- [API introduction](/api-reference/introduction)
+- [Terraform Quickstart](/terraform/quickstart)

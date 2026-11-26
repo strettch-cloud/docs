@@ -1,84 +1,64 @@
 ---
-title: Strettch Cloud Teams Overview
+title: "Teams overview"
 sidebarTitle: "Overview"
-description: Learn how teams in Strettch Cloud isolate resources and billing, how member roles work, and why every compute instance and domain belongs to a team.
+description: "How teams hold computes, domains and billing on Strettch Cloud, and what the Owner, Admin and Member roles can do."
 ---
 
-## What are Teams?
+Every compute and every domain belongs to a team, and the team pays for it. Each member of a team has one role, Owner, Admin or Member, which decides what that person can do.
 
-Teams are the top-level organizational structure in Strettch Cloud. Every resource you create—compute instances, DNS zones, and more—belongs to a team.
+## How teams work
 
-When you create your first account, Strettch Cloud automatically creates a default team for you, named after your first name (for example, "Liberi's Team" if your name is Liberi). You can create additional teams or join existing ones to collaborate with other users.
+- **Resources belong to the team, not to a person.** There is no layer between a team and its resources, such as a project.
+- **Each team has its own bill.** It has its own credits, funds and invoices. See [Paying your bill](/faqs/paying-your-bill).
+- **Teams do not share.** A compute or a domain cannot be moved from one team to another, and one team cannot pay for another.
+- **You can be in several teams.** You own some and are a member of others. The team selector, next to the logo at the top of the dashboard, switches between them.
 
----
-
-## How Teams Organize Resources
-
-All cloud resources belong directly to teams—there is no intermediate project or organization layer. All team members with appropriate permissions can access and manage these resources.
+When you sign up, we create a first team for you, named after your first name, such as "Liberi's Team".
 
 <Frame>
   <img className="block dark:hidden" src="/images/computes/team-architecture.png" style={{ borderRadius: '0.2rem' }} />
   <img className="hidden dark:block" src="/images/computes/team-architecture-dark.png" style={{ borderRadius: '0.2rem' }} />
 </Frame>
 
-### Key Principles
+## What each role can do
 
-- **Isolated Resources**: Teams cannot share resources or billing. A compute instance in "Team A" cannot be transferred to "Team B."
-- **Multi-Team Membership**: You can belong to multiple teams simultaneously, each with independent resources and billing.
-- **Separate Billing**: Each team has its own billing account. Usage and charges are tracked separately per team.
+A team has one Owner. Everyone else is an Admin or a Member.
 
----
+| | Owner | Admin | Member |
+|---|---|---|---|
+| **Computes** | | | |
+| See computes, their graphs and their history | Yes | Yes | Yes |
+| Create a compute, rename it, change its tags | Yes | Yes | Yes |
+| Open the web console | Yes | Yes | Yes |
+| Turn a compute off or on, reboot it, upsize it | Yes | Yes | No |
+| Destroy a compute | Yes | Yes | No |
+| **Domains** | | | |
+| See domains and records | Yes | Yes | Yes |
+| Add or remove domains and records | Yes | Yes | No |
+| **Keys** | | | |
+| Add their own SSH keys and API keys | Yes | Yes | Yes |
+| **Billing** | | | |
+| See the billing pages and top up | Yes | Yes | Yes |
+| Edit the Entity Profile, the contact emails and the low balance alert | Yes | Yes | No |
+| **Team** | | | |
+| See the activity logs | Yes | Yes | Yes |
+| Export the activity logs | Yes | Yes | No |
+| Invite members, change roles, remove members | Yes | Yes | No |
+| Rename the team | Yes | No | No |
+| Transfer ownership | Yes | No | No |
+| Delete the team | Yes | No | No |
+| Leave the team | No | Yes | Yes |
 
-## Team Roles and Permissions
+An [API key](/api-reference/create-an-api-key) can do what the member who created it can do.
 
-Teams use a role-based access control system with three levels:
+See [Managing teams](/services/teams/managing-teams) for how to invite people and change their roles.
 
-| Permission | Owner | Admin | Member |
-|------------|-------|-------|--------|
-| **Resource Management** |
-| &nbsp;&nbsp;&nbsp;&nbsp;View resources | ✓ | ✓ | ✓ |
-| &nbsp;&nbsp;&nbsp;&nbsp;Perform power actions (Start/Stop) | ✓ | ✓ | ⛔ |
-| &nbsp;&nbsp;&nbsp;&nbsp;Update resource configuration | ✓ | ✓ | ⛔ |
-| &nbsp;&nbsp;&nbsp;&nbsp;Delete resources | ✓ | ✓ | ⛔ |
-| &nbsp;&nbsp;&nbsp;&nbsp;Manage DNS zones & records | ✓ | ✓ | ⛔ |
-| **Team Management** |
-| &nbsp;&nbsp;&nbsp;&nbsp;Invite users | ✓ | ✓ | ⛔ |
-| &nbsp;&nbsp;&nbsp;&nbsp;Remove Members | ✓ | ✓ | ⛔ |
-| &nbsp;&nbsp;&nbsp;&nbsp;Change roles | ✓ | ✓ | ⛔ |
-| &nbsp;&nbsp;&nbsp;&nbsp;Update team settings | ✓ | ✓ | ⛔ |
-| **Billing & Audit** |
-| &nbsp;&nbsp;&nbsp;&nbsp;View billing info | ✓ | ✓ | ✓ |
-| &nbsp;&nbsp;&nbsp;&nbsp;Update payment methods | ✓ | ✓ | ⛔ |
-| &nbsp;&nbsp;&nbsp;&nbsp;Export audit logs | ✓ | ✓ | ⛔ |
-| **Critical Actions** |
-| &nbsp;&nbsp;&nbsp;&nbsp;Delete team | ✓ | ⛔ | ⛔ |
-| &nbsp;&nbsp;&nbsp;&nbsp;Transfer ownership | ✓ | ⛔ | ⛔ |
+## How many teams you can have
+
+There is a limit on the number of teams one person can own. You see it in **Account Settings**, on the **TEAMS** tab. Each team also has [limits on its computes and public IPs](/services/compute/overview#limits-for-a-team).
+
+## If a member breaks the rules
 
 <Warning>
-**Violation Policy**
-
-If any team member uses a team resource to commit a violation (for example, illegal activity on a compute instance), all resources belonging to that team will be shut down immediately pending investigation. This may result in a permanent ban.
+  If any member of a team uses one of its resources for a violation, such as illegal activity on a compute, we shut down all the resources of that team at once while we investigate. The team may be banned permanently.
 </Warning>
-
-### Switching Between Teams
-
-Use the team selector in the dashboard to switch between teams. Resources and billing information change based on the currently selected team.
-
----
-
-## Next Steps
-
-Now that you understand how Teams work in Strettch Cloud:
-
-<CardGroup cols={2}>
-  <Card title="Managing Teams" icon="users-gear" href="/services/teams/managing-teams">
-    Learn how to invite members, change roles, and manage team settings
-  </Card>
-  <Card title="Create Compute Instance" icon="server" href="/getting-started/quickstart">
-    Start deploying resources for your team
-  </Card>
-</CardGroup>
-
-<Note>
-  **Need help?** Contact our [support team](mailto:cloud@strettch.com) or visit [cloud.strettch.com](https://cloud.strettch.com).
-</Note>

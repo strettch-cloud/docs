@@ -1,130 +1,80 @@
 ---
-title: SSH Keys
-description: Generate SSH key pairs, add public keys to Strettch Cloud, and use them to securely access your compute instances from macOS, Linux, or Windows.
+title: "SSH Keys"
+description: "Create an SSH key, add it to your team, and use it to log in to a compute without a password."
 ---
 
-## What are SSH Keys?
+An SSH key lets you log in to a compute without typing a password. You add the public half of the key to your team, and choose it when you create a compute.
 
-SSH (Secure Shell) keys are a robust and secure way to log into your Strettch Cloud compute instances without typing a password. They work using a cryptographic key pair consisting of two interacting parts:
+A key has two halves. The public key is the one you give to Strettch Cloud, and it is safe to share. The private key stays on your computer. Anyone who has your private key can log in to your computes, so never upload it, email it or commit it to version control.
 
-1. **The Public Key**: Think of this as a padlock. You upload this to Strettch Cloud, and we install it on your compute instances. It is perfectly safe to share.
-2. **The Private Key**: Think of this as the physical key that opens the padlock. This stays securely on your personal computer and should **never** be shared with anyone.
+## Create an SSH key on your computer
 
-<Warning>
-**Never** upload your private key to any dashboard, share it over email, or commit it to version control (like GitHub). Anyone with your private key has full access to your resources.
-</Warning>
-
-When you log in, your server verifies that your private key matches its public padlock. If they match, you are granted access automatically.
-
-**Why do we need them and why are they recommended?**
-
-- **Enhanced Security**: Traditional passwords can be guessed, stolen, or cracked using automated "brute-force" attacks. SSH keys use complex cryptographic algorithms that make them virtually impossible to decipher by brute force.
-- **Convenience**: Once set up, you no longer need to remember or type a long, complex password every time you log into your server. The authentication happens instantly in the background.
-
-By using SSH keys, you ensure that only authorized users who possess the correct private key file can access your infrastructure.
-
----
-
-## Generating an SSH Key
-
-If you don't already have an SSH key, follow the instructions below to generate one on Linux, MacOS & Windows:
-
-<Info>
-**Windows Users:** The commands below can be securely executed natively in modern Windows via PowerShell or Windows Terminal.
-</Info>
+These commands work on Linux, macOS, and Windows in PowerShell or Windows Terminal. If you already have a key, skip to the next section.
 
 <Steps>
-  <Step title="Generate a new SSH Key">
-    Open your terminal and run:
+  <Step title="Create the key">
     ```bash
     ssh-keygen
     ```
-    Then press **Enter** to accept the default file location. Add a passphrase for extra security. It's optional but highly recommended.
+
+    Press **Enter** to accept the file location. You can set a passphrase, which protects the key if someone copies the file.
   </Step>
 
-  <Step title="Add the public key">
-    Run:
+  <Step title="Show the public key">
     ```bash
     cat ~/.ssh/id_ed25519.pub
     ```
-    *(Note: If your system generated an RSA key by default, use `cat ~/.ssh/id_rsa.pub` instead)*
-    
-    Copy and paste the output into the SSH key content field in the next section.
+
+    If your system created an RSA key, the file is `~/.ssh/id_rsa.pub`. Copy the whole line that the command prints.
   </Step>
 </Steps>
 
----
-
-## Adding SSH Keys to Your Team
-
-In Strettch Cloud, SSH keys are managed at the team level. Adding an SSH key to your team settings makes it available to select whenever a team member creates a new compute instance.
+## Add an SSH key to your team
 
 <Steps>
-  <Step title="Navigate to Team Settings">
-    Go to your Strettch Cloud dashboard and open your **Team Settings**.
+  <Step title="Open the SSH keys of the team">
+    Go to **Team Settings** > **SSH Keys** and click **New SSH Key**. If the team has no key yet, the button reads **Add SSH Key**.
   </Step>
 
-  <Step title="Go to SSH Keys">
-    Find the **SSH Keys** section within your team settings.
+  <Step title="Paste the public key">
+    Paste the line you copied into **Public Key**, and give the key a name in **Key Name**. A name such as `sam@macbook` tells your team whose key it is and which computer it is on.
   </Step>
 
-  <Step title="Add a New Key">
-    Click on **Add SSH Key**. You will be prompted to paste your **Public Key** and give it a recognizable name. Since SSH keys are shared at the team level, we recommend using a `Firstname@Computer` format (e.g., `Sam@MacBookPro`).
-  </Step>
-  
-  <Step title="Save">
-    Click save to store the key. It is now securely associated with your team and ready for use.
+  <Step title="Save the key">
+    Click **Add SSH Key**.
   </Step>
 </Steps>
 
-<Tip>
-The team SSH key list shows every active member's keys, each labelled with the name of the member who added it. This makes it easy to see who owns which key when several people contribute keys to the same team.
-</Tip>
+The key is now in the team's list. Every member of the team sees all the keys, each with the name of the member who added it, and can choose any of them for a new compute. Only the member who added a key can edit or delete it.
 
----
+## Use an SSH key when you create a compute
 
-## Using SSH Keys During Compute Creation
+On the create page, under **Authentication Method**, choose **SSH Key** and select one or more keys. See [Create a compute](/services/compute/create-a-compute).
 
-Once you have added at least one SSH key to your team, it becomes highly recommended to apply it when provisioning a new Compute instance. This replaces the default insecure password authentication method.
+The keys you select are put in `~/.ssh/authorized_keys` of the `root` user, so you can [connect over SSH](/services/compute/connect-to-a-compute#connect-over-ssh) as soon as the compute is running. A compute created with an SSH key has no root password.
 
-<Steps>
-  <Step title="Create a New Instance">
-    Start the process to create your compute instance from the dashboard.
-  </Step>
+## Add an SSH key to a compute that already exists
 
-  <Step title="Select SSH Keys">
-    In the **Authentication** section during compute creation, you will see a list of the SSH keys attached to your team.
-  </Step>
-
-  <Step title="Apply Keys">
-    Check the box next to one or more SSH keys that you want to add to this instance. 
-  </Step>
-
-  <Step title="Launch Compute">
-    Finalize the creation of your compute instance. Once it's running, you can connect to it securely using the corresponding private key on your computer!
-  </Step>
-</Steps>
-
-<Tip>
-Adding an SSH key during creation configures the `~/.ssh/authorized_keys` file for the default user on your compute instance, ensuring you have immediate secure access the moment it boots up.
-</Tip>
-
----
-
-## Adding SSH Keys to an Existing Compute
-
-If you already created a compute instance without an SSH key, you can still add one manually.
+Adding a key to your team does not change computes that already exist. Add the key on the compute yourself.
 
 <Steps>
-  <Step title="Access the Instance">
-    Log into your running compute instance using your existing password.
+  <Step title="Log in to the compute">
+    [Connect to the compute](/services/compute/connect-to-a-compute) with the web console or with the root password.
   </Step>
 
-  <Step title="Add the Public Key">
-    Open the `~/.ssh/authorized_keys` file on your instance and paste your public key on a new line to enable secure access.
+  <Step title="Add the public key">
+    Open `~/.ssh/authorized_keys` and paste your public key on a new line.
   </Step>
 
-  <Step title="Disable Password Auth (Optional)">
-    Edit `/etc/ssh/sshd_config`, set `PasswordAuthentication no` and restart the SSH service with `sudo systemctl restart ssh`. **Make sure accessing Compute via SSH Key works before this!**
+  <Step title="Turn off password login (optional)">
+    <Warning>
+      First check that you can log in with the key. If the key does not work and password login is off, you can no longer connect over SSH.
+    </Warning>
+
+    In `/etc/ssh/sshd_config`, set `PasswordAuthentication no`, then restart SSH:
+
+    ```bash
+    sudo systemctl restart ssh
+    ```
   </Step>
 </Steps>

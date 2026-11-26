@@ -49,7 +49,7 @@
             "description": "Items per page",
             "schema": {
               "type": "integer",
-              "default": 20
+              "default": 10
             }
           }
         ],
@@ -157,7 +157,7 @@
             }
           },
           "400": {
-            "description": "Possible codes: BAD_REQUEST, VALIDATION_ERROR, MALFORMED_JSON, INVALID_IDEMPOTENCY_KEY",
+            "description": "Possible codes: BAD_REQUEST, VALIDATION_ERROR, MALFORMED_JSON, INVALID_IDEMPOTENCY_KEY, INSUFFICIENT_BALANCE",
             "content": {
               "application/json": {
                 "schema": {
@@ -870,7 +870,7 @@
             }
           },
           "400": {
-            "description": "Possible codes: BAD_REQUEST",
+            "description": "Possible codes: BAD_REQUEST, INSUFFICIENT_BALANCE",
             "content": {
               "application/json": {
                 "schema": {
@@ -890,7 +890,7 @@
             }
           },
           "403": {
-            "description": "Possible codes: FORBIDDEN, INSUFFICIENT_BALANCE, TEAM_SUSPENDED, TEAM_PAST_DUE, TEAM_TERMINATED",
+            "description": "Possible codes: FORBIDDEN, TEAM_SUSPENDED, TEAM_PAST_DUE, TEAM_TERMINATED",
             "content": {
               "application/json": {
                 "schema": {
@@ -1153,6 +1153,12 @@
               "production",
               "web"
             ]
+          },
+          "userData": {
+            "description": "Optional cloud-init user data: a #cloud-config file or a shell script starting with #!, base64 encoded, at most 32 KiB after decoding. The instance receives it unchanged on its first boot.",
+            "type": "string",
+            "contentEncoding": "base64",
+            "example": "I2Nsb3VkLWNvbmZpZwpwYWNrYWdlczoKICAtIG5naW54Cg=="
           },
           "withPublicIp": {
             "type": "boolean",

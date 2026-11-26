@@ -1,126 +1,78 @@
 ---
-title: "DNS Provider Guides"
-description: "Step-by-step instructions for pointing your domain to Strettch Cloud nameservers from Vercel, Namecheap, GoDaddy, Cloudflare, and other registrars."
+title: "Change your nameservers at your domain provider"
+sidebarTitle: "Provider Guides"
+description: "Steps to point a domain to the Strettch Cloud nameservers at Vercel, Cloudflare, Bunny.net and Namecheap."
 ---
 
-To use Strettch Cloud DNS, you need to point your domain to our nameservers. This guide provides instructions for common domain providers.
+Change the nameservers at the company where you registered the domain. These are the steps for four providers. At any other provider, look for the nameserver settings of the domain and enter the same two nameservers:
 
-The Strettch Cloud nameservers are:
 - `ns1.strettch.com`
 - `ns2.strettch.com`
 
+A nameserver change can take up to 24 hours to take effect. When you have made it, go back to the dashboard and [activate the domain](/services/dns/managing-dns#add-a-domain).
+
 ## Vercel
 
-If you purchased your domain through Vercel, follow these steps to change your nameservers:
-
 <Steps>
-  <Step title="Navigate to Domains">
-    Go to your Vercel Dashboard and select the project associated with your domain, or go to your team settings if it's a team domain. Navigate to the **Domains** tab.
+  <Step title="Open the domain">
+    In your Vercel dashboard, select the project that uses the domain, or open your team settings if the domain belongs to the team. Go to the **Domains** tab and click the domain.
   </Step>
 
-  <Step title="Select Domain">
-    Click on the domain you want to configure.
+  <Step title="Switch to custom nameservers">
+    Scroll down to the **Nameservers** section. It is set to "Vercel Nameservers". Switch to **Custom Nameservers**.
   </Step>
 
-  <Step title="Edit Nameservers">
-    Scroll down to the **Nameservers** section. By default, it will be set to "Vercel Nameservers". Switch to **Custom Nameservers**.
-  </Step>
-
-  <Step title="Enter Strettch Cloud Nameservers">
-    Enter the Strettch Cloud nameservers:
-    - `ns1.strettch.com`
-    - `ns2.strettch.com`
-  </Step>
-
-  <Step title="Save Changes">
-    Click **Save**. Propagation may take up to 24 hours.
+  <Step title="Enter the nameservers">
+    Enter `ns1.strettch.com` and `ns2.strettch.com`, then click **Save**.
   </Step>
 </Steps>
 
 ## Cloudflare
 
-If your domain is registered with or managed by Cloudflare:
+These steps apply when you registered the domain with Cloudflare. If you only use Cloudflare for DNS and registered the domain somewhere else, change the nameservers at that registrar.
 
 <Steps>
-  <Step title="Select Domain">
+  <Step title="Open the domain">
     Log in to your Cloudflare dashboard and select your domain.
   </Step>
 
-  <Step title="Go to DNS Settings">
-    In the sidebar, click on **DNS** and then **Records**.
+  <Step title="Find the nameserver settings">
+    Go to **Domain Registration** > **Manage Domain** > **Configuration** and look for **Custom Nameservers**.
   </Step>
 
-  <Step title="Change Nameservers">
-    Scroll down to the **Cloudflare Nameservers** section (if you are on a full setup). Note that if you are on a Cloudflare Registrar plan, you might need to go to **Domain Registration** > **Manage Domain** > **Configuration**.
-    
-    If you are just using Cloudflare for DNS but registered elsewhere, you change the nameservers at your *registrar*, not Cloudflare.
-    
-    If you registered *with* Cloudflare, look for **Custom Nameservers** in the configuration.
-  </Step>
-
-  <Step title="Enter Strettch Cloud Nameservers">
-    Replace the existing nameservers with:
-    - `ns1.strettch.com`
-    - `ns2.strettch.com`
-  </Step>
-
-  <Step title="Save">
-    Save your changes.
+  <Step title="Enter the nameservers">
+    Replace the existing nameservers with `ns1.strettch.com` and `ns2.strettch.com`, then save.
   </Step>
 </Steps>
 
 ## Bunny.net
 
-For domains registered with Bunny.net:
-
 <Steps>
-  <Step title="Go to Domain Details">
-    Log in to the Bunny.net console and navigate to **Services** > **Domain Registration**. Click on your domain.
+  <Step title="Open the domain">
+    Log in to Bunny.net and go to **Services** > **Domain Registration**. Click your domain.
   </Step>
 
-  <Step title="Nameserver Settings">
-    Click on the **Nameservers** tab in the left menu.
+  <Step title="Choose custom nameservers">
+    Click the **Nameservers** tab in the left menu and select **Use custom nameservers**.
   </Step>
 
-  <Step title="Use Custom Nameservers">
-    Select **Use custom nameservers**.
-  </Step>
-
-  <Step title="Add Nameservers">
-    Enter the Strettch Cloud nameservers:
-    - Nameserver 1: `ns1.strettch.com`
-    - Nameserver 2: `ns2.strettch.com`
-  </Step>
-
-  <Step title="Update">
-    Click **Update Nameservers**.
+  <Step title="Enter the nameservers">
+    Enter `ns1.strettch.com` as nameserver 1 and `ns2.strettch.com` as nameserver 2, then click **Update Nameservers**.
   </Step>
 </Steps>
 
 ## Namecheap
 
-For domains registered with Namecheap:
-
 <Steps>
-  <Step title="Domain List">
-    Log in to your Namecheap account and go to **Domain List**.
+  <Step title="Open the domain">
+    Log in to your Namecheap account and go to **Domain List**. Click **Manage** next to your domain.
   </Step>
 
-  <Step title="Manage Domain">
-    Click the **Manage** button next to your domain.
+  <Step title="Choose custom DNS">
+    In the **Nameservers** section, select **Custom DNS** from the dropdown menu.
   </Step>
 
-  <Step title="Nameservers">
-    Find the **Nameservers** section. Select **Custom DNS** from the dropdown menu.
-  </Step>
-
-  <Step title="Enter Nameservers">
-    Enter the Strettch Cloud nameservers in the provided lines:
-    - `ns1.strettch.com`
-    - `ns2.strettch.com`
-  </Step>
-
-  <Step title="Save">
-    Click the green checkmark icon to save your changes.
+  <Step title="Enter the nameservers">
+    Enter `ns1.strettch.com` and `ns2.strettch.com` on the two lines, then click the green checkmark to save.
   </Step>
 </Steps>

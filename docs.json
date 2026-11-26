@@ -29,7 +29,7 @@
             ]
           },
           {
-            "group": "FAQs",
+            "group": "Billing",
             "pages": [
               "faqs/paying-your-bill",
               "faqs/invoices",
@@ -52,9 +52,16 @@
             "group": "SC Compute",
             "pages": [
               "services/compute/overview",
-              "guides/computes",
+              "services/compute/create-a-compute",
+              "services/compute/connect-to-a-compute",
+              "services/compute/turn-a-compute-off-and-on",
+              "services/compute/upsize-a-compute",
+              "services/compute/destroy-a-compute",
+              "services/compute/public-ips-and-the-private-network",
+              "services/compute/compute-graphs",
               "services/compute/bandwidth",
               "services/compute/ssh-keys",
+              "services/compute/metadata",
               {
                 "group": "Application Images",
                 "pages": [
@@ -98,6 +105,7 @@
             "group": "Getting Started",
             "pages": [
               "api-reference/introduction",
+              "api-reference/create-an-api-key",
               "api-reference/ai-skill"
             ]
           },
@@ -190,6 +198,24 @@
       }
     ]
   },
+  "redirects": [
+    {
+      "source": "/guides/computes",
+      "destination": "/services/compute/overview"
+    },
+    {
+      "source": "/guides/domains",
+      "destination": "/services/dns/managing-dns"
+    },
+    {
+      "source": "/guides/teams",
+      "destination": "/services/teams/managing-teams"
+    },
+    {
+      "source": "/services/dns/temp",
+      "destination": "/services/dns/overview"
+    }
+  ],
   "logo": {
     "light": "/logo/logo-light.svg",
     "dark": "/logo/logo-dark.svg"

@@ -1,21 +1,21 @@
 ---
 title: "Authentication"
 sidebarTitle: "Authentication"
-description: "Authenticate the Strettch Cloud Terraform provider with an API key, locally and in CI."
+description: "Give the Strettch Cloud Terraform provider an API key, on your computer, in CI and on HCP Terraform."
 ---
 
-The provider authenticates with a Strettch Cloud **API key**, sent as a bearer token on every request.
+The provider authenticates with a Strettch Cloud API key. It sends the key as a bearer token on every request.
 
 ## Create an API key
 
-Generate an API key in the [Strettch Cloud console](https://cloud.strettch.com/p/settings/api-keys). Keep it somewhere safe — it acts with the same [permissions](/services/teams/overview#team-roles-and-permissions) as the member who created it.
+[Create an API key](/api-reference/create-an-api-key) in the dashboard. The key acts with the same [permissions](/services/teams/overview#what-each-role-can-do) as the member who created it.
 
-## Provide the key
+## Give the key to the provider
 
-The recommended way is the `STRETTCH_CLOUD_API_KEY` environment variable, so the key never lands in your configuration files:
+Set the key in the `STRETTCH_CLOUD_API_KEY` environment variable. This keeps it out of your Terraform files:
 
 ```bash
-export STRETTCH_CLOUD_API_KEY="<your api key>"
+export STRETTCH_CLOUD_API_KEY="YOUR_API_KEY"
 ```
 
 ```hcl main.tf
@@ -24,15 +24,13 @@ provider "strettchcloud" {
 }
 ```
 
-<Tip>
-  Typing the key as an argument records it in your shell history. To avoid that, read it interactively instead:
+A key you type in a command is saved in your shell history. To avoid that, let the shell read it without showing it:
 
-  ```bash
-  read -rs STRETTCH_CLOUD_API_KEY && export STRETTCH_CLOUD_API_KEY
-  ```
-</Tip>
+```bash
+read -rs STRETTCH_CLOUD_API_KEY && export STRETTCH_CLOUD_API_KEY
+```
 
-You *can* set it inline with the `api_key` argument, but only if the value comes from a variable or secret store — never a literal in version control:
+You can also pass the key with the `api_key` argument. Do this only when the value comes from a variable or a secret store, never as text in a file you commit:
 
 ```hcl
 variable "strettchcloud_api_key" {
@@ -46,26 +44,22 @@ provider "strettchcloud" {
 ```
 
 <Warning>
-  A saved plan (`terraform plan -out=...`) stores input variable values in **cleartext**, even when marked `sensitive`. Anyone who can read the plan file can recover the key — so prefer the environment variable for automation, and protect any plan artifacts you keep.
+  A saved plan (`terraform plan -out=...`) stores the values of input variables as clear text, even when a variable is marked `sensitive`. Anyone who can read the plan file can read the key. In automation, use the environment variable, and protect any plan file you keep.
 </Warning>
 
-<Warning>
-  Never commit your API key. Treat it like a password: use an environment variable or a secrets manager, and rotate it if it is ever exposed.
-</Warning>
+If a key is ever exposed, revoke it in the dashboard and create a new one.
 
-## In CI/CD
+## In CI
 
-Store the key as a secret in your CI system and expose it as `STRETTCH_CLOUD_API_KEY` for the plan/apply steps. For example, in GitHub Actions:
+Store the key as a secret in your CI system and pass it to the plan and apply steps as `STRETTCH_CLOUD_API_KEY`. In GitHub Actions:
 
 ```yaml
 env:
   STRETTCH_CLOUD_API_KEY: ${{ secrets.STRETTCH_CLOUD_API_KEY }}
 ```
 
+Verbose logging such as `TF_LOG=TRACE` can print environment variables. Do not use it in runs whose logs other people can read.
+
 ## On HCP Terraform
 
-Set `STRETTCH_CLOUD_API_KEY` as a **sensitive** workspace environment variable. It is then write-only — it cannot be read back through the UI or API, and it is kept out of your configuration and state.
-
-<Note>
-  Log redaction is best-effort, not a guarantee. Verbose logging such as `TF_LOG=TRACE` can print environment variables, so avoid it in shared or recorded runs.
-</Note>
+Set `STRETTCH_CLOUD_API_KEY` as a sensitive environment variable on the workspace. HCP Terraform then does not show the value again, in its interface or through its API.

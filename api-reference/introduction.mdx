@@ -1,70 +1,49 @@
 ---
-title: 'Strettch Cloud API Introduction'
-description: 'Authenticate, make requests, and explore the Strettch Cloud REST API for provisioning compute, managing DNS, and automating infrastructure workflows.'
+title: 'Strettch Cloud API introduction'
+sidebarTitle: 'Introduction'
+description: 'Base URL, authentication, response format, error codes, pagination, idempotency and the rate limit of the Strettch Cloud API.'
 ---
 
-## Welcome
-
-Use the Strettch Cloud API to provision compute instances, automate infrastructure workflows, and integrate cloud resources directly into your applications — all through a single REST interface.
-
-Our API is organized around REST principles and returns JSON-encoded responses. Every request is authenticated, versioned, traced, and designed for reliable use in production systems.
+The Strettch Cloud API lets you create and manage computes from your own code. It is a REST API: you send JSON, and every answer is JSON.
 
 ## Base URL
-
-All API requests should be made to:
 
 ```bash
 https://api.strettch.cloud/api/v1
 ```
 
-<Note>
-  There is no sandbox environment. All API requests interact with live resources. Use caution when testing destructive operations.
-</Note>
+There is no sandbox. Every request acts on your real computes, and a compute you create is billed.
 
 ## Authentication
 
-All endpoints require authentication via an API key passed as a Bearer token.
+Every endpoint except the health check needs an API key, sent as a bearer token:
 
 ```http
-Authorization: Bearer <your_api_key>
+Authorization: Bearer YOUR_API_KEY
 ```
 
-You can generate and manage your API keys from the [Strettch Cloud Console](https://cloud.strettch.com/p/settings/api-keys).
+See [Create an API key](/api-reference/create-an-api-key).
 
-### API Key Scopes
+A key belongs to one team and acts with the role of the member who created it. See [What each role can do](/services/teams/overview#what-each-role-can-do).
 
-API keys inherit the permission level (Owner, Admin, or Member) of the team member who created them. This means a key can perform any action allowed by the creator's role across the team's resources.
-
-Refer to the [Team Roles & Permissions](/services/teams/overview#team-roles-and-permissions) guide for a detailed breakdown of what each role can perform.
-
-<Note>
-  In the future, you will be able to further restrict API keys to specific granular scopes (e.g., `compute:read` only). Currently, they operate with full role-level access.
-</Note>
+- If the member's role changes, the key follows the new role.
+- If the member leaves the team or is removed, the key stops working.
 
 <Warning>
-  Keep your API keys secure. Do not share them in publicly accessible areas such as GitHub repositories, client-side code, or online forums. If a key is compromised, revoke it immediately from the Console.
+  Anyone who has a key can act on your team with it. Do not put a key in a public repository, in code that runs in a browser, or in a forum post. If a key leaks, delete it in the dashboard at once.
 </Warning>
 
-### Common Authentication Errors
+## Requests
 
-| Status | Code | Cause |
-| :--- | :--- | :--- |
-| `401` | `UNAUTHORIZED` | Key is missing, malformed, or revoked. |
-| `403` | `FORBIDDEN` | Key lacks permission (scope) for this action. |
-
-## Request Format
-
-For all `POST`, `PUT`, and `PATCH` requests, set the `Content-Type` header:
+Send `POST` and `PATCH` bodies as JSON, with this header:
 
 ```http
 Content-Type: application/json
 ```
 
-## Response Format
+## Responses
 
-All responses return JSON with a consistent top-level structure.
-
-### Success Response
+A successful answer:
 
 ```json
 {
@@ -76,7 +55,7 @@ All responses return JSON with a consistent top-level structure.
 }
 ```
 
-### Error Response
+An error:
 
 ```json
 {
@@ -88,34 +67,52 @@ All responses return JSON with a consistent top-level structure.
 }
 ```
 
-The `code` field is a stable, machine-readable string you can use for programmatic error handling.
+| Field | Type | In | Meaning |
+| :--- | :--- | :--- | :--- |
+| `success` | boolean | both | `true` or `false`. |
+| `message` | string | both | A sentence for people. It can change, so do not match on it. |
+| `data` | object or array | success | The result. Left out when there is none. |
+| `meta` | object | success, lists | See [Pagination](#pagination). |
+| `code` | string | error | What went wrong. It does not change, so match on this. |
+| `requestId` | string | both | Send it to support when you report a problem. |
+| `timestamp` | string | both | When we answered. |
 
-**Common error codes:**
+## Error codes
 
-| Code | HTTP Status | Description |
-| :--- | :--- | :--- |
-| `BAD_REQUEST` | `400` | Request body or parameters are malformed. |
-| `FORBIDDEN` | `403` | You do not have permission to perform this action. |
-| `RESOURCE_NOT_FOUND` | `404` | The requested resource does not exist. |
-| `TOO_MANY_REQUESTS` | `429` | Too many requests — see Rate Limiting. |
-| `INTERNAL_SERVER_ERROR` | `500` | Unexpected server-side error. |
+| Code | Status | Meaning |
+| :--- | :---: | :--- |
+| `BAD_REQUEST` | 400 | The request is malformed or a value is not valid. The `message` names the first problem. |
+| `COMPUTE_RUNNING` | 400 | The compute must be stopped for this action. |
+| `INSUFFICIENT_BALANCE` | 400 | The team's credits and funds do not cover one month of the price. |
+| `UNAUTHORIZED` | 401 | The key is missing, wrong, expired or deleted, or its creator left the team. |
+| `FORBIDDEN` | 403 | The role behind the key may not do this. |
+| `TEAM_PAST_DUE` | 403 | The team owes money and cannot create computes until it is paid. |
+| `TEAM_SUSPENDED` | 403 | The team is suspended for an unpaid amount. Only `GET` requests work. |
+| `TEAM_TERMINATED` | 403 | The team is terminated for an unpaid amount. Only `GET` requests work. |
+| `RESOURCE_NOT_FOUND` | 404 | There is no such compute, image, region or specification. |
+| `CONFLICT` | 409 | The request conflicts with the current state of the compute. |
+| `COMPUTE_DESTROYED` | 410 | The compute was destroyed. |
+| `UNPROCESSABLE_ENTITY` | 422 | The request is well formed but cannot be carried out. |
+| `TOO_MANY_REQUESTS` | 429 | You passed the [rate limit](#rate-limit). |
+| `INTERNAL_SERVER_ERROR` | 500 | Something failed on our side. |
+| `BAD_GATEWAY`, `SERVICE_UNAVAILABLE` | 502, 503 | A temporary problem on our side. Wait a few seconds and try again. |
 
 ## Pagination
 
-List endpoints (e.g., `GET /computes`) are paginated. Use the following query parameters:
+[List computes](/api-reference/endpoint/list-computes) returns its result in pages.
 
-| Parameter | Type | Default | Description |
+| Parameter | Type | Default | Meaning |
 | :--- | :--- | :--- | :--- |
-| `page` | integer | `1` | Page number to retrieve. |
-| `limit` | integer | `20` | Items per page (max `100`). |
+| `page` | integer | `1` | The page to return. |
+| `limit` | integer | `10` | How many computes a page holds. |
 
-Paginated responses include a `meta` object that provides context for the current result set:
+The answer has a `meta` object:
 
-| Field | Type | Description |
+| Field | Type | Meaning |
 | :--- | :--- | :--- |
-| `total` | integer | The total number of items matching the query across all pages. |
-| `page` | integer | The current page number. |
-| `limit` | integer | The maximum number of items returned in this page. |
+| `total` | integer | How many computes there are over all pages. |
+| `page` | integer | The page you got. |
+| `limit` | integer | How many computes a page holds. |
 
 ```json
 {
@@ -124,54 +121,41 @@ Paginated responses include a `meta` object that provides context for the curren
   "meta": {
     "total": 42,
     "page": 1,
-    "limit": 20
+    "limit": 10
   }
 }
 ```
 
 ## Idempotency
 
-`POST` endpoints that create resources support idempotency to prevent duplicate actions on network retries (e.g., accidentally provisioning two servers).
-
-Pass a unique UUID v4 in the `Idempotency-Key` header:
+[Create a compute](/api-reference/endpoint/create-compute) needs an `Idempotency-Key` header, so that a request you send twice, for example after a timeout, creates one compute and not two.
 
 ```http
-Idempotency-Key: <unique_uuid_v4>
+Idempotency-Key: YOUR_UNIQUE_KEY
 ```
 
-**Behaviour:**
+- Use a new value for every compute you want to create. A UUID works well.
+- If you send the same key again, you get the compute that the first request created. No second compute is created, and the answer is `202` both times.
+- The body of the second request is not compared with the first. The same key with a different body still returns the first compute.
+- A key is remembered for your team for as long as that compute exists.
 
-- A retry with the same key returns the original response — no duplicate action is performed.
-- The response status on a replayed request is `202`, regardless of the original status code.
+## Rate limit
 
-## Rate Limiting
+Each API key can send 2 requests a second. Past that, the API answers `429` with the code `TOO_MANY_REQUESTS`.
 
-All API requests are subject to rate limits to ensure platform stability and fair usage.
+Every answer carries these headers:
 
-| Tier | Limit |
+| Header | Meaning |
 | :--- | :--- |
-| **All Requests** | 2 requests / second per API key |
+| `X-RateLimit-Limit` | How many requests you can send in the current second. |
+| `X-RateLimit-Remaining` | How many you have left in the current second. |
+| `X-RateLimit-Reset` | When the count starts again, as a Unix timestamp in seconds. |
+| `Retry-After` | On a `429` only: how many seconds to wait before you try again. |
 
-When a rate limit is exceeded, the API returns `429 Too Many Requests`. Use the response headers to manage your request cadence efficiently:
-
-```http
-x-ratelimit-limit: 2
-x-ratelimit-remaining: 1
-x-ratelimit-reset: 1776410380
-```
-
-| Header | Description |
-| :--- | :--- |
-| `x-ratelimit-limit` | Total request allowance per window. |
-| `x-ratelimit-remaining` | Requests remaining in the current window. |
-| `x-ratelimit-reset` | The Unix timestamp when the current rate limit window expires and the quota resets. |
-
-If your system requires higher throughput for specific use cases, contact our team at [cloud@strettch.com](mailto:cloud@strettch.com).
+If you need a higher limit, email [cloud@strettch.com](mailto:cloud@strettch.com).
 
 ## Versioning
 
-The current API version is `v1`, reflected in every endpoint path.
+The API version is `v1`, and it is part of every path.
 
-Breaking changes will be introduced under a new version (e.g., `/api/v2`). When a new version is released, the previous version will continue to receive support for a defined deprecation period, communicated via email and the [changelog](/changelog).
-
-Non-breaking additions (new fields, new endpoints) may be made to the current version without notice.
+We may add endpoints and fields to `v1` without notice, so your code should ignore fields it does not know. A change that could break your code comes in a new version, such as `/api/v2`. We announce it by email and in the [changelog](/changelog), and `v1` keeps working for a period that we state in the announcement.

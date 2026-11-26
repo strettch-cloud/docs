@@ -1,48 +1,43 @@
 ---
-title: "How Strettch Cloud Invoices Work"
+title: "Invoices"
 sidebarTitle: "Invoices"
-description: "Learn how monthly Strettch Cloud invoices are generated, when they are charged, what charges and credits they include, and how to download PDFs."
+description: "When Strettch Cloud creates an invoice, who receives it, what it lists, and where to view, download and pay it."
 ---
 
-Strettch Cloud billing cycles are monthly. On the first day of each month, we invoice and charge your team’s primary payment method for the previous month’s usage. If your team does not use any resources, you do not receive an invoice.
+An invoice lists what your team used in one calendar month. We create it at the start of the next month. A team that used nothing in a month gets no invoice for it.
 
-Invoices include the following information:
+An invoice is not a request to pay again. Usage is already taken from your credits and funds each day. See [Paying your bill](/faqs/paying-your-bill).
 
-* Charges the team has accured in a billing cycle, like resource usage
-* **Credits** applied to the invoice, if any
-* **Purchase orders**, if any
-* Reference information, like the invoice number, payment due date, and the name and email address on the team
+## Who receives the invoice
 
-You can update the team information displayed on invoices on the **Settings** page’s **Invoices** tab. Any changes you make are immediately visible on invoices you view thereafter.
+We email the invoice as a PDF to the Owner of the team. To send it to more people, an Owner or an Admin adds their addresses in **Team Settings** > **General**, under **Contact Emails**.
 
-## View and Download Invoices 
-When we create an invoice, we email a PDF of it to team members with the owner or biller role. Invoices are also available directly in the control panel, as a downloadable PDF.
+## Where to see your invoices
 
-On the Invoices tab of the Settings page, your latest invoice is visible in the Month-to-date Summary section:
+Go to **Team Settings** > **Billing** > **Invoices**. Each row shows the invoice number, the issue date, the total and a status, **PAID** or **UNPAID**.
 
-<Frame>
-     <img src="/images/billing/invoices.png" style={{ borderRadius: '0.2rem' }} />
-    </Frame>
+- Click **Invoice** on a row to download the PDF.
+- For an invoice that is **UNPAID**, click **Pay Invoice**. You can pay that invoice or everything your team owes.
 
-    In this section, you can:
+An invoice that stays unpaid leads to your team being suspended on the 15th and its computes being destroyed on the 29th. See [What happens when your team runs out](/faqs/paying-your-bill#what-happens-when-your-team-runs-out).
 
-* View the invoice in your browser, and expand details on the charges by resource type and individual resource
-* Download a PDF of the invoice
-To download the PDF version of the invoice, click **Download icon**.
+## What an invoice lists
 
-## Bandwidth on Your Invoice
+- the billing period and the date of issue;
+- who is billed;
+- the total for the month, and the amount that is taxable;
+- a breakdown of the usage behind the total.
 
-Each team has a monthly allowance of outbound internet traffic, pooled from all its computes. If the team uses more than its allowance, the invoice has a **Bandwidth** section with one line, **Extra Bandwidth Usage**, showing the GB above the allowance, the price per GB and the amount. If the team stays within its allowance, there is no bandwidth line.
+Top-ups are not on an invoice. They are listed in **Team Settings** > **Billing** > **Transactions**.
+
+All invoices are in Rwandan francs (RWF). We cannot change the date or the period of an invoice.
+
+## Bandwidth on your invoice
+
+Each team has a monthly allowance of outbound internet traffic, pooled from all its computes. If the team uses more than its allowance, the invoice has a **Bandwidth** section with one line, **Extra Bandwidth Usage**, showing the GiB above the allowance, the price per GiB and the amount. If the team stays within its allowance, there is no bandwidth line.
 
 See [Bandwidth](/services/compute/bandwidth) for how the allowance and charges work.
 
-## Invoice Limits 
-The following limits apply to invoices:
+## Tax receipts
 
-* We cannot change invoice and billing dates.
-
-* Invoices do not reflect topped-up credits or payments. Invoices are only for the charges incurred in the billing cycle.
-
-* We are now billing exclusively in local currency (RWF) and all invoices are in RWF. With our plan to expand we plan to bill in the local currency of the country where the team is based.
-
-In addition to monthly invoice emails, you will receive billing alerts, which are emails you receive when your monthly spending exceeds a certain threshold.
+An invoice is your billing statement. For a tax receipt for a paid invoice, see [Receipts](/faqs/receipts).

@@ -92,6 +92,7 @@ Body:
 | `publicKeys` | string[] | Yes (min 1) | SSH public keys for access |
 | `withPublicIp` | boolean | No | Allocate a public IP address |
 | `tags` | string[] | No | Labels for the instance |
+| `userData` | string (base64) | No | cloud-init user data (`#cloud-config` or a `#!` script), at most 32 KiB decoded |
 
 ### Upsize Compute Request (PATCH /computes/{id}/upsize)
 
@@ -123,14 +124,14 @@ Body:
   "meta": {
     "total": 42,
     "page": 1,
-    "limit": 20
+    "limit": 10
   },
   "requestId": "f47ac10b-...",
   "timestamp": "2024-01-15T10:00:00Z"
 }
 ```
 
-Pagination query params: `page` (default: 1), `limit` (default: 20, max: 100)
+Pagination query params: `page` (default: 1), `limit` (default: 10)
 
 ### Error Response
 
@@ -202,9 +203,9 @@ Pagination query params: `page` (default: 1), `limit` (default: 20, max: 100)
 | `VALIDATION_ERROR` | 400 | Request body failed validation |
 | `MALFORMED_JSON` | 400 | Invalid JSON in request body |
 | `INVALID_IDEMPOTENCY_KEY` | 400 | Idempotency key is not a valid UUID v4 |
+| `INSUFFICIENT_BALANCE` | 400 | Team has insufficient credits |
 | `UNAUTHORIZED` | 401 | API key is missing, malformed, or revoked |
 | `FORBIDDEN` | 403 | Insufficient permissions for this action |
-| `INSUFFICIENT_BALANCE` | 403 | Team has insufficient credits |
 | `TEAM_SUSPENDED` | 403 | Team account is suspended |
 | `TEAM_PAST_DUE` | 403 | Team has overdue payments |
 | `TEAM_TERMINATED` | 403 | Team account is terminated |
@@ -325,6 +326,18 @@ curl -s -X PATCH https://api.strettch.cloud/api/v1/computes/{id}/upsize \
 curl -s -X DELETE https://api.strettch.cloud/api/v1/computes/{id} \
   -H "Authorization: Bearer $API_KEY"
 ```
+
+## Compute Metadata (from inside a compute)
+
+Code running on a compute can read that compute's own details from `http://169.254.169.254`, with no API key. Every request needs the header `Metadata-Flavor: StrettchCloud`; without it the answer is `403 METADATA_FLAVOR_REQUIRED`. It is not reachable from outside the compute. `instance-id` is not the compute `id` of this API. The limit is a burst of 10 requests, then 6 a second; past it the answer is `429` with `Retry-After: 1`, so read `metadata.json` once rather than field by field.
+
+| Method | Path | Returns |
+|--------|------|---------|
+| GET | `/v1/metadata.json` | `instance-id`, `hostname`, `team-id`, `region`, `public-keys`, `network-config` (cloud-init network config v2; interfaces `public0`, `private0`) |
+| GET | `/v1/metadata/<field>` | One field as plain text, e.g. `/v1/metadata/network-config/ethernets/public0/addresses/0` |
+| GET | `/v1/user-data` | The `userData` sent at create, decoded; `404 USER_DATA_NOT_SET` if none |
+
+Full reference: https://docs.cloud.strettch.com/services/compute/metadata
 
 ## Important Notes
 

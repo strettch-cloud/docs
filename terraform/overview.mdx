@@ -1,39 +1,20 @@
 ---
 title: "Terraform Provider"
 sidebarTitle: "Overview"
-description: "Provision and manage your Strettch Cloud infrastructure as code with the official Strettch Cloud Terraform provider."
+description: "Create and manage your Strettch Cloud computes from Terraform files with the official Strettch Cloud provider."
 ---
 
-The official [Strettch Cloud Terraform provider](https://registry.terraform.io/providers/strettch-cloud/strettchcloud/latest) lets you define and provision your Strettch Cloud infrastructure with Terraform.
+The official [Strettch Cloud Terraform provider](https://registry.terraform.io/providers/strettch-cloud/strettchcloud/latest) lets you create and manage computes from Terraform files. You describe a compute in a file, review the change with `terraform plan`, and apply it.
 
 <CardGroup cols={3}>
   <Card title="Quickstart" icon="rocket" href="/terraform/quickstart">
-    Go from zero to a running compute instance in a few minutes.
+    Create your first compute with Terraform.
   </Card>
   <Card title="Terraform Registry" icon="book-open" href="https://registry.terraform.io/providers/strettch-cloud/strettchcloud/latest/docs">
-    The full resource and data-source reference.
+    Every resource, data source and argument.
   </Card>
   <Card title="Source on GitHub" icon="github" href="https://github.com/strettch-cloud/terraform-provider-strettchcloud">
-    Browse the code, open issues, and contribute.
-  </Card>
-</CardGroup>
-
----
-
-## Why Terraform?
-
-<CardGroup cols={2}>
-  <Card title="Infrastructure as code" icon="file-code">
-    Describe your compute instances in version-controlled configuration instead of clicking through the console.
-  </Card>
-  <Card title="Reproducible environments" icon="clone">
-    Spin up identical staging and production environments from the same definition.
-  </Card>
-  <Card title="Safe changes" icon="shield-halved">
-    Preview every change with `terraform plan` before it touches your infrastructure.
-  </Card>
-  <Card title="Fits your workflow" icon="gears">
-    Run plans and applies from CI/CD, alongside the rest of your Terraform.
+    Read the code and open issues.
   </Card>
 </CardGroup>
 
@@ -41,14 +22,12 @@ The official [Strettch Cloud Terraform provider](https://registry.terraform.io/p
   <img src="/images/terraform/terraform-workflow.png" style={{ borderRadius: '0.2rem' }} />
 </Frame>
 
----
-
 ## What you can manage
 
-- **Compute instances** (`strettchcloud_compute`) — create, update, resize, reboot, and destroy virtual machines.
-- **Catalog lookups** — resolve the available images, regions, and specifications as data sources, so you never hardcode a slug that might change.
+- **Computes** (`strettchcloud_compute`): create, update, upsize, reboot and destroy.
+- **Images, regions and specifications**: look them up as data sources, so your files do not depend on a slug that can change.
 
----
+[Resources and data sources](/terraform/resources) lists each one.
 
 ## Add the provider
 
@@ -67,40 +46,17 @@ provider "strettchcloud" {
 }
 ```
 
-<Note>
-Keep your API key out of your configuration files. Set it as the **`STRETTCH_CLOUD_API_KEY`** environment variable, and store it as a secret in CI.
-</Note>
+Keep your API key out of your Terraform files. Set it in the `STRETTCH_CLOUD_API_KEY` environment variable. See [Authentication](/terraform/authentication).
 
----
+## Provider settings
 
-## Provider configuration
+Every argument is optional. You can set each one in the provider block or with the environment variable next to it.
 
-Every argument is optional, and each can be set with the matching **`STRETTCH_CLOUD_*`** environment variable. In practice you only set `api_key` — and even that is read from the environment by default (see [Authentication](/terraform/authentication)).
-
-<ResponseField name="api_key" type="string" required>
-  API key, sent as a bearer token. Read from **`STRETTCH_CLOUD_API_KEY`** by default. Sensitive — keep it out of configuration files.
-</ResponseField>
-
-<ResponseField name="api_url" type="string" default="https://api.strettch.cloud/api/v1">
-  Base URL of the Strettch Cloud API. Also set with **`STRETTCH_CLOUD_API_URL`**.
-</ResponseField>
-
-<ResponseField name="requests_per_second" type="number" default="2">
-  Client-side rate limit. Higher values are capped to the API ceiling of `2`. Also set with **`STRETTCH_CLOUD_REQUESTS_PER_SECOND`**.
-</ResponseField>
-
-<ResponseField name="http_retry_max" type="number" default="4">
-  Maximum retries after the first attempt for retryable failures. Also set with **`STRETTCH_CLOUD_HTTP_RETRY_MAX`**.
-</ResponseField>
-
-<ResponseField name="http_retry_wait_min" type="number" default="1">
-  Minimum backoff, in seconds, before the first retry. Also set with **`STRETTCH_CLOUD_HTTP_RETRY_WAIT_MIN`**.
-</ResponseField>
-
-<ResponseField name="http_retry_wait_max" type="number" default="30">
-  Maximum backoff, in seconds, between retries. Also set with **`STRETTCH_CLOUD_HTTP_RETRY_WAIT_MAX`**.
-</ResponseField>
-
----
-
-Ready to deploy something? Head to the [Quickstart](/terraform/quickstart).
+| Argument | Type | Default | Environment variable | What it sets |
+| --- | --- | --- | --- | --- |
+| `api_key` | string | none | `STRETTCH_CLOUD_API_KEY` | Your API key. The provider needs one, from this argument or from the environment variable. |
+| `api_url` | string | `https://api.strettch.cloud/api/v1` | `STRETTCH_CLOUD_API_URL` | Base URL of the Strettch Cloud API. |
+| `requests_per_second` | number | `2` | `STRETTCH_CLOUD_REQUESTS_PER_SECOND` | How many requests a second the provider sends. A higher value is capped at `2`, the [API rate limit](/api-reference/introduction#rate-limit). |
+| `http_retry_max` | number | `4` | `STRETTCH_CLOUD_HTTP_RETRY_MAX` | How many times the provider retries a request that can be retried, after the first attempt. |
+| `http_retry_wait_min` | number, seconds | `1` | `STRETTCH_CLOUD_HTTP_RETRY_WAIT_MIN` | The wait before the first retry. |
+| `http_retry_wait_max` | number, seconds | `30` | `STRETTCH_CLOUD_HTTP_RETRY_WAIT_MAX` | The longest wait between two retries. |

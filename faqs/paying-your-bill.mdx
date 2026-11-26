@@ -1,50 +1,72 @@
 ---
-title: "How to Pay Your Strettch Cloud Bill"
+title: "Paying your bill"
 sidebarTitle: "Paying Your Bill"
-description: "Add a payment method, manage automatic monthly charges, settle outstanding invoices, and resolve failed payments for your Strettch Cloud team."
+description: "How to top up, how credits and funds are spent, when usage is charged, and the dates on which an unpaid team is suspended and its computes are destroyed."
 ---
 
-## How does billing work?
-Strettch Cloud operates on a prepaid credit system. You add funds to your team's wallet, and your resource usage is deducted from this balance daily.
+Strettch Cloud is prepaid. You top up your team, and each day we take the previous day's usage from your credits first, then from your funds.
 
+Every team pays for itself, with its own credits and funds.
 
-## How is usage calculated?
-We track your resource usage (like Virtual Machines) continuously.
+## Credits and funds
 
+A team holds two amounts, and they are never added together.
 
-* **Compute (VMs):** Usage is calculated daily for the previous day. We bill by the hour. If you use a VM for part of an hour, it is rounded up to the full hour.
+- **Funds** are the money you topped up.
+- **Credits** are amounts we add to a team: promotions, refunds, referral rewards, rewards for a long-term commitment, and compensation after an incident. A credit can have an expiry date.
 
+Credits are spent first, starting with the credit that expires soonest. Your funds are used when the credits run out.
 
-* **Public IPs:** Billed monthly. If you hold a public IP at any point during the month, you are charged the monthly fee.
+The number at the top of the dashboard shows your credits, labelled **Credits**, while you have any. After that it shows your funds, labelled **Balance**. **Team Settings** > **Billing** > **Overview** shows both, and the **Credits** tab lists each credit with its expiry date and how much of it is used.
 
-We currently accept payment using credit cards (Visa, MasterCard, American Express, UnionPay), debit cards. We also support direct debit from banks.
+## How to top up
 
-## How do I pay?
+Click **Top Up** at the top of the dashboard, enter an amount in RWF and click **Continue**. The smallest top-up is RWF 1,000. A payment window opens and shows the ways you can pay, such as mobile money and bank cards. Follow its steps.
 
-You can make a manual payment on the **Billing tab** of the **Settings** page. Your current balance is always listed at the top of the page, next to a top-up button. The text of the button varies if the balance is overdue or if you’re making an early payment.
+When the payment is confirmed, your funds go up. Every top-up, with its status, is listed in **Team Settings** > **Billing** > **Transactions**.
 
-<Frame>
-     <img src="/images/billing/topup.png" style={{ borderRadius: '0.2rem' }} />
-    </Frame>
+## What is charged, and when
 
-Click the topu-up button to open a payment modal. In the Payment Amount section, you can select from any past due balance, estimated costs for the current billing period, or a custom amount.
+Once a day we charge the previous day's usage:
 
-<Frame>
-     <img src="/images/billing/topup-modal.png" style={{ borderRadius: '0.2rem' }} />
-    </Frame>
+- **Computes** are charged by the hour, for as long as they exist. See [What you pay in each state](/services/compute/overview#what-you-pay-in-each-state).
+- **Public IPs** are charged by the calendar month. See [What a public IP costs](/services/compute/public-ips-and-the-private-network#what-a-public-ip-costs).
+- **Bandwidth** is charged only above your team's allowance. See [Bandwidth](/services/compute/bandwidth).
 
-After you enter the amount you want to pay. Once the payment is confirmed, your balance will be updated immediately.
+At the start of each month you get an [invoice](/faqs/invoices) that lists the charges of the month before.
 
-## When is my balance updated?
+## What happens when your team runs out
 
-* **Top-ups:** Your balance increases as soon as we receive payment confirmation from IremboPay.
+When usage is charged and your credits and funds do not cover it, your team owes the difference. Nothing is turned off straight away. The steps follow the calendar, and each one happens only if the invoice is still unpaid on that day.
 
-* **Usage Charges:** Your balance is debited once every 24 hours for the previous day's usage.
+| Date | What happens |
+|---|---|
+| The 1st of the next month | The invoice for the month arrives and is **UNPAID**. Your team cannot create new computes, but you can still manage the ones you have. |
+| The 15th | Your team is suspended. We turn off every compute in the team. |
+| The 29th | We destroy every compute in the team, with all the data on its disks. |
 
-## What happens if my balance runs out?
-If your balance is insufficient:
-* **Past Due:** You will receive a reminder email.
+The dates are UTC dates. A February with 28 days has no 29th, so the computes are destroyed on 1 March. If a step cannot run on its day, we try again on each of the next two days.
 
-* **Suspension:** If payment is not made, your resources may be suspended.
+For example, your team runs out on 20 November. The November invoice arrives on 1 December and is unpaid. We turn your computes off on 15 December and destroy them on 29 December. Paying what you owe at any time before 29 December keeps your computes.
 
-* **Termination:** Continued non-payment may lead to resource termination. We recommend keeping a positive balance to avoid service interruption.
+<Warning>
+  Destroyed computes and their data cannot be brought back. Once your team is suspended, you cannot turn your computes on or reach their data until you pay, so you cannot take a backup then. If you pay what you owe before the 29th, nothing is destroyed. To take your own copy of your data, do it before the 15th.
+</Warning>
+
+### How you are told
+
+We email every member of the team before each step. The email says how many days are left. Before the 15th it says your services will be suspended. After the 15th it says your resources are scheduled for deletion, and we also send it by SMS to members with a Rwandan phone number.
+
+### What suspended means
+
+- Your computes are off, so everything that runs on them is offline. You cannot turn them on, connect to them or copy data from them until you pay.
+- You still pay for them while they are off, so the amount you owe keeps growing. See [What you pay in each state](/services/compute/overview#what-you-pay-in-each-state).
+- The dashboard asks you to top up at least the amount you owe before you can use it again. In the API, only `GET` requests work.
+
+### How to keep your computes
+
+Top up at least the amount you owe. The dashboard shows the amount. When the payment is confirmed, the invoice is paid and no further step happens.
+
+If your computes were already turned off, turn each one on again from its page. See [Turn a compute off and on](/services/compute/turn-a-compute-off-and-on).
+
+To get a warning earlier, turn on **Low Balance Alert** in **Team Settings** > **Billing** > **Overview** and set an amount. We email every member of the team when your funds fall below it. An Owner or an Admin can set it.
