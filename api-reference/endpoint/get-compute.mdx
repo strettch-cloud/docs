@@ -1,15 +1,13 @@
 ---
-title: 'Get Compute Instance'
+title: 'Get a compute'
 openapi: '/api-reference/openapi.json GET /computes/{id}'
 ---
 
-### Response Error Codes
+### Errors
 
-If the request fails, the `code` field in the error response will contain one of the following.
-
-| Code | Status | Description |
+| Code | Status | When |
 | :--- | :---: | :--- |
-| `UNAUTHORIZED` | 401 | Authentication failed or was not provided. |
-| `RESOURCE_NOT_FOUND` | 404 | The specified compute instance was not found. |
-| `TOO_MANY_REQUESTS` | 429 | You have exceeded the rate limit. |
-| `INTERNAL_SERVER_ERROR` | 500 | An unexpected error occurred on our end. |
+| `RESOURCE_NOT_FOUND` | 404 | Your team has no compute with this ID. |
+| `COMPUTE_DESTROYED` | 410 | The compute was destroyed. |
+
+For every other code, see [Error codes](/api-reference/introduction#error-codes).

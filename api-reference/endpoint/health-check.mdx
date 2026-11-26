@@ -1,13 +1,13 @@
 ---
-title: 'Service Health Check'
+title: 'Health check'
 openapi: '/api-reference/openapi.json GET /health'
 ---
 
-### Response Error Codes
+This endpoint needs no API key.
 
-If the request fails, the `code` field in the error response will contain one of the following.
+### Errors
 
-| Code | Status | Description |
+| Code | Status | When |
 | :--- | :---: | :--- |
-| `OK` | 200 | The service and its critical dependencies are healthy. |
-| `INTERNAL_SERVER_ERROR` | 500 | An unexpected error occurred while performing the health check. |
+| `OK` | 200 | The API and the services it depends on are healthy. |
+| `INTERNAL_SERVER_ERROR` | 500 | The health check failed. |

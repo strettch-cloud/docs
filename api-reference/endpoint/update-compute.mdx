@@ -1,42 +1,22 @@
 ---
-title: 'Update Compute Instance'
+title: 'Update a compute'
 openapi: '/api-reference/openapi.json PATCH /computes/{id}'
 ---
 
-### Request Reference
+### Request fields
 
-Both fields are optional. Send only the ones you want to change; any field you
-omit is left unchanged.
+Both fields are optional. Send only the ones you want to change. A field you leave out stays as it is.
 
-| Field | Type | Description |
+| Field | Type | Meaning |
 | :--- | :--- | :--- |
-| `hostName` | string | New host name for the compute instance. |
-| `tags` | string[] | Replacement set of tags. The list you send replaces the existing tags entirely. |
+| `hostName` | string | The new name of the compute. |
+| `tags` | string[] | The new tags. The list you send replaces all the tags the compute has. |
 
----
+### Errors
 
-### Response Error Codes
+| Code | Status | When |
+| :--- | :---: | :--- |
+| `BAD_REQUEST` | 400 | A value is not valid. |
+| `RESOURCE_NOT_FOUND` | 404 | Your team has no compute with this ID. |
 
-If the request fails, the `code` field in the error response will contain one of the following.
-
-<Tabs>
-  <Tab title="Standard">
-    | Code | Status | Description |
-    | :--- | :---: | :--- |
-    | `BAD_REQUEST` | 400 | The request was invalid or malformed. |
-    | `UNAUTHORIZED` | 401 | Authentication failed or was not provided. |
-    | `FORBIDDEN` | 403 | You do not have permission to perform this action. |
-    | `RESOURCE_NOT_FOUND` | 404 | The specified compute instance was not found. |
-    | `INTERNAL_SERVER_ERROR` | 500 | An unexpected error occurred on our end. |
-  </Tab>
-  <Tab title="Billing & Team">
-    <Warning>
-      These errors block all resource operations. Resolve your team's billing status before retrying.
-    </Warning>
-
-    | Code | Status | Description |
-    | :--- | :---: | :--- |
-    | `TEAM_SUSPENDED` | 403 | Team is suspended due to an outstanding payment. |
-    | `TEAM_PAST_DUE` | 403 | Team has an outstanding balance that must be settled first. |
-  </Tab>
-</Tabs>
+For every other code, see [Error codes](/api-reference/introduction#error-codes).

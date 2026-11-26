@@ -1,0 +1,61 @@
+---
+title: "Create a compute"
+description: "Create a compute from the dashboard: choose a location, an image, a specification, a public IP and how you log in."
+---
+
+Your team needs enough credits and funds to cover the **Total (Cost per month)** that the summary shows for the compute. If it does not, the dashboard asks you to [top up](/faqs/paying-your-bill) before it creates the compute.
+
+<Steps>
+  <Step title="Start a new compute">
+    Go to **Computes** and click **Create Compute**.
+  </Step>
+
+  <Step title="Choose Location">
+    Choose where the compute runs. Pick the location closest to the people who will use it.
+  </Step>
+
+  <Step title="Choose Image">
+    Choose what is installed on the compute. Each image is marked **OS** or **Application**.
+
+    - An OS image is a Linux system with nothing else on it. Choose its version from the list on the card.
+    - An application image comes with an application already installed. **See Details** opens the page that says what is on it and how to start it.
+  </Step>
+
+  <Step title="Choose Type">
+    Choose a specification from the table. Each row is one combination of CPU, RAM and storage, with its monthly [bandwidth allowance](/services/compute/bandwidth) and its price per hour and per month.
+
+    A specification that is too small for the image you chose cannot be selected. You can [upsize](/services/compute/upsize-a-compute) a compute later, but you cannot make it smaller.
+  </Step>
+
+  <Step title="Networking Options">
+    **Assign a Public IP Address** is turned on. A public IP is billed separately from the compute, at the price shown under the switch. Turn the switch off if nothing on the internet needs to reach this compute.
+
+    You cannot add or remove a public IP after the compute is created. See [Public IPs and the private network](/services/compute/public-ips-and-the-private-network) to decide.
+  </Step>
+
+  <Step title="Authentication Method">
+    Choose how you will log in as `root`. You choose one of the two, not both.
+
+    - **SSH Key**: select one or more of your team's SSH keys, or click **New SSH Key** to add one. See [SSH Keys](/services/compute/ssh-keys).
+    - **Root Password**: type a password that meets the rules shown under the field. Store it before you go on. We do not email it, and the dashboard does not show it again.
+  </Step>
+
+  <Step title="Compute Name">
+    A name is filled in for you. Keep it or type your own.
+  </Step>
+
+  <Step title="Add Tags (Optional)">
+    Add tags if you want to group your computes, for example by environment. You can change them later.
+  </Step>
+
+  <Step title="Create the compute">
+    Check the **Summary**, then click **Create Compute**.
+  </Step>
+</Steps>
+
+You are taken back to the **Computes** list, and a message shows the SSH command for the new compute. The compute shows **STARTING...** and then **RUNNING**. You can open it once it is running.
+
+## Next steps
+
+- [Connect to the compute](/services/compute/connect-to-a-compute)
+- [Point a domain to it](/services/dns/managing-dns)

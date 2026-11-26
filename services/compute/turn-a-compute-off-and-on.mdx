@@ -1,0 +1,44 @@
+---
+title: "Turn a compute off and on"
+description: "Turn a compute off, turn it on again or reboot it from the dashboard. A compute that is turned off is still billed."
+---
+
+You need to be an Owner or an Admin of the team.
+
+<Warning>
+  A compute that is turned off is still billed at the same price. To stop billing, [destroy the compute](/services/compute/destroy-a-compute).
+</Warning>
+
+## Turn a compute off
+
+When you turn a compute off from the dashboard, we first try a graceful shutdown. If that fails, we force the shutdown, and a forced shutdown can corrupt data. To be safe, shut the operating system down from inside the compute first:
+
+```bash
+poweroff
+```
+
+Then turn the compute off in the dashboard:
+
+1. In the **Computes** list, click the compute.
+2. Open the **Power** tab and click **Turn Off**.
+3. In the **Turn Off Compute** dialog, click **Turn off**.
+
+The compute changes to **STOPPED**. It keeps its data and its IP addresses.
+
+## Turn a compute on
+
+1. In the **Computes** list, click the compute.
+2. Open the **Power** tab and click **Turn On**.
+3. In the **Turn On Compute** dialog, click **Turn on**.
+
+The compute changes to **RUNNING**.
+
+The **On** / **Off** switch at the top of the compute's page does the same as the two buttons.
+
+## Reboot a compute
+
+A reboot stops the compute and starts it again. It breaks every open connection, and the compute is back in about 2 minutes.
+
+1. In the **Computes** list, click the compute. It must be running.
+2. At the top of the page, click the reboot button, next to the **On** switch.
+3. In the **Reboot Compute?** dialog, click **Reboot**.

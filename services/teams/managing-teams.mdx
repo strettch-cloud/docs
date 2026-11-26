@@ -1,195 +1,96 @@
 ---
-title: Manage Team Members and Permissions
+title: "Managing teams"
 sidebarTitle: "Managing Teams"
-description: Invite collaborators, assign Member or Admin roles, transfer ownership, remove users, and configure team settings in your Strettch Cloud account.
+description: "Create a team, invite members, change their roles, remove them, transfer ownership, and leave or delete a team on Strettch Cloud."
 ---
 
-## Inviting Members to Your Team
+Most of these tasks need a role in the team. See [What each role can do](/services/teams/overview#what-each-role-can-do).
 
-Add collaborators to your team so they can help manage resources.
+## Create a team
 
-<Steps>
-  <Step title="Navigate to Team Settings">
-    Open your team settings page from the dashboard.
-  </Step>
+1. Click the team selector, next to the logo at the top of the dashboard, and click **New Team**.
+2. In the **Create a new team** dialog, type a **Team Name** and choose a colour for its avatar.
+3. Click **Create Team**.
 
-  <Step title="Click Members">
-    Click on "Invite Members".
-    Input an email address and select a role:
-    - **Member**: Can manage emails, domains, and webhooks
-    - **Admin**: Has all Member permissions plus ability to invite users, update payments, and delete the team
-  </Step>
+You are the Owner of the new team. It has its own computes, domains and bill.
 
-  <Step title="Send the Invitation">
-    The new member will receive an email invitation to join the team.
-  </Step>
-</Steps>
+## Switch between teams
 
-<Tip>
-The invited member will appear under **Pending Invitations** until they accept the invite.
-</Tip>
+Click the team selector and choose a team. The dashboard then shows the computes, domains and billing of that team.
 
----
+## Invite a member
 
-## Changing Team Avatar
+You need to be an Owner or an Admin.
 
-Customize your team's appearance with a custom avatar.
+1. Go to **Team Settings** > **Members** and click **Invite Members**.
+2. Type the person's **Email address** and choose a role, Member or Admin.
+3. Click **Invite**.
 
-<Steps>
-  <Step title="Navigate to Team Settings">
-    Open your team settings page from the dashboard.
-  </Step>
+The person receives an email with the invitation, and you can also copy the invitation link and send it yourself. An invitation is valid for 10 days.
 
-  <Step title="Team Avatar">
-    Click on the colorful button and choose among the available options. 
-  </Step>
-</Steps>
+Until the person accepts, the invitation is listed on the **PENDING INVITATIONS** tab. From its menu you can change the role with **Update Role** or withdraw it with **Cancel Invitation**.
 
-<Frame>
-  <img src="/images/teams/avatar-setup.png" style={{ borderRadius: '0.2rem' }} />
-</Frame>
+To accept an invitation, the person opens **Account Settings** > **TEAMS** > **PENDING INVITATIONS** and clicks **Accept**.
 
----
+## Change a member's role
 
-## Switching Between Teams
+You need to be an Owner or an Admin. You cannot change your own role or the Owner's.
 
-If you belong to multiple teams, you can switch between them to access different resources.
+1. Go to **Team Settings** > **Members**.
+2. Open the menu on the member's row and click **Update Role**.
+3. Choose the new role and click **Save Changes**.
 
-<Steps>
-  <Step title="Click the Team Name">
-    In the top left corner of any Strettch Cloud page, click on the team name.
-  </Step>
+The new role applies at once.
 
-  <Step title="Select a Team">
-    A dropdown menu appears listing all teams you belong to. Select the team you want to switch to.
-  </Step>
-</Steps>
+## Remove a member
 
-<Frame>
-  <img src="/images/teams/team-selection.png" style={{ borderRadius: '0.2rem' }} />
-</Frame>
+You need to be an Owner or an Admin. You cannot remove the Owner.
 
----
+Removing a member takes away their access to the dashboard, but not to your computes. Before you remove someone:
 
-## Changing Member Roles
+- delete their SSH keys from `~/.ssh/authorized_keys` on every compute they could log in to;
+- change every root password they know.
 
-As an admin, you can modify the roles of team members.
+Then remove them from the team:
 
-<Steps>
-  <Step title="Navigate to Team Settings">
-    Open your team settings page from the dashboard.
-  </Step>
+1. Go to **Team Settings** > **Members**.
+2. Open the menu on the member's row and click **Remove Member**.
+3. Tick the two statements in the dialog, which confirm that you did both things above, and click **Yes, Remove member**.
 
-  <Step title="Find the Member">
-    Locate the user whose role you want to change.
-  </Step>
+The member loses access to the team at once, and the API keys they created for the team stop working. This cannot be undone, but you can invite the person again.
 
-  <Step title="Edit the Role">
-    Click the more options button **...** next to their name and choose **Edit**.
-  </Step>
+## Transfer ownership
 
-  <Step title="Confirm the Change">
-    Select the new role and confirm. The team member will immediately receive the new permissions.
-  </Step>
-</Steps>
+Only the Owner can do this, and the new Owner must already be a member of the team. You cannot transfer the only team you own.
 
-<Frame>
-  <img src="/images/teams/edit-member-role.png" style={{ borderRadius: '0.2rem' }} />
-</Frame>
+1. Go to **Team Settings** > **Members**.
+2. Open the menu on the member's row and click **Transfer Ownership**.
+3. In the **Transfer Team Ownership** dialog, click **Transfer Ownership**.
 
----
+The member must accept before the transfer happens. Until then you stay the Owner, and their row shows **TRANSFER PENDING**. When they accept, they become the Owner and you become an Admin. Only the new Owner can transfer the team again.
 
-## Removing a Member
+## Leave a team
 
-As an admin or owner, you can remove a member who no longer needs access to the team.
+An Admin or a Member can leave. The Owner cannot: transfer ownership first, or delete the team.
 
-<Steps>
-  <Step title="Navigate to Team Settings">
-    Open your team settings page from the dashboard.
-  </Step>
+1. Go to **Team Settings** > **General**.
+2. Under **Leave Team**, click **Leave Team** and confirm.
 
-  <Step title="Find the Member">
-    Locate the member you want to remove in the members list.
-  </Step>
+You lose access to the team at once.
 
-  <Step title="Open Member Options">
-    Click the more options button **...** next to their name and choose **Remove**.
-  </Step>
+## Delete a team
 
-  <Step title="Confirm">
-    Confirm the removal. The member loses access to the team and its resources immediately, and they receive an email notifying them they've been removed.
-  </Step>
-</Steps>
+Only the Owner can delete a team, and deleting cannot be undone. Every member loses access.
 
----
+Before you can delete a team:
 
-## Transferring Team Ownership
+- it is not the only team you own;
+- it has no computes left, so [destroy them](/services/compute/destroy-a-compute) first;
+- it has no active domains, so [remove them](/services/dns/managing-dns#remove-a-domain) first;
+- it owes nothing.
 
-Only the team owner can transfer ownership, and the new owner must already be a member of the team.
+If the dashboard still refuses, its message says why. [Contact support](/support) if you need help with it.
 
-<Steps>
-  <Step title="Navigate to Team Settings">
-    Open your team settings page from the dashboard.
-  </Step>
-
-  <Step title="Find the Member to Promote">
-    Locate the member you want to make the new owner.
-  </Step>
-
-  <Step title="Initiate the Transfer">
-    Click the more options button **...** next to their name and choose **Transfer Ownership**.
-  </Step>
-
-  <Step title="Confirm the Transfer">
-    Confirm your decision. The selected member receives an email letting them know ownership has been transferred to them.
-  </Step>
-</Steps>
-
-<Warning>
-Once the transfer is complete, the previous owner is downgraded to admin and loses owner-only privileges (such as deleting the team). Make sure you're transferring to someone you trust.
-</Warning>
-
----
-
-## Leaving a Team
-
-You can leave a team if there is at least one other admin who can manage it.
-
-<Steps>
-  <Step title="Navigate to Team Settings">
-    Open your team settings page from the dashboard.
-  </Step>
-
-  <Step title="Open Your Member Options">
-    Under the members section, click **...** next to your name for more options.
-  </Step>
-
-  <Step title="Select Leave Team">
-    Click the **Leave Team** button.
-  </Step>
-
-  <Step title="Confirm Your Decision">
-    Confirm that you want to leave. You will immediately lose access to the team and its resources.
-  </Step>
-</Steps>
-
-<Warning>
-If you are the only admin or owner, you must promote another member to admin before you can leave the team.
-</Warning>
-
----
-
-## Next Steps
-
-<CardGroup cols={2}>
-  <Card title="Teams Overview" icon="users" href="/services/teams/overview">
-    Learn more about how teams work in Strettch Cloud
-  </Card>
-  <Card title="Paying Your Bill" icon="credit-card" href="/faqs/paying-your-bill">
-    Configure payment methods and view team usage
-  </Card>
-</CardGroup>
-
-<Note>
-  **Need help?** Contact our [support team](mailto:cloud@strettch.com) or visit [cloud.strettch.com](https://cloud.strettch.com).
-</Note>
+1. Go to **Team Settings** > **General**.
+2. Under **Delete Team**, click **Delete Team**.
+3. In the **Delete Team?** dialog, click **Delete Team**.

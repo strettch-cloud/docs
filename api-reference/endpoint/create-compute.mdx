@@ -1,72 +1,29 @@
 ---
-title: 'Create Compute Instance'
+title: 'Create a compute'
 openapi: '/api-reference/openapi.json POST /computes'
 ---
 
-### Request Reference
+The compute is billed from the moment it is created. Send an `Idempotency-Key` header with every request, so that a retry does not create a second compute. See [Idempotency](/api-reference/introduction#idempotency).
 
-Use these slugs for the `region`, `image`, and `specification` fields in your request body.
+### Request values
 
-<Tabs>
-  <Tab title="Regions">
-    | Slug | Name | Country |
-    | :--- | :--- | :--- |
-    | `KGL-1` | Kigali-1 | 🇷🇼 Rwanda |
-  </Tab>
-  <Tab title="Images">
-    | Slug | OS | Version |
-    | :--- | :--- | :--- |
-    | `UBUNTU-24.04` | Ubuntu | 24.04 LTS |
-    | `UBUNTU-22.04` | Ubuntu | 22.04 LTS |
-    | `DEBIAN-13` | Debian | 13 |
-    | `DEBIAN-12` | Debian | 12 |
-  </Tab>
-  <Tab title="Specifications">
-    <Note>
-      The `S` prefix stands for Shared CPU. RAM in GB (512 MB for the smallest tier).
-    </Note>
+`region`, `image` and `specification` each take a slug. Get the slugs you can use from these endpoints:
 
-    | Slug | vCPUs | RAM | Storage (SSD) |
-    | :--- | :---: | :---: | :---: |
-    | `S-1C` | 1 | 512 MB | 10 GB |
-    | `S-1C-1G` | 1 | 1 GB | 20 GB |
-    | `S-1C-2G` | 1 | 2 GB | 40 GB |
-    | `S-2C-4G` | 2 | 4 GB | 80 GB |
-    | `S-4C-8G` | 4 | 8 GB | 160 GB |
-    | `S-8C-16G` | 8 | 16 GB | 320 GB |
-    | `S-16C-32G` | 16 | 32 GB | 640 GB |
-  </Tab>
-</Tabs>
+| Field | Example | Where to get the values |
+| :--- | :--- | :--- |
+| `region` | `KGL-1` | [List regions](/api-reference/endpoint/list-regions) |
+| `image` | `UBUNTU-24.04` | [List images](/api-reference/endpoint/list-images) |
+| `specification` | `S-1C-1G` | [List specifications](/api-reference/endpoint/list-specifications) |
 
----
+In a specification slug, the `S` at the start stands for shared CPU.
 
-### Response Error Codes
+### Errors
 
-If the request fails, the `code` field in the error response will contain one of the following.
+| Code | Status | When |
+| :--- | :---: | :--- |
+| `BAD_REQUEST` | 400 | A value is not valid, or the `Idempotency-Key` header is missing. |
+| `INSUFFICIENT_BALANCE` | 400 | The team's credits and funds do not cover one month of the compute's price. |
+| `TEAM_PAST_DUE` | 403 | The team owes money and cannot create computes until it is paid. |
+| `RESOURCE_NOT_FOUND` | 404 | There is no such image, region or specification. |
 
-<Tabs>
-  <Tab title="Standard">
-    | Code | Status | Description |
-    | :--- | :---: | :--- |
-    | `BAD_REQUEST` | 400 | The request was invalid or malformed. |
-    | `UNAUTHORIZED` | 401 | Authentication failed or was not provided. |
-    | `FORBIDDEN` | 403 | You do not have permission to perform this action. |
-    | `RESOURCE_NOT_FOUND` | 404 | The requested resource (image, region, or specification) was not found. |
-    | `CONFLICT` | 409 | A conflict with the current server state occurred. |
-    | `UNPROCESSABLE_ENTITY` | 422 | The request was well-formed but failed semantic validation. |
-    | `TOO_MANY_REQUESTS` | 429 | You have exceeded the rate limit. |
-    | `INTERNAL_SERVER_ERROR` | 500 | An unexpected error occurred on our end. |
-  </Tab>
-  <Tab title="Billing & Team">
-    <Warning>
-      These errors block all resource operations. Resolve your team's billing status before retrying.
-    </Warning>
-
-    | Code | Status | Description |
-    | :--- | :---: | :--- |
-    | `INSUFFICIENT_BALANCE` | 403 | Team balance is too low to provision this instance. |
-    | `TEAM_SUSPENDED` | 403 | Team is suspended due to an outstanding payment. |
-    | `TEAM_PAST_DUE` | 403 | Team has an outstanding balance that must be settled first. |
-    | `TEAM_TERMINATED` | 403 | Team has been terminated and can no longer access resources. |
-  </Tab>
-</Tabs>
+For every other code, see [Error codes](/api-reference/introduction#error-codes).

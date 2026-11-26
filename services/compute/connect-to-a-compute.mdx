@@ -1,0 +1,64 @@
+---
+title: "Connect to a compute"
+description: "Open a terminal on a compute from your browser with the web console, or connect over SSH on port 222."
+---
+
+You can connect in two ways. The web console is a terminal in your browser and needs no password and no public IP. SSH connects from your own computer and needs a public IP.
+
+## Open the web console
+
+The compute must be running. On a new compute the button reads **Setting up your console** until the [SC Agent](/agents/sc-agent) on the compute is ready.
+
+<Steps>
+  <Step title="Open the compute">
+    In the **Computes** list, click the compute.
+  </Step>
+
+  <Step title="Click the console button">
+    At the top of the page, click the console button, between **Upsize** and the reboot button. Its tooltip reads **Go to console**.
+
+    <Frame>
+      <img src="/images/computes/open-console.png" style={{ borderRadius: '0.2rem' }} />
+    </Frame>
+  </Step>
+</Steps>
+
+A new browser tab opens with a terminal. You are logged in as `root` without typing a password.
+
+If the tab shows **SSH connection failed**, see [The web console does not open](/agents/sc-agent#the-web-console-does-not-open).
+
+## Connect over SSH
+
+The compute must be running and have a public IP. You log in with the SSH key or the root password you chose when you created the compute.
+
+<Steps>
+  <Step title="Copy the SSH command">
+    In the **Computes** list, click the compute. Under **Public IP (IPv4)**, click **Copy SSH**.
+  </Step>
+
+  <Step title="Run it in your terminal">
+    Paste the command into a terminal on your computer. It has this form:
+
+    ```bash
+    ssh root@YOUR_COMPUTE_IP -p 222
+    ```
+  </Step>
+
+  <Step title="Enter the root password">
+    If you created the compute with a root password, type it when you are asked. With an SSH key you are logged in without a password.
+  </Step>
+</Steps>
+
+## Which port to use
+
+SSH to a compute uses port 222, not the default port 22. The command you copy from the dashboard already has `-p 222` in it.
+
+From some networks, such as MTN in Rwanda, port 22 also works.
+
+## If you lose the root password
+
+The dashboard cannot show or reset a root password. Open the [web console](#open-the-web-console), which logs you in as `root` without it, and set a new one:
+
+```bash
+passwd
+```

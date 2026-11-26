@@ -1,82 +1,37 @@
 ---
 title: Core Concepts
-description: Learn how teams, regions, compute instances, and resources work together on Strettch Cloud so you can organize infrastructure and manage costs.
+description: "The two ideas behind Strettch Cloud: every resource belongs to a team, and you pay for the time a resource exists."
 ---
 
-Before deploying your first resources on Strettch Cloud, understanding these core concepts will help you organize your infrastructure and manage costs effectively.
+Two ideas explain most of Strettch Cloud. Everything you create belongs to a team. And you pay for the time a resource exists, not for how hard it works.
 
----
+## Everything belongs to a team
 
-## Understanding Teams
+A compute or a domain belongs to one team, and that team pays for it. There is no layer between a team and its resources, such as a project.
 
-**Problem**: How do I organize my cloud resources and collaborate with others?
-
-Teams are the top-level organizational structure in Strettch Cloud. Every resource you create—compute instances, DNS zones, and more—belongs to a team.
-
-### How Teams Work
-
-When you create your first account, Strettch Cloud automatically creates a default team for you, named after your first name (for example, "Liberi's Team" if your name is Liberi). You can create additional teams or join existing ones to collaborate with other users.
-
-**Team Structure with Multiple Teams**:
+When you sign up, we create a team for you. You can create more teams and be a member of other people's teams. Teams do not share resources or bills.
 
 <Frame>
   <img className="block dark:hidden" src="/images/computes/team-architecture.png" style={{ borderRadius: '0.2rem' }} />
   <img className="hidden dark:block" src="/images/computes/team-architecture-dark.png" style={{ borderRadius: '0.2rem' }} />
 </Frame>
 
+Each member of a team has a role: Owner, Admin or Member. See [Teams overview](/services/teams/overview) for what each role can do.
 
-### Key Team Principles
+## You pay for the time a resource exists
 
-- **Resources belong directly to teams**: There is no intermediate project layer. When you create a compute instance or DNS zone, it belongs to the team.
-- **Users can join multiple teams**: You can be a member of several teams simultaneously, each with its own resources and billing.
-- **Teams have roles**: Teams include roles (owner, admin, member) to control who can manage resources. See the Teams documentation for details on permissions.
-- **Teams are isolated**: Teams cannot share resources or billing with each other. Each team operates independently.
+A compute is billed for every hour it exists, at the price of its specification. It costs the same whether it works all day or sits idle. Nothing scales up or down by itself, so the price does not change with load.
 
 <Warning>
-**Violation Policy**
-
-If any team member uses a team resource to commit a violation (for example, illegal activity on a compute instance), all resources belonging to that team will be shut down immediately pending investigation. This may result in a permanent ban.
+  Turning a compute off does not stop its billing. To stop paying for a compute, destroy it. See [What you pay in each state](/services/compute/overview#what-you-pay-in-each-state).
 </Warning>
 
----
+## You pay in advance
 
-## How Billing Works
+Billing is prepaid. You top up your team, and each day we take the previous day's usage from your credits first, then from your funds. See [Paying your bill](/faqs/paying-your-bill).
 
-**Problem**: When am I charged for my cloud resources?
+## Next steps
 
-Strettch Cloud uses a **pay-as-you-go** billing model. Understanding how this works helps you predict and control costs.
-
-### Pay-as-you-go vs Pay-per-use
-
-Strettch Cloud uses **pay-as-you-go**, not pay-per-use. Here's the comparison:
-
-| Billing Model | How It Works | Used by Us? |
-|---------------|--------------|-------------|
-| **Pay-as-you-go** | You are billed for how long you reserve resources, regardless of actual usage. A compute instance reserved for 24 hours costs the same whether you use it heavily or leave it idle. | ✓ Yes |
-| **Pay-per-use** | You are billed based on actual resource consumption with auto-scaling. If a 1 CPU / 2GB instance scales to 2 CPU / 4GB, you are billed for the increased specs. | ✗ No |
-
-<Tip>
-**Billing Example**
-
-A compute instance costs **10 RWF per hour**. If you reserve this instance for 24 hours (one day):
-```
-10 RWF/hour × 24 hours = 240 RWF per day
-```
-
-You pay 240 RWF for that day regardless of whether the instance processes workloads all day or sits idle. Your monthly bill accumulates these daily charges throughout the billing cycle.
-</Tip>
-
-<Warning>
-Stopping a compute instance does not stop billing. To stop incurring charges, you must destroy the resource. See [Resource Lifecycle in SC Compute Overview](/services/compute/overview#resource-lifecycle) for details on resource states.
-</Warning>
-
----
-
-## Next Steps
-
-Now that you understand how teams and billing work:
-
-- [Create your first compute instance](/getting-started/quickstart)
-- [Learn about SC Compute and resource lifecycles](/services/compute/overview)
-- [Manage your team](/guides/teams)
-- [Set up DNS for your domains](/guides/domains)
+- [Create your first compute](/getting-started/quickstart)
+- [See what a compute costs](/services/compute/overview)
+- [Invite people to your team](/services/teams/managing-teams)

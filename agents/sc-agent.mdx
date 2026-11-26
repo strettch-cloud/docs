@@ -1,148 +1,92 @@
 ---
 title: "SC Agent"
-description: "Install the SC Agent to enable browser-based console and SSH terminal access to your Strettch Cloud compute instances on Ubuntu and Debian."
+description: "The SC Agent runs on a compute and makes the web console work. When the web console is ready, how it logs you in, and what to check when it does not open."
 ---
 
-The SC Agent is a lightweight, open-source utility that enables web-based console access to your computes directly from the Strettch Cloud web console. It manages the SSH connection between your browser and the compute to provide seamless terminal access without requiring SSH client software.
+The SC Agent is a small program on your compute that makes the web console work. It is installed on every compute you create, and its [source code is on GitHub](https://github.com/strettch-cloud/sc-agent).
 
-**Supported Systems:** Ubuntu 20.04+, Debian 8+
+**Supported systems:** Ubuntu 20.04 and newer, Debian 8 and newer.
 
-View the [source code on GitHub](https://github.com/strettch-cloud/sc-agent)
+## When the web console is ready
 
-## Automatic Installation
+The web console is ready within a few minutes after you create a compute. Until then, the console button on the compute's page reads **Setting up your console**.
 
-The SC Agent installs automatically when you create a new compute instance. No action needed—just wait a few minutes after creation, then access your console from the web console.
+The compute must be running. The web console does not open on a compute that is turned off.
 
-## Manual Installation
+## How the web console logs you in
 
-Need to install the agent on an existing instance? Here's how:
+The web console logs you in as `root` without a password. This is the same for a compute created with a root password and for one created with an SSH key, and the compute does not need a public IP.
 
-### Quick Install (Recommended)
+It needs two ports open on the compute: TCP 22 and UDP 60124. If you run your own firewall on the compute, keep both open.
 
-Run this single command to install the agent:
+See [Connect to a compute](/services/compute/connect-to-a-compute#open-the-web-console) for the steps.
 
-<CodeGroup>
-```bash Install the agent
+## Install the agent yourself
+
+You need this only if the agent was removed from a compute.
+
+```bash
 curl -sSL https://repo.cloud.strettch.com/console/install.sh | sudo bash
 ```
-</CodeGroup>
 
-The script will automatically detect your OS, set up repositories, and install the agent:
+The script finds your system, adds the Strettch Cloud package repository and installs the `sc-console-agent` package. To read the script before you run it:
 
-```
---- Installing sc-console-agent for noble ---
--> Cleaning up old repository configurations...
-   -> Updating package lists
-   -> Installing prerequisites
-   -> Downloading GPG key
-   -> Adding repository
-   -> Updating package index
-   -> Installing sc-console-agent
-...
-Setting up sc-console-agent (0.1.12) ...
-Configuring SC-Agent...
-ℹ️  Creating required directories...
-ℹ️  Downloading latest agent configuration...
-✅ Agent configuration downloaded successfully
-ℹ️  Enabling sc-console-agent.service...
-✅ sc-console-agent.service enabled
-ℹ️  Starting services...
-✅ sc-console-agent.service started successfully
-
-╔════════════════════════════════════╗
-║ SC-Console-Agent Installation Done ║
-╚════════════════════════════════════╝
-
-Service Status:
-  • Main Service: active
-  • Auto-Update:  active
-
-✅ sc-console-agent installed successfully!
-```
-
-### Review Before Installing
-
-Prefer to inspect the script first? Download and review it:
-
-<CodeGroup>
-```bash Review the install script
+```bash
 curl -sSL https://repo.cloud.strettch.com/console/install.sh
 ```
-</CodeGroup>
 
-### Verify Installation
+Then check that the agent runs:
 
-Check that the agent is running:
-
-<CodeGroup>
-```bash Check agent status
+```bash
 systemctl status sc-console-agent
 ```
-</CodeGroup>
 
-You should see `Active: active (running)`:
+You should see this line:
 
-```
-● sc-console-agent.service - SC Console Agent - Secure compute console access management
-     Loaded: loaded (/etc/systemd/system/sc-console-agent.service; enabled; preset: enabled)
-     Active: active (running) since Tue 2025-10-14 10:12:20 UTC; 38s ago
-       Docs: https://docs.cloud.strettch.com/agents/sc-console-agent
-   Main PID: 578570 (sc-console-agen)
-      Tasks: 8 (limit: 9435)
-     Memory: 1.9M (peak: 2.4M)
-        CPU: 41ms
-     CGroup: /system.slice/sc-console-agent.service
-             └─578570 /usr/bin/sc-console-agent
+```text
+Active: active (running)
 ```
 
-Access your console from the web console within a few minutes.
+The web console is ready within a few minutes.
 
-To check the installed agent version:
+## Manage the agent
 
 <CodeGroup>
-```bash Check version
-dpkg -l | grep sc-console-agent
-```
-</CodeGroup>
-
-## Managing the Agent
-
-### Basic Commands
-
-<CodeGroup>
-```bash Start the agent
-sudo systemctl start sc-console-agent
-```
-
-```bash Stop the agent
-sudo systemctl stop sc-console-agent
-```
-
-```bash Restart the agent
-sudo systemctl restart sc-console-agent
-```
-
 ```bash Check status
 systemctl status sc-console-agent
 ```
-</CodeGroup>
 
-### Auto-Start on Boot
+```bash Restart
+sudo systemctl restart sc-console-agent
+```
 
-<CodeGroup>
-```bash Enable auto-start
+```bash Stop
+sudo systemctl stop sc-console-agent
+```
+
+```bash Start
+sudo systemctl start sc-console-agent
+```
+
+```bash Start at boot
 sudo systemctl enable sc-console-agent
 ```
 
-```bash Disable auto-start
+```bash Do not start at boot
 sudo systemctl disable sc-console-agent
 ```
 </CodeGroup>
 
-## Viewing Logs
+To see which version is installed:
+
+```bash
+dpkg -l | grep sc-console-agent
+```
+
+## Read the logs
 
 <CodeGroup>
-```bash Live logs
+```bash Live
 sudo journalctl -u sc-console-agent -f
 ```
 
@@ -157,127 +101,87 @@ sudo journalctl -u sc-console-agent -n 100
 
 ## Updates
 
-The agent updates automatically. You can also trigger updates manually:
+The agent updates itself. To update it now:
 
-<CodeGroup>
-```bash Check for and install updates
+```bash
 sudo systemctl start sc-console-agent-updater
 ```
 
-```bash View update logs
+To follow the update:
+
+```bash
 sudo journalctl -u sc-console-agent-updater -f
 ```
-</CodeGroup>
 
-## Uninstalling
+## Uninstall the agent
 
-To completely remove the agent:
+Without the agent, the web console does not work, and you can reach the compute only over SSH.
 
-<CodeGroup>
-```bash Uninstall the agent
+```bash
 sudo apt-get purge sc-console-agent
 ```
-</CodeGroup>
 
-The uninstall process will stop all services and remove the agent:
+## The web console does not open
 
-```
-Reading package lists... Done
-Building dependency tree... Done
-The following packages will be REMOVED:
-  sc-console-agent*
-After this operation, 7,449 kB disk space will be freed.
-Do you want to continue? [Y/n] Y
-...
-Removing sc-console-agent (0.1.12) ...
-Removing SC-Agent (keeping configuration)...
-Stopping sc-console-agent-update-scheduler.timer...
-Stopping sc-console-agent.service...
-Disabling sc-console-agent-update-scheduler.timer...
-Disabling sc-console-agent.service...
-SC-Agent removed (configuration preserved in /etc/sc-console-agent)
-Purging configuration files for sc-console-agent (0.1.12) ...
+The console tab shows **SSH connection failed**, or the console button stays on **Setting up your console**.
+
+First connect to the compute [over SSH](/services/compute/connect-to-a-compute#connect-over-ssh):
+
+```bash
+ssh root@YOUR_COMPUTE_IP -p 222
 ```
 
-**Note:** After uninstalling, console access will be unavailable. You'll need to use SSH with password authentication or SSH keys instead.
+Then go through these checks in order.
 
-## Troubleshooting
+**1. Is the agent running?**
 
-### Console Not Accessible?
-
-If you can't access your compute console from the Strettch Cloud web console, follow these steps:
-
-#### Step 1: SSH into Your Virtual Machine
-
-First, connect to your VM using SSH:
-
-<CodeGroup>
-```bash SSH into your VM
-ssh -p 222 root@your-vm-ip-address
+```bash
+systemctl status sc-console-agent
 ```
-</CodeGroup>
 
-Enter your password when prompted. Once logged in, proceed with the following steps.
+You should see `Active: active (running)`.
 
-#### Step 2: Verify Required Ports are Open
+- If you see `inactive (dead)` or `failed`, restart the agent and make it start at boot:
 
-The console requires two ports to function:
+  ```bash
+  sudo systemctl restart sc-console-agent
+  sudo systemctl enable sc-console-agent
+  ```
 
-<CodeGroup>
-```bash Check if ports are listening
+- If you see `could not be found`, the agent is not installed. [Install it](#install-the-agent-yourself).
+
+**2. Are the two ports open?**
+
+```bash
 sudo ss --listening --numeric --tcp --udp | grep --extended-regexp ':(22|60124)\b'
 ```
-</CodeGroup>
 
-**Expected:** port 22 listed as `LISTEN` (TCP) and port 60124 listed as `UNCONN` (UDP).
+You should see port 22 as `LISTEN` and port 60124 as `UNCONN`.
 
-If ports are blocked by your firewall, allow them:
+If a firewall on the compute blocks them, allow them:
+
 <CodeGroup>
-```bash UFW firewall
+```bash ufw
 sudo ufw allow 22/tcp
 sudo ufw allow 60124/udp
 ```
 
-```bash iptables firewall
+```bash iptables
 sudo iptables -A INPUT -p tcp --dport 22 -j ACCEPT
 sudo iptables -A INPUT -p udp --dport 60124 -j ACCEPT
 ```
 </CodeGroup>
 
-#### Step 3: Check if the Agent is Running
+**3. Try the web console again**
 
-<CodeGroup>
-```bash Check agent status
-systemctl status sc-console-agent
-```
-</CodeGroup>
+Wait 30 to 60 seconds, then open the web console.
 
-**Look for:** `Active: active (running)` in the output
+**If it still does not open**, email [cloud@strettch.com](mailto:cloud@strettch.com) with:
 
-#### Step 4: Take Action Based on Status
-
-**If the agent is not installed** (you see `could not be found`):
-- Go to the [Manual Installation](#manual-installation) section above and install the agent
-
-**If the agent is stopped** (you see `inactive (dead)` or `failed`):
-<CodeGroup>
-```bash Restart the agent
-sudo systemctl restart sc-console-agent
-```
-
-```bash Enable auto-start on boot
-sudo systemctl enable sc-console-agent
-```
-</CodeGroup>
-
-#### Step 5: Test Console Access
-
-Wait 30-60 seconds, then try accessing your console from the web console.
-
-#### Still Not Working?
-
-Contact support at [cloud@strettch.com](mailto:cloud@strettch.com)
+- the name of the compute;
+- the output of `systemctl status sc-console-agent`;
+- the output of `sudo journalctl -u sc-console-agent -n 100`.
 
 ## Security
 
-The agent uses encrypted communication, cryptographic signatures, and port knocking for secure access. It runs with minimal privileges and updates automatically for security patches.
+The agent encrypts its communication and checks cryptographic signatures. It runs with only the privileges it needs.

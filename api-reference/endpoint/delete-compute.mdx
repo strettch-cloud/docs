@@ -1,34 +1,14 @@
 ---
-title: 'Delete Compute Instance'
+title: 'Delete a compute'
 openapi: '/api-reference/openapi.json DELETE /computes/{id}'
 ---
 
-### Response Error Codes
+Deleting a compute destroys it, with its disks and its IP addresses. It cannot be undone, and it works on a compute that is running. In the dashboard this action is called [Destroy](/services/compute/destroy-a-compute).
 
-If the request fails, the `code` field in the error response will contain one of the following.
+### Errors
 
-<Tabs>
-  <Tab title="Standard">
-    | Code | Status | Description |
-    | :--- | :---: | :--- |
-    | `BAD_REQUEST` | 400 | The request was invalid or malformed. |
-    | `UNAUTHORIZED` | 401 | Authentication failed or was not provided. |
-    | `FORBIDDEN` | 403 | You do not have permission to perform this action. |
-    | `RESOURCE_NOT_FOUND` | 404 | The specified compute instance was not found. |
-    | `CONFLICT` | 409 | A conflict with the current server state occurred. |
-    | `UNPROCESSABLE_ENTITY` | 422 | The request was well-formed but failed semantic validation. |
-    | `TOO_MANY_REQUESTS` | 429 | You have exceeded the rate limit. |
-    | `INTERNAL_SERVER_ERROR` | 500 | An unexpected error occurred on our end. |
-  </Tab>
-  <Tab title="Billing & Team">
-    <Warning>
-      These errors block all resource operations. Resolve your team's billing status before retrying.
-    </Warning>
+| Code | Status | When |
+| :--- | :---: | :--- |
+| `RESOURCE_NOT_FOUND` | 404 | Your team has no compute with this ID. |
 
-    | Code | Status | Description |
-    | :--- | :---: | :--- |
-    | `TEAM_SUSPENDED` | 403 | Team is suspended due to an outstanding payment. |
-    | `TEAM_PAST_DUE` | 403 | Team has an outstanding balance that must be settled first. |
-    | `TEAM_TERMINATED` | 403 | Team has been terminated and can no longer access resources. |
-  </Tab>
-</Tabs>
+For every other code, see [Error codes](/api-reference/introduction#error-codes).

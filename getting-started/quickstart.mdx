@@ -1,203 +1,54 @@
 ---
 title: "Quickstart"
-description: "Sign up, add a payment method, and deploy your first Strettch Cloud compute instance on African infrastructure in under five minutes."
+description: "Create a Strettch Cloud account, create your first compute, open a terminal on it in your browser, and destroy it again."
 ---
 
-## Getting Your First Instance Running
+You create one small compute, open a terminal on it in your browser, and destroy it. You pay for the compute by the hour until you destroy it.
 
-This guide walks you through creating a Strettch Cloud account and deploying your first compute instance. You will have a running virtual machine accessible via web console and SSH in less than 5 minutes.
+You need a phone number that can receive a code by SMS or WhatsApp, and a way to pay for your first top-up.
 
-By the end of this guide, you will have:
-- A verified Strettch Cloud account
-- A running compute instance with public IP
-- Terminal access through both web console and SSH
+<Steps>
+  <Step title="Create your account">
+    Go to [cloud.strettch.com](https://cloud.strettch.com/) and sign up with one of the sign-in providers on the page.
 
----
+    On **Let's verify your phone number**, enter your number and click **Send Verification Code**. A Rwandan number (+250) can get the code by SMS or WhatsApp. Any other number gets it on WhatsApp. Enter the code.
 
-## Step 1: Create Your Account
+    You are now in the dashboard, on **Computes**, in a team that we created for you.
+  </Step>
 
-Visit [https://cloud.strettch.com/](https://cloud.strettch.com/) to begin.
+  <Step title="Start a new compute">
+    Click **Create Compute** and make these choices:
 
-### Choose Your Sign-In Method
+    - **Choose Location** and **Choose Image**: keep what is already selected.
+    - **Choose Type**: choose the smallest specification you can select.
+    - **Networking Options**: turn **Assign a Public IP Address** off. You do not need a public IP for this test, and a public IP is charged for the whole calendar month.
+    - **Authentication Method**: keep **Root Password** and type a password that meets the rules under the field. Store it.
+    - **Compute Name**: keep the name that is filled in.
+  </Step>
 
-Strettch Cloud supports three authentication providers to make team collaboration easier:
+  <Step title="Top up and create">
+    Click **Create Compute**.
 
-<CardGroup cols={3}>
-  <Card title="Sign in with GitHub" icon="github">
-    Use your GitHub account to authenticate
-  </Card>
-  <Card title="Sign in with Google" icon="google">
-    Use your Google account to authenticate
-  </Card>
-  <Card title="Sign in with Microsoft" icon="microsoft">
-    Use your Microsoft account to authenticate
-  </Card>
-</CardGroup>
+    Your team must hold one month of the compute's price, although you pay only for the hours the compute exists. If it holds less, the **Top Up Credits** dialog opens with the amount that is missing. Click **Continue** and pay in the payment window. When the payment is confirmed, click **Create Compute** again.
 
-Click your preferred option to continue.
+    You are taken to the **Computes** list. The compute shows **STARTING...** and then **RUNNING**.
+  </Step>
 
-### Verify Your Phone Number
+  <Step title="Check that it works">
+    Click the compute. At the top of its page, click the console button, next to **Upsize**. While the button reads **Setting up your console**, wait.
 
-After authenticating, you will be prompted to add your phone number. Phone verification serves as a second layer of identification to maintain platform integrity.
+    A new browser tab opens with a terminal, and you are logged in as `root`. Your compute works.
+  </Step>
 
-1. Enter your phone number in international format (e.g., +250788123456)
-2. Click **Send Verification Code**
-3. Choose where to receive your verification code:
-   - **WhatsApp:** Receive code via WhatsApp message
-   - **SMS:** Receive code via text message
+  <Step title="Destroy the compute">
+    Destroy the compute so that billing stops. Open the **Destroy** tab, click **Destroy Compute**, type the text the dialog asks for and click **Destroy**.
 
-<Note>
-**Non-Rwandan Phone Numbers:** If your phone number does not start with +250, only WhatsApp verification is available. The verification code will be sent automatically to your WhatsApp.
-</Note>
+    The funds you did not use stay in your team.
+  </Step>
+</Steps>
 
-4. Enter the verification code you received
-5. Complete account setup
+## Next steps
 
-Your account is now active and ready to use.
-
----
-
-## Step 2: Create Your First Compute Instance
-
-After account verification, you will be directed to the Computes dashboard.
-
-### Start the Creation Process
-
-Click the **New Compute** button to open the compute creation page.
-
-### Configure Your Instance
-
-You will need to make several configuration choices. Here are the key decisions:
-
-#### 1. Choose Your Image
-
-Select the operating system or pre-configured application you want to run. We currently offer **Ubuntu 22 LTS**, **Ubuntu 24 LTS**, **Debian 12**, and **Debian 13**, alongside pre-baked **Application Images**: Supabase, Dokploy, and Coolify that come with the platform already installed.
-
-The Ubuntu versions are Long Term Support (LTS) releases, while Debian 12 and Debian 13 are Debian stable releases. All are reliable choices for production applications, but their support lifecycles differ.
-
-#### 2. Select Instance Specifications
-
-Choose your compute specifications based on your workload:
-
-- **CPU:** Number of processing cores
-- **RAM:** Memory allocation
-- **Storage:** Disk space
-
-Pricing appears next to each configuration option. Costs are shown in Rwandan Francs (RWF).
-
-<Note>
-Start with smaller specifications for testing. You can always create new instances with different specs as your needs grow.
-</Note>
-
-#### 3. Add Public IP Address (Recommended)
-
-Enable the public IP option to make your instance accessible from the internet.
-
-<Warning>
-**Additional Cost:** Public IP addresses are billed separately from compute resources. This is required for SSH access from outside the Strettch Cloud network. Check current pricing in your dashboard.
-</Warning>
-
-Without a public IP, you can only access your instance through the web console or by setting up a VPN.
-
-#### 4. Set Root Password
-
-Create a secure password for the root user account.
-
-<Warning>
-**Save Your Password:** Strettch Cloud does not send password reminders via email. Store your password in a secure location. If you forget it, you can reset it using web console access.
-</Warning>
-
-#### 5. Name Your Instance
-
-Give your compute instance a descriptive name that helps you identify its purpose (e.g., "production-api", "testing-server", "wordpress-site").
-
-### Complete the Creation
-
-Review your configuration and verify you have sufficient account balance. Click **Create Compute** to provision your instance.
-
-<Note>
-**Insufficient Balance:** If you do not have enough credits, you will be prompted to add funds before the instance can be created. See [Paying Your Bill](/faqs/paying-your-bill) for payment options.
-</Note>
-
-Instance creation typically takes 1-2 minutes. You will be redirected to the Computes dashboard where you can monitor the provisioning status.
-
----
-
-## Step 3: Access Your Instance
-
-Once your instance is running, you have two ways to access it.
-
-### Option 1: Web Console Access
-
-The web console provides browser-based terminal access to your instance. This works for all instances regardless of network configuration.
-
-1. Click on your compute instance name in the dashboard
-2. Click the **Console** button in the left menu
-3. A new browser tab opens with a terminal interface
-
-You will be automatically logged in—no password required. This is handled securely by our agent running on your instance.
-
-The web console is ready to use immediately after your instance is created.
-
-### Option 2: SSH Access
-
-SSH provides direct terminal access from your local computer. This requires a public IP address.
-
-Open your terminal and run this command:
-
-```bash
-ssh root@<your-public-ip> -p 222
-```
-
-Replace `<your-public-ip>` with the IP address shown on your compute details page.
-
-**Example:**
-
-```bash
-ssh root@41.74.168.123 -p 222
-```
-
-When prompted, enter the root password you created during setup.
-
-<Note>
-**Port 222:** Strettch Cloud uses port 222 instead of the default port 22 for SSH access due to a firewall restriction from our upstream internet provider. This applies to most connections. However, if you are connecting from within certain networks (such as MTN in Rwanda), you may be able to connect using the default port 22 without specifying `-p 222`.
-</Note>
-
-<Warning>
-**VPN Required for Private Instances:** If you did not add a public IP, SSH access requires setting up a VPN connection to the Strettch Cloud network. Use the web console instead for immediate access.
-</Warning>
-
-You now have a running compute instance on African infrastructure with full terminal access.
-
----
-
-## Next Steps
-
-Your instance is ready for use. Here are recommended next actions:
-
-<CardGroup cols={2}>
-  <Card title="Point Your Domain" icon="globe" href="/guides/domains">
-    Configure DNS records to direct your domain to your new instance
-  </Card>
-  <Card title="Invite Team Members" icon="users" href="/guides/teams">
-    Add collaborators and assign roles for team-based infrastructure management
-  </Card>
-  <Card title="Monitor Performance" icon="chart-line" href="/guides/computes#monitoring">
-    View real-time metrics for CPU, memory, network, and disk usage
-  </Card>
-  <Card title="Learn About Pricing" icon="wallet" href="/faqs/paying-your-bill">
-    Understand billing, payment methods, and how to manage your account balance
-  </Card>
-</CardGroup>
-
----
-
-## Getting Help
-
-If you encounter issues during setup or have questions:
-
-- **Email Support:** [cloud@strettch.com](mailto:cloud@strettch.com)
-- **Documentation:** Browse our [complete guides](/guides/computes)
-- **Platform Status:** [cloud.strettch.com](https://cloud.strettch.com)
-
-Our support team is based in Africa and familiar with local infrastructure challenges.
+- [Create a compute](/services/compute/create-a-compute) with a public IP and [connect to it over SSH](/services/compute/connect-to-a-compute#connect-over-ssh).
+- [Point a domain](/services/dns/managing-dns) to a compute.
+- [Invite people to your team](/services/teams/managing-teams).

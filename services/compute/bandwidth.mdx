@@ -1,12 +1,12 @@
 ---
-title: "Bandwidth Allowances and Billing"
+title: "Bandwidth allowances and billing"
 sidebarTitle: "Bandwidth"
 description: "Learn how outbound internet traffic from SC Compute is measured, how each team's pooled monthly allowance works, how traffic above it is charged, and where to see your usage."
 ---
 
 Every compute comes with a monthly allowance of outbound internet traffic. The allowances of all the computes in a team are added together into one pool, and you only pay for traffic above that pool.
 
-## What Is Measured
+## What is measured
 
 Bandwidth is the **outbound internet traffic** sent by your computes: data leaving our network for the internet, such as responses your applications send to visitors and files they download from you.
 
@@ -17,11 +17,11 @@ These are **not** counted and are always free:
 
 Traffic is measured on the server that hosts your compute, not inside the compute, so it is counted the same way whatever runs on it.
 
-## Allowance per Specification
+## Allowance per specification
 
-Each specification includes a monthly allowance, and bigger specifications include more. You can see the allowance for each specification in the **Bandwidth** column when you create a compute. 1 GB is 1,000,000,000 bytes.
+Each specification includes a monthly allowance, and bigger specifications include more. You can see the allowance for each specification in the **Bandwidth** column when you create a compute. Bandwidth is counted in GiB. 1 GiB is 1,073,741,824 bytes.
 
-## How the Team Allowance Works
+## How the team allowance works
 
 **The allowance is pooled per team.** Every compute adds its allowance to one team-wide amount, and your bill depends on the team's total traffic against that amount. One busy compute can use the allowance of quieter ones.
 
@@ -35,37 +35,37 @@ Each specification includes a monthly allowance, and bigger specifications inclu
 
 ## Price
 
-Traffic above your team's allowance is charged per GB. You can see the current price per GB in the **Bandwidth** tab of your team's billing overview.
+Traffic above your team's allowance is charged per GiB. You can see the current price per GiB in the **Bandwidth** tab of your team's billing overview.
 
-## How It Is Charged
+## How it is charged
 
-Bandwidth is charged the same way as your computes: daily, from your credits first and then your balance.
+Bandwidth is charged the same way as your computes: daily, from your credits first, then your funds.
 
 - **Each day**, we work out your team's usage for the month so far, take away the team allowance and what you have already been charged this month, and charge the rest.
-- **Charges are in steps of 0.01 GB**, rounded down. Anything below that carries over to the next day, so nothing is charged twice and nothing is lost.
-- **On your monthly invoice**, bandwidth has its own **Bandwidth** section with one line, **Extra Bandwidth Usage**, showing the GB above your allowance, the price per GB and the amount.
+- **Charges are in steps of 0.01 GiB**, rounded down. Anything below that carries over to the next day, so nothing is charged twice and nothing is lost.
+- **On your monthly invoice**, bandwidth has its own **Bandwidth** section with one line, **Extra Bandwidth Usage**, showing the GiB above your allowance, the price per GiB and the amount.
 
 If your team stays within its allowance, there is no bandwidth charge and no bandwidth line on the invoice.
 
-## Where to See Your Usage
+## Where to see your usage
 
 **For the whole team:** go to **Team Settings > Billing > Overview** and open the **Bandwidth** tab. For the selected month it shows:
 
 - the team's usage against its allowance;
-- the cost of any usage above the allowance, and the price per GB;
+- the cost of any usage above the allowance, and the price per GiB;
 - **Usage breakdown**: each compute's usage against the allowance it adds to the team.
 
-**For one compute:** open the compute and find the **Network** chart. It shows the compute's live public and private traffic, inbound and outbound. Below the chart, **Outbound bandwidth usage this month** shows the total for the month, with a link to your team's usage.
+**For one compute:** open the compute and find the **Network** graph on the **Monitoring** tab. It shows the compute's live public and private traffic, inbound and outbound. Below the graph, **Egress bandwidth usage this month** shows the total for the month, and **View Team Usage** opens your team's usage.
 
 <Info>
-Monthly usage covers full days, up to the end of the previous day in UTC, so today's traffic is added tomorrow. The **Network** chart shows live traffic, so the two can differ during the day.
+Monthly usage covers full days, up to the end of the previous day in UTC, so today's traffic is added tomorrow. The **Network** graph shows live traffic, so the two can differ during the day.
 </Info>
 
 <Warning>
 A compute using more than its own allowance in the usage breakdown is not charged on its own. Charges only apply when the **team's** total goes above the **team's** allowance.
 </Warning>
 
-## Frequently Asked Questions
+## Frequently asked questions
 
 <AccordionGroup>
   <Accordion title="Do I pay for traffic coming into my computes?">
@@ -82,10 +82,8 @@ A compute using more than its own allowance in the usage breakdown is not charge
   </Accordion>
 </AccordionGroup>
 
----
-
-## Next Steps
+## Next steps
 
 - [See how invoices work](/faqs/invoices)
-- [Monitor your compute](/guides/computes)
-- [Learn about compute specifications and billing states](/services/compute/overview)
+- [Read the compute graphs](/services/compute/compute-graphs)
+- [See what a compute costs in each state](/services/compute/overview#what-you-pay-in-each-state)

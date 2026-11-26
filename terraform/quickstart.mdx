@@ -1,14 +1,16 @@
 ---
 title: "Terraform Quickstart"
 sidebarTitle: "Quickstart"
-description: "Install the Strettch Cloud Terraform provider, authenticate, and deploy your first compute instance as code."
+description: "Install the Strettch Cloud Terraform provider, create your first compute from a Terraform file, log in to it and destroy it."
 ---
 
-This guide takes you from nothing to a running compute instance, managed entirely by Terraform.
+You create one compute with a public IP, log in to it over SSH, and destroy it. You pay for the compute and its public IP until you destroy them.
+
+You need a Strettch Cloud team with enough credits or funds for the compute, and an SSH key pair on your computer. See [SSH Keys](/services/compute/ssh-keys) if you do not have one.
 
 <Steps>
   <Step title="Install Terraform">
-    Install Terraform from the [official downloads](https://developer.hashicorp.com/terraform/install) if you don't have it yet, then confirm it's on your path:
+    Install Terraform from the [official downloads](https://developer.hashicorp.com/terraform/install), then check that it runs:
 
     ```bash
     terraform version
@@ -16,19 +18,17 @@ This guide takes you from nothing to a running compute instance, managed entirel
   </Step>
 
   <Step title="Create an API key">
-    In the [Strettch Cloud console](https://cloud.strettch.com/p/settings/api-keys), create an API key, then expose it to Terraform:
+    [Create an API key](/api-reference/create-an-api-key) in the dashboard, then give it to Terraform in an environment variable:
 
     ```bash
-    export STRETTCH_CLOUD_API_KEY="<your api key>"
+    export STRETTCH_CLOUD_API_KEY="YOUR_API_KEY"
     ```
 
-    <Warning>
-      Treat the key like a password. Never commit it to version control; in CI, store it as a secret.
-    </Warning>
+    Treat the key like a password. Do not commit it to version control.
   </Step>
 
   <Step title="Configure the provider">
-    Create a `main.tf` and declare the provider:
+    Create a file named `main.tf` and declare the provider:
 
     ```hcl main.tf
     terraform {
@@ -46,8 +46,8 @@ This guide takes you from nothing to a running compute instance, managed entirel
     ```
   </Step>
 
-  <Step title="Define your first compute">
-    Add a compute instance and output its public IP:
+  <Step title="Define a compute">
+    Add a compute to `main.tf` and output its public IP. Replace the value of `public_keys` with your own SSH public key.
 
     ```hcl main.tf
     resource "strettchcloud_compute" "web" {
@@ -64,14 +64,10 @@ This guide takes you from nothing to a running compute instance, managed entirel
       value = strettchcloud_compute.web.ipv4
     }
     ```
-
-    <Tip>
-      Replace `public_keys` with your own SSH public key so you can log in once the instance is up.
-    </Tip>
   </Step>
 
   <Step title="Initialize and apply">
-    Download the provider, preview the plan, then create the instance:
+    Download the provider, look at the plan, then create the compute:
 
     ```bash
     terraform init
@@ -79,11 +75,19 @@ This guide takes you from nothing to a running compute instance, managed entirel
     terraform apply
     ```
 
-    Terraform prints the `public_ip` output when the apply completes — SSH in with the key you provided.
+    When the apply finishes, Terraform prints the `public_ip` output.
   </Step>
 
-  <Step title="Clean up">
-    When you're done, tear everything down:
+  <Step title="Check that it works">
+    Log in with the SSH key you provided. SSH to a compute uses [port 222](/services/compute/connect-to-a-compute#which-port-to-use).
+
+    ```bash
+    ssh root@$(terraform output -raw public_ip) -p 222
+    ```
+  </Step>
+
+  <Step title="Destroy the compute">
+    Destroy what you created so that billing stops:
 
     ```bash
     terraform destroy
@@ -91,11 +95,9 @@ This guide takes you from nothing to a running compute instance, managed entirel
   </Step>
 </Steps>
 
----
+## Look up images, regions and specifications
 
-## Look up catalog values
-
-Rather than pinning an image, region, or size to a slug that might change, look them up as data sources and reference the result:
+The slug of an image, a region or a specification can change. Look them up as data sources and use the result, so your files do not depend on a fixed slug:
 
 <CodeGroup>
 ```hcl Images
@@ -123,7 +125,7 @@ output "spec_slugs" {
 ```
 </CodeGroup>
 
-You can also fetch a single entry — for example, pick a specification by size without hardcoding its slug:
+You can also look up one entry. This example picks a specification by its CPU and RAM:
 
 ```hcl
 data "strettchcloud_specification" "medium" {
@@ -140,15 +142,8 @@ resource "strettchcloud_compute" "app" {
 }
 ```
 
----
-
 ## Next steps
 
-<CardGroup cols={2}>
-  <Card title="Full reference" icon="book-open" href="https://registry.terraform.io/providers/strettch-cloud/strettchcloud/latest/docs">
-    Every resource, data source, and argument on the Terraform Registry.
-  </Card>
-  <Card title="Reboot on demand" icon="rotate-right" href="https://registry.terraform.io/providers/strettch-cloud/strettchcloud/latest/docs/actions/compute_reboot">
-    Trigger a reboot from the command line or a lifecycle event (Terraform 1.14+).
-  </Card>
-</CardGroup>
+- [Deploy a web server](/terraform/guides/deploy-a-web-server) with Terraform and Nginx.
+- [Resources and data sources](/terraform/resources) lists what the provider can manage.
+- [Reboot a compute](https://registry.terraform.io/providers/strettch-cloud/strettchcloud/latest/docs/actions/compute_reboot) from the command line or a lifecycle event. This needs Terraform 1.14 or newer.
