@@ -1,0 +1,49 @@
+---
+title: "Public IPs and the private network"
+sidebarTitle: "Public IPs and networking"
+description: "When a compute needs a public IP, how a public IP is billed, and how computes without one stay reachable inside your team's private network."
+---
+
+A public IP makes a compute reachable from the internet. It is billed separately from the compute, and you choose it when you create the compute: you cannot add or remove a public IP afterwards.
+
+## When a compute needs a public IP
+
+A compute needs a public IP when:
+
+- it must receive connections from the internet, as a web server or a public API does;
+- you want to connect to it over SSH from your own computer;
+- it is the entry point to your other computes, as a reverse proxy is.
+
+A compute without a public IP stays in a private network. The internet cannot reach it, but it can communicate with the other computes in your team. You can still open its [web console](/services/compute/connect-to-a-compute#open-the-web-console).
+
+Every compute has a private IP. You see both addresses at the top of the compute's page, as **Public IP (IPv4)** and **Private IP**.
+
+## What a public IP costs
+
+A public IP has a monthly price. It is shown under the **Assign a Public IP Address** switch when you create a compute, and in the **Summary** before you confirm.
+
+<Warning>
+  A public IP is charged for the whole calendar month, however many days you held it. A compute with a public IP that you create on 28 March and destroy on 2 April pays the public IP price twice, once for March and once for April.
+</Warning>
+
+## How many public IPs a team can have
+
+A team has a limit on its public IPs. The create page shows how many your team has used. To raise the limit, go to **Team Settings** > **General** and click **Request More** under **Resource Limits**.
+
+## Use one public compute as a gateway
+
+You do not need a public IP on every compute. Give one compute a public IP and let it pass traffic to the others over the private network.
+
+For example, a web application has a reverse proxy, a frontend, a backend and a database, each on its own compute:
+
+<Frame>
+  <img className="block dark:hidden" src="/images/computes/public-private-internet-archtecture.jpg" style={{ borderRadius: '0.2rem' }} />
+  <img className="hidden dark:block" src="/images/computes/public-private-internet-archtecture-dark.jpg" style={{ borderRadius: '0.2rem' }} />
+</Frame>
+
+- The reverse proxy has a public IP. The internet reaches it, and it passes requests on to the other three.
+- The frontend, the backend and the database have no public IP. The internet cannot reach them directly.
+
+With this setup only one compute is exposed to the internet, and you pay for one public IP instead of four.
+
+To set it up, [create each compute](/services/compute/create-a-compute) and turn **Assign a Public IP Address** off for all but the gateway.

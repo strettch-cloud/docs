@@ -1,0 +1,28 @@
+---
+title: "Destroy a compute"
+description: "Destroy a compute from the dashboard to stop its billing. Its disks and IP addresses are removed and cannot be brought back."
+---
+
+You need to be an Owner or an Admin of the team.
+
+<Warning>
+  Destroying a compute removes it for good, with its disks and its IP addresses. You cannot undo it. Copy any data you need off the compute first.
+</Warning>
+
+<Steps>
+  <Step title="Open the Destroy tab">
+    In the **Computes** list, click the compute and open the **Destroy** tab.
+  </Step>
+
+  <Step title="Click Destroy Compute">
+    Click **Destroy Compute**. A dialog asks you to confirm.
+  </Step>
+
+  <Step title="Type the name to confirm">
+    Type the text the dialog shows, which is your team name, a slash and the compute name. Then click **Destroy**.
+  </Step>
+</Steps>
+
+A message tells you that the compute was destroyed, and it leaves the **Computes** list. Billing for the compute and its public IP stops.
+
+To destroy a compute from a script, use the [Delete a compute](/api-reference/endpoint/delete-compute) endpoint of the API.

@@ -1,0 +1,33 @@
+---
+title: "Compute graphs"
+description: "What the six graphs on a compute's Monitoring tab show, what to watch for in each, and where a compute's monthly bandwidth usage is."
+---
+
+Every compute has six graphs of its CPU, memory, disk, network and load. They are on the **Monitoring** tab, which opens first when you click a compute in the **Computes** list.
+
+## What each graph shows
+
+| Graph | What it shows | What to watch for |
+|---|---|---|
+| **CPU Usage (%)** | How much of the compute's CPU is in use | Usage that stays above 80% means the compute needs more CPU. |
+| **Memory** | How much of the compute's RAM is in use, as a percentage | Usage that stays above 90% means the compute needs more RAM. |
+| **Disk Usage** | How much of the compute's storage is full, as a percentage | A disk that fills up stops applications from writing data. |
+| **Disk IOPS** | Read and write operations on the disk | Long periods of heavy disk activity slow applications down. |
+| **Network** | Public and private traffic, inbound and outbound | A spike you do not expect can mean unusual traffic. |
+| **Load (1/5/15)** | The system load average over 1, 5 and 15 minutes | A load higher than the number of CPUs means processes are waiting for CPU. |
+
+If a compute stays short of CPU or RAM, you can [upsize it](/services/compute/upsize-a-compute).
+
+## Choose the period
+
+**Period** sets how far back the graphs go, from the last hour to the last 30 days. Hover over a graph to see the value at one point in time. **Refresh** loads the newest values.
+
+## Bandwidth used this month
+
+Below the **Network** graph, **Egress bandwidth usage this month** shows how much outbound internet traffic the compute has sent this month. **View Team Usage** opens the usage of the whole team.
+
+One compute using more than its own allowance is not a charge by itself. You pay only when the whole team goes above its pooled allowance. See [Bandwidth](/services/compute/bandwidth).
+
+## Where the graphs get their data
+
+The [SC Metrics Agent](/agents/sc-metrics-agent) runs on the compute and sends the values to the dashboard. It is installed on every compute you create. If you stop or uninstall it, the graphs stay empty.

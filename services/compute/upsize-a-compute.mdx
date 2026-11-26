@@ -1,0 +1,36 @@
+---
+title: "Upsize a compute"
+description: "Move a compute to a bigger specification from the dashboard. The compute must be turned off first, and it cannot go back to a smaller specification."
+---
+
+Upsizing moves a compute to a bigger specification. You need to be an Owner or an Admin of the team. Before you start:
+
+- The compute must be turned off, so your applications are down until you turn it on again.
+- A compute can only go to a bigger specification. You cannot move it back to a smaller one afterwards.
+- You pay the new price from the moment you upsize. Your team's credits and funds must cover the new monthly price, or the dashboard asks you to top up first.
+
+<Steps>
+  <Step title="Turn the compute off">
+    [Turn the compute off](/services/compute/turn-a-compute-off-and-on).
+  </Step>
+
+  <Step title="Choose the new specification">
+    Open the compute and go to the **Upsize** tab. The table marks the specification the compute has now as **Current**. Choose a bigger one. Smaller ones cannot be selected.
+  </Step>
+
+  <Step title="Check the price">
+    Below the table, **Current Cost**, **Additional Cost** and **New Monthly Cost** show what changes.
+  </Step>
+
+  <Step title="Upsize">
+    Click **Upsize Compute**. There is no confirmation dialog. A message tells you that the compute was upsized.
+  </Step>
+
+  <Step title="Turn the compute on">
+    The compute stays off after the upsize. [Turn it on](/services/compute/turn-a-compute-off-and-on#turn-a-compute-on).
+  </Step>
+</Steps>
+
+A bigger specification also has a bigger bandwidth allowance. It counts for the whole month you upsize in. See [Bandwidth](/services/compute/bandwidth).
+
+To upsize from a script, use the [Upsize a compute](/api-reference/endpoint/upsize-compute) endpoint of the API.

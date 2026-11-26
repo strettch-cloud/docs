@@ -188,9 +188,9 @@ Rule 1 only works if everyone knows where a fact lives. Add a row when a new fac
 |---|---|
 | What is billed in each compute state, including turned off | SC Compute overview |
 | How long a compute takes to create | SC Compute overview |
-| SSH port 222, and port 22 from some networks | Managing Instances |
+| SSH port 222, and port 22 from some networks | Connect to a compute |
 | When the web console is ready, and how it logs you in | SC Agent |
-| A public IP is billed separately, and when you need one | Managing Instances |
+| A public IP is billed separately, and when you need one | Public IPs and the private network |
 | What each role can do | Teams overview |
 | How to pay, and the payment methods | Paying Your Bill |
 | What credits and funds are, and that credits are spent first | Paying Your Bill |

@@ -1,87 +1,59 @@
 ---
-title: SC Compute Virtual Machines Overview
+title: "SC Compute overview"
 sidebarTitle: "Overview"
-description: Learn how Strettch Cloud SC Compute virtual machines work, including instance specifications, supported images, regions, networking, and pricing.
+description: "What a compute is, what you pay for it in each state, including while it is turned off, and how long it takes to create."
 ---
 
-## What is SC Compute?
+A compute is a virtual machine that runs Linux, with root access for you. You pay for a compute for as long as it exists, from the moment you create it until you destroy it, whether it is running or turned off.
 
-SC Compute is a virtual machine service that gives you access to remotely available servers over the internet. Think of it as renting a server in the cloud that you can use for whatever you need.
+## What you choose for a compute
 
-Each compute instance comes with:
-- **Customizable specifications** - Choose CPU, RAM, and storage that fit your needs
-- **compute monitoring** - Track performance metrics in real-time
-- **UI management** - Control your instances (shutdown, reboot) directly from the dashboard
-- **Team collaboration** - Share compute resources with your team members
+- **An image**: a Linux system, or an application image with an application already installed.
+- **A specification**: one combination of CPU, RAM and storage. The price of each specification is shown when you create a compute.
+- **A public IP**, if the internet must reach the compute. It is billed separately. See [Public IPs and the private network](/services/compute/public-ips-and-the-private-network).
+- **How you log in**: an [SSH key](/services/compute/ssh-keys) or a root password.
 
----
+A compute belongs to a [team](/services/teams/overview), and the team pays for it.
 
-## Use Cases
+## What you pay in each state
 
-SC Compute instances can be used for virtually anything you would do with your own server. Common use cases include:
+The price of a compute is per hour. We count the hours a compute exists each day and round them up to a full hour.
 
-- **Hosting websites and web applications** - Deploy your frontend and backend applications
-- **Running web APIs** - Serve REST APIs, GraphQL endpoints, or microservices
-- **Database hosting** - Run MySQL, PostgreSQL, MongoDB, or other databases
-- **Development and testing environments** - Spin up instances for testing and experimentation
-- **Batch processing and data analysis** - Run compute-intensive workloads
-- **Custom services** - Deploy any application or service that runs on Linux
+For example, at 10 RWF per hour, a compute that exists for a whole day costs 240 RWF for that day. It costs the same whether it is busy, idle or turned off.
 
----
-
-## Resource Lifecycle
-
-**Problem**: What states can my resources be in, and what do they mean for access and billing?
-
-Different resource types may have different lifecycles. This section focuses primarily on **compute instances** as the most common example.
-
-### Lifecycle States
-
-Here's the typical flow through lifecycle states:
-```
-Creating → Running ⟷ Stopped → Destroying → Destroyed
-```
-
-| State | Description | Web Dashboard | Resource Access (SSH/Console) | Billable? | Can Transition To |
-|-------|-------------|---------------|-------------------------------|-----------|-------------------|
-| **Creating** | Initial provisioning when first created | Visible | Not accessible | No* | Running |
-| **Running** | Normal operational state | Visible | Fully accessible | **Yes** | Stopped, Destroying |
-| **Stopped** | Instance stopped but resources reserved | Visible | Not accessible | **Yes** | Starting, Destroying |
-| **Starting/Rebooting** | Transitioning from Stopped or rebooting | Visible | Not accessible | **Yes** | Running |
-| **Destroying** | Brief destruction process (seconds) | Visible | Not accessible | No* | Destroyed |
-| **Destroyed** | Billing stops; instance no longer accessible. Not user-recoverable | Not visible | Not accessible | **No** | None |
-
-<Info>
-*Creating and Destroying states are not billable due to their very brief duration (typically seconds to less than a minute).
-</Info>
+| State | What it means | Can you connect? | Billed? |
+|---|---|---|---|
+| **STARTING** | The compute is being created or turned on | No | Yes |
+| **RUNNING** | The compute is on | Yes | Yes |
+| **REBOOTING** | The compute is restarting | No | Yes |
+| **STOPPING**, **STOPPED** | The compute is turned off. It keeps its disk and its IP addresses | No | Yes, at the same price |
+| **DESTROYING**, **DESTROYED** | The compute is gone and cannot be brought back | No | No |
 
 <Warning>
-The **Stopped** state still incurs charges because resources remain reserved. To stop billing, you must **Destroy** the resource.
+  A compute that is turned off is still billed at the same price, because its CPU, RAM and storage stay reserved for you. Billing stops only when you [destroy the compute](/services/compute/destroy-a-compute).
 </Warning>
 
-### Understanding the States
+You see the state of each compute in the **Computes** list. **Total Charged (For This Month)** on a compute's page shows what it has cost so far this month.
 
-**Creating**: When you first create a compute instance, it goes through a provisioning process where the system allocates resources, installs the operating system, and configures networking. This typically takes less than a minute.
+See [Paying your bill](/faqs/paying-your-bill) for when the charges are taken.
 
-**Running**: This is the normal operational state where your instance is fully accessible. You can connect via SSH or the web console and use the compute resources.
+## How long a compute takes to create
 
-**Stopped**: When you stop an instance, it shuts down but all resources (CPU, RAM, storage) remain reserved for you. This means you continue to be billed at the same rate. The benefit is that you can quickly restart the instance without losing any data or configuration.
+A new compute is usually running in less than a minute. The web console needs a little longer. See [SC Agent](/agents/sc-agent#when-the-web-console-is-ready).
 
-**Destroying/Destroyed**: When you destroy an instance, billing stops immediately and resources are released. Destruction is final from your side — there is no self-service recovery. If you destroyed something by mistake, contact [support](mailto:cloud@strettch.com) right away; in some cases an admin may be able to recover an instance within a brief window before the underlying data is permanently removed.
+## Limits for a team
 
----
+A team has a limit on the number of computes, the number of public IPs and the size of one compute. You see them in **Team Settings** > **General**, under **Resource Limits**. Click **Request More** there to ask for a higher limit.
 
 ## Bandwidth
 
-Each compute includes a monthly allowance of outbound internet traffic, and the allowances of all the computes in a team are pooled. Inbound traffic and traffic between your computes are free. You only pay for outbound traffic above the team's allowance. See [Bandwidth](/services/compute/bandwidth) for how the allowance and charges work.
+Each compute includes a monthly allowance of outbound internet traffic, and the allowances of all the computes in a team are pooled. Inbound traffic and traffic between your computes are free. You pay only for outbound traffic above the team's allowance. See [Bandwidth](/services/compute/bandwidth).
 
----
+## What you can do with a compute
 
-## Next Steps
-
-Now that you understand what SC Compute is and how the lifecycle works:
-
-- [Create your first compute instance](/guides/computes)
-- [Learn about SC Agent for web console access](/agents/sc-agent)
-- [Set up monitoring with SC Metrics Agent](/agents/sc-metrics-agent)
-- [Connect a domain to your compute instance](/guides/domains)
+- [Create a compute](/services/compute/create-a-compute)
+- [Connect to a compute](/services/compute/connect-to-a-compute)
+- [Turn a compute off and on](/services/compute/turn-a-compute-off-and-on)
+- [Upsize a compute](/services/compute/upsize-a-compute)
+- [Read the compute graphs](/services/compute/compute-graphs)
+- [Destroy a compute](/services/compute/destroy-a-compute)
