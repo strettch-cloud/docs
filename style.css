@@ -1,0 +1,5 @@
+/* The page description stays in the page head for search engines and link previews.
+   It is not shown under the title. */
+#header > div.prose {
+  display: none;
+}
