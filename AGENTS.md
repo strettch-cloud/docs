@@ -197,6 +197,7 @@ Rule 1 only works if everyone knows where a fact lives. Add a row when a new fac
 | Bandwidth allowance and charges | Bandwidth |
 | API rate limit, pagination, error format | API Introduction |
 | Default TTL and how fast DNS changes take effect | DNS overview |
+| The metadata address, header, fields, error codes and rate limit | Compute metadata |
 
 ## Before you publish
 

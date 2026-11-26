@@ -1,0 +1,210 @@
+---
+title: "Compute metadata"
+sidebarTitle: "Metadata"
+description: "Read your compute's hostname, SSH keys, network addresses and user data from inside the compute, at 169.254.169.254."
+---
+
+A compute can read its own hostname, SSH keys, network addresses and user data from the metadata service at `http://169.254.169.254`. The service answers only from inside a compute, only about the compute that asks, and needs no API key.
+
+```bash
+curl -s -H "Metadata-Flavor: StrettchCloud" http://169.254.169.254/v1/metadata/hostname
+```
+
+```text
+web-01
+```
+
+## Address and header
+
+| Part | Value |
+|------|-------|
+| Address | `169.254.169.254`, port 80, plain HTTP |
+| Header | `Metadata-Flavor: StrettchCloud` on every request. The value is case-sensitive. |
+| Method | `GET` |
+| Version | Every path starts with `/v1` |
+
+### Why the header is required
+
+The header protects you from server-side request forgery (SSRF). An application on your compute that fetches URLs its users give it could be given `http://169.254.169.254/v1/metadata.json` by an attacker. Such an application sends the URL it was given, but not our header, so the service refuses the request.
+
+For the same reason, the service refuses a request that carries an `X-Forwarded-For` header, which proxies add when they pass a request on.
+
+## Versioning
+
+`/v1` does not break. We may add paths and fields to it, so your scripts should ignore fields they do not know. A change that could break a script, such as removing or renaming a field, comes as a new version, and `/v1` keeps working.
+
+## Paths
+
+| Path | Returns |
+|------|---------|
+| `/v1/metadata.json` | The metadata document, as JSON |
+| `/v1/metadata/<field>` | One field of the document, as plain text |
+| `/v1/user-data` | The user data you passed when you created the compute |
+
+## Metadata document
+
+```bash
+curl -s -H "Metadata-Flavor: StrettchCloud" http://169.254.169.254/v1/metadata.json
+```
+
+```json
+{
+  "instance-id": "4f1d7a52-0c3e-4b8e-9a51-2d6c7e8f9a10",
+  "hostname": "web-01",
+  "team-id": "0b6c1f0e-7a3d-4c55-8e21-5d9a4b7c3e02",
+  "region": "KGL-1",
+  "public-keys": [
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAA... you@laptop"
+  ],
+  "network-config": {
+    "version": 2,
+    "ethernets": {
+      "private0": {
+        "match": { "macaddress": "1e:00:aa:00:00:02" },
+        "mtu": 1500,
+        "addresses": ["10.0.0.5/24"],
+        "routes": [
+          { "to": "10.0.0.0/24", "scope": "link", "table": 101 },
+          { "to": "0.0.0.0/0", "via": "10.0.0.1", "table": 101 }
+        ],
+        "routing-policy": [{ "from": "10.0.0.5", "table": 101 }]
+      },
+      "public0": {
+        "match": { "macaddress": "1e:00:aa:00:00:01" },
+        "mtu": 1500,
+        "addresses": ["192.0.2.10/24"],
+        "nameservers": { "addresses": ["8.8.8.8", "8.8.4.4"] },
+        "routes": [{ "to": "0.0.0.0/0", "via": "192.0.2.1" }]
+      }
+    }
+  }
+}
+```
+
+The answer comes on one line. It is laid out here so you can read it.
+
+| Field | Type | Meaning |
+|-------|------|---------|
+| `instance-id` | string | A unique ID for this compute. It is not the compute `id` in the API. |
+| `hostname` | string | The hostname the compute was created with. Renaming the compute later does not change it. |
+| `team-id` | string | The ID of the team that owns the compute. |
+| `region` | string | The region the compute runs in, as the API names it. |
+| `public-keys` | list of strings | The SSH public keys the compute was created with. |
+| `network-config` | object | The compute's network interfaces, in [cloud-init's network configuration format, version 2](https://cloudinit.readthedocs.io/en/latest/reference/network-config-format-v2.html). |
+
+In `network-config`, each key under `ethernets` names one interface by its role:
+
+- `public0` is the interface with the compute's public IP. It is there only when the compute has a public IP.
+- `private0` is the interface on your private network.
+
+For each interface, `match.macaddress` is its MAC address and `addresses` lists its IP addresses with their prefix length. The other keys are the MTU, nameservers, routes and routing rules the compute was set up with on its first boot.
+
+The document describes the compute as it was created. It does not follow changes you make inside the compute, such as a new hostname or an SSH key you add later.
+
+### Read one field
+
+`/v1/metadata/<field>` returns one value as plain text, so a shell script does not need a JSON parser. Use `/` to go into objects and lists, and a number to pick an item from a list:
+
+```bash
+md() {
+  curl -sS --fail --max-time 5 --retry 5 \
+    -H "Metadata-Flavor: StrettchCloud" \
+    "http://169.254.169.254/v1/metadata/$1"
+  echo
+}
+
+md hostname
+md region
+md public-keys/0
+md network-config/ethernets/public0/addresses/0
+md network-config/ethernets/private0/addresses/0 | cut -d/ -f1
+```
+
+```text
+web-01
+KGL-1
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAA... you@laptop
+192.0.2.10/24
+10.0.0.5
+```
+
+Ask for an object or a list and you get what it contains, one entry per line. An entry that you can go into ends with `/`:
+
+```bash
+md
+md network-config/ethernets
+```
+
+```text
+instance-id
+hostname
+team-id
+region
+public-keys/
+network-config/
+private0/
+public0/
+```
+
+## User data
+
+`/v1/user-data` returns the user data you passed in `userData` when you [created the compute](/api-reference/endpoint/create-compute#user-data), exactly as you sent it, after base64 decoding.
+
+```bash
+curl -s -H "Metadata-Flavor: StrettchCloud" http://169.254.169.254/v1/user-data
+```
+
+```text
+#cloud-config
+packages:
+  - nginx
+```
+
+If the compute was created without user data, the service answers `404` with the code `USER_DATA_NOT_SET`.
+
+<Warning>
+  Any program on the compute can read its metadata and user data, whichever user runs it. Do not put a secret in user data unless every program on the compute may see it.
+</Warning>
+
+## Error codes
+
+An error comes with a JSON body that names it:
+
+```bash
+curl -s http://169.254.169.254/v1/metadata.json
+```
+
+```json
+{"code":"METADATA_FLAVOR_REQUIRED","message":"send the header Metadata-Flavor: StrettchCloud"}
+```
+
+Branch on the status and the `code`. The `message` is for people and can change, and the body can carry other fields.
+
+| Status | Code | Meaning |
+|--------|------|---------|
+| 400 | `BAD_REQUEST` | The path is malformed, for example it contains `..` or `//`. |
+| 403 | `METADATA_FLAVOR_REQUIRED` | The `Metadata-Flavor: StrettchCloud` header is missing or has another value. |
+| 403 | `FORWARDED_REQUEST_REJECTED` | The request carries an `X-Forwarded-For` header. |
+| 404 | `NOT_FOUND` | There is no such path. |
+| 404 | `PATH_NOT_FOUND` | The metadata document has no such field. |
+| 404 | `USER_DATA_NOT_SET` | The compute was created without user data. |
+| 404 | `METADATA_NOT_AVAILABLE` | The compute was created before 19 November 2026 and has no metadata document. |
+| 405 | `METHOD_NOT_ALLOWED` | The method is not allowed. Use `GET`. |
+| 429 | `TOO_MANY_REQUESTS` | You sent requests too fast. Wait the number of seconds in the `Retry-After` header, then try again. |
+| 5xx | | A temporary problem. Wait a few seconds and try again. |
+
+## Rate limit
+
+A compute can send a burst of 10 requests, then 6 a second. If you send them faster, the service can answer `429` with `Retry-After: 1`.
+
+A script that reads many fields one after another can reach the limit. Read the metadata document once and take the fields from it instead.
+
+## Retry in boot scripts
+
+A script that runs at boot should set a time limit and retry, so that a short interruption does not fail it. `--retry` makes curl wait and try again on `429` answers, temporary `5xx` answers and timeouts. `--fail` makes curl exit with an error instead of printing an error body as if it were the answer.
+
+```bash
+curl -sS --fail --max-time 5 --retry 5 \
+  -H "Metadata-Flavor: StrettchCloud" \
+  http://169.254.169.254/v1/metadata.json
+```

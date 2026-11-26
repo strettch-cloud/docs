@@ -61,6 +61,7 @@
               "services/compute/compute-graphs",
               "services/compute/bandwidth",
               "services/compute/ssh-keys",
+              "services/compute/metadata",
               {
                 "group": "Application Images",
                 "pages": [
