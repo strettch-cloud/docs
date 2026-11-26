@@ -1,219 +1,104 @@
 ---
 title: "Managing DNS"
-description: "Register a domain on Strettch Cloud, configure nameservers, and create or edit A, AAAA, CNAME, MX, and TXT DNS records from the dashboard."
+description: "Add a domain to your Strettch Cloud team, point it to our nameservers, and add, check and delete its DNS records."
 ---
 
-## Registering a Domain
+You need to be an Owner or an Admin of the team to add or remove domains and records.
 
-Before you can manage DNS records, you need to register a domain with Strettch Cloud DNS.
+## Add a domain
 
-<Note>
-**Important:** Strettch Cloud does not sell domain names. You must first purchase your domain from a domain registrar (such as Namecheap, GoDaddy, or Cloudflare). Once you own the domain, you can register it with Strettch Cloud to manage its DNS records.
-</Note>
+You need a domain that you bought from a registrar. Strettch Cloud does not sell domains.
 
 <Steps>
-  <Step title="Navigate to Domains">
-    Go to your team's dashboard and select the **Domains** tab.
+  <Step title="Start the setup">
+    Go to **Domains** and click **Setup Domain**. When the team has no domain yet, the button reads **Set up Domain**.
   </Step>
 
-  <Step title="Setup Domain">
-    Click **Setup Domain**. Enter the domain address you want to register (e.g., `example.com`).
+  <Step title="Connect your domain">
+    Type your domain, for example `example.com`, and click **Validate**. If the domain cannot be used, a message says why. When it is valid, click **Continue**.
   </Step>
 
-  <Step title="Validate Domain">
-    Click **Confirm** to validate the domain availability.
+  <Step title="Imported DNS Records">
+    This step appears only when we find records that your domain already has. Choose **Yes, Import Records** to copy them, select the ones you want and click **Import Selected Records**. Choose **I'll do it later** to start with no records.
+  </Step>
 
-    - If the domain name is invalid or unavailable, you'll see a notification. Choose a different domain name.
-    - If the domain is valid, you'll move to the nameserver configuration step.
+  <Step title="DNS Delegation">
+    The page shows our two nameservers, `ns1.strettch.com` and `ns2.strettch.com`. Log in at your registrar and replace the domain's nameservers with these two. See [Provider guides](/services/dns/dns-provider-guides) for the steps at some registrars. Then click **Continue**.
+  </Step>
 
-    <Frame>
-      <img src="/images/domains/validate-domain.png" style={{ borderRadius: "0.2rem" }} />
-    </Frame>
+  <Step title="Active Domain">
+    Click **Activate Domain**.
   </Step>
 </Steps>
 
-## Adding Nameservers to Your Domain Provider
+The domain is now in the **Domains** list with the status **ACTIVATING...**. It becomes **ACTIVE** when we see our nameservers on it, which takes between 3 minutes and 24 hours. If it shows **INACTIVE**, check the nameservers at your registrar. See [How long a new domain takes to become active](/services/dns/overview#how-long-a-new-domain-takes-to-become-active).
 
-After validating your domain, configure your domain provider to use Strettch Cloud's nameservers.
+You can add records only when the domain is **ACTIVE**.
+
+## Add a record
 
 <Steps>
-  <Step title="Copy Nameservers">
-    In the domain setup wizard, you'll see a table with Strettch Cloud nameservers. Click the **copy icons** to copy each nameserver:
-    - `ns1.strettch.com`
-    - `ns2.strettch.com`
-
-    <Frame>
-      <img src="/images/domains/add-nameservers.png" style={{ borderRadius: "0.2rem" }} />
-    </Frame>
+  <Step title="Open the domain">
+    Go to **Domains** and click the domain. The tabs on the side filter its records by type.
   </Step>
 
-  <Step title="Update Domain Provider">
-    Log in to your domain registrar (where you purchased the domain). Navigate to your domain's DNS or nameserver settings. Replace the existing nameservers with the Strettch Cloud nameservers you copied.
-
-    The exact steps vary by registrar. We have detailed guides for popular providers:
-
-    <CardGroup cols={2}>
-      <Card title="Provider Guides" icon="book" href="/services/dns/dns-provider-guides">
-        View step-by-step instructions for Vercel, Cloudflare, Bunny, and Namecheap
-      </Card>
-    </CardGroup>
+  <Step title="Start a new record">
+    Click **Add New Record**. On the **ALL** tab, choose the **Record Type** first.
   </Step>
 
-  <Step title="Activate Domain">
-    Return to the Strettch Cloud domain setup wizard. Scroll down and click the **Activate domain** button to complete the registration.
+  <Step title="Fill in the record">
+    The fields depend on the type. Every type has a name, which is **Hostname** for most types, a value, and **TTL (Seconds)**. MX and SRV records also have a **Priority**.
+
+    In **Hostname**, type only the part before your domain. For `www.example.com`, type `www`.
+  </Step>
+
+  <Step title="Save the record">
+    Click **Add Record**. The record is served immediately.
   </Step>
 </Steps>
 
-<Warning>
-  You must add Strettch Cloud's nameservers to your domain provider. Without this step, your domain will remain inactive and DNS records will not work.
-</Warning>
+See [Record types](/services/dns/overview#record-types) for what each type does, and [TTL](/services/dns/overview#ttl-and-how-fast-a-change-takes-effect) for which value to choose.
 
-## Verifying Domain Status
+## Check a record
 
-After activating your domain, check its status to ensure proper configuration.
-
-<Steps>
-  <Step title="View Domain List">
-    After domain creation, you'll be redirected to the domains list for your team. Each domain shows its current status.
-  </Step>
-
-  <Step title="Understand Status Indicators">
-    Domain activation can take between **3 minutes** and **24 hours** depending on your domain provider's propagation speed.
-
-    - **Activating**: Domain is waiting for nameserver propagation to complete
-    - **Active**: Domain is fully operational and DNS records are working
-    - **Inactive**: Domain failed to activate (nameservers not configured correctly)
-
-    <Frame>
-      <img src="/images/domains/verify-domain-status.png" style={{ borderRadius: '0.2rem' }} />
-    </Frame>
-  </Step>
-</Steps>
-
-<Warning>
-  If a domain remains inactive beyond 24 hours, verify with your domain registrar that Strettch Cloud's nameservers (`ns1.strettch.com` and `ns2.strettch.com`) are correctly configured.
-</Warning>
-
-## Managing DNS Records
-
-Once your domain is active and using Strettch Cloud's nameservers, you can manage its DNS records.
-
-<Warning>
-  Your domain must use **Strettch Cloud's nameservers** for DNS records to work. If you're using a third-party domain registrar, ensure you've added our nameservers as described above.
-</Warning>
-
-### Supported Record Types
-
-Strettch Cloud DNS supports the following record types:
-
-| Record Type | Hostname Example | Description |
-| ----------- | ---------------- | ----------- |
-| **A** | `example.com` | Redirects to IPv4 address `192.0.2.1` |
-| **AAAA** | `example.com` | Redirects to IPv6 address `2001:0db8:85a3:0000:0000:8a2e:0370:733` |
-| **SRV** | `_sip._tcp.example.com` | Service located at `10 60 5060 sip.example.com` |
-| **TXT** | `_dmarc.example.com` | Returns `v=DMARC1; p=none; rua=mailto:dmarc@example.com` |
-| **MX** | `example.com` | Mail handled by `mail.example.com` |
-| **CNAME** | `blog.example.com` | Is an alias of `wiki.example.com` |
-
-### Adding DNS Records
-
-<Steps>
-  <Step title="Select Domain">
-    On your team's dashboard, go to the **Domains** tab. Click on the domain you want to manage to open its Advanced Settings page.
-  </Step>
-
-  <Step title="Create Record">
-    On the Advanced Settings page, click **Add new record**. Fill out the DNS Record form with the following information:
-
-    **Name**: The prefix or subdomain for the record. For `www.example.com`, enter `www`. For the root domain, leave blank or use `@`.
-
-    **Type**: Select the record type (`A`, `AAAA`, `CNAME`, `MX`, `TXT`, `SRV`, or `NS`).
-
-    **Value**: The target value for the record (IP address, domain name, or text content).
-
-    **TTL**: Time to live in seconds. Default is 60 seconds. Lower values mean faster propagation but more DNS queries.
-
-    **Comment** (optional): Add a note explaining what this record is for.
-
-    **Additional Fields**: Some records require extra data. For example, MX records need a priority value.
-
-    <Frame>
-      <img src="/images/domains/new-record.png" style={{ borderRadius: "0.2rem" }} />
-    </Frame>
-  </Step>
-
-  <Step title="Save Record">
-    Click **Create Record** to add the DNS record. Changes take effect immediately.
-  </Step>
-</Steps>
-
-### Verifying DNS Records
-
-After adding or modifying DNS records, verify they're configured correctly.
-
-**Using Third-Party Tools**
-
-Use online tools to check DNS propagation globally:
-- [DNS Checker](https://dnschecker.org)
-- [DNS Map](https://dnsmap.io)
-
-These tools show how your DNS records appear in different regions worldwide.
-
-**Using Command Line**
-
-Check DNS records directly using the `dig` command:
+Ask for the record with `dig`. The `+short` option prints only the value.
 
 <CodeGroup>
-```bash Check A record
+```bash A record
 dig A api.example.com +short
 ```
 
-```bash Check MX record
+```bash MX record
 dig MX example.com +short
 ```
 
-```bash Check TXT record
+```bash TXT record
 dig TXT _dmarc.example.com +short
 ```
 
-```bash Check CNAME record
+```bash CNAME record
 dig CNAME blog.example.com +short
 ```
 </CodeGroup>
 
-The `+short` flag returns only the record value without additional information.
+You should see the value you entered. If you see an old value, wait until its TTL has run out and ask again.
 
-### Removing DNS Records
+## Change a record
 
-<Steps>
-  <Step title="Navigate to Domain">
-    On your team's dashboard, select the **Domains** tab. Click on the domain containing the record you want to delete.
-  </Step>
+The dashboard cannot edit a record. Delete the record and add it again with the new value.
 
-  <Step title="Delete Record">
-    On the Advanced Settings page, locate the record you want to remove. Click the ellipsis menu **(⋯)** next to the record and select **Delete**.
+## Delete a record
 
-    <Frame>
-      <img src="/images/domains/delete-dns.png" style={{ borderRadius: "0.2rem" }} />
-    </Frame>
-  </Step>
+A deleted record cannot be restored.
 
-  <Step title="Confirm Deletion">
-    Follow the prompts to confirm deletion. The record will be removed immediately.
-  </Step>
-</Steps>
+1. Go to **Domains** and click the domain.
+2. On the row of the record, open the menu and click **Delete Record**.
+3. In the dialog, click **Delete**.
 
-## Next Steps
+## Remove a domain
 
-<CardGroup cols={2}>
-  <Card title="DNS Overview" icon="book" href="/services/dns/overview">
-    Learn about DNS concepts and how Strettch Cloud DNS works
-  </Card>
-  <Card title="SC Compute" icon="server" href="/services/compute/overview">
-    Deploy applications and connect them to your domains
-  </Card>
-</CardGroup>
+Removing a domain removes it and its records from Strettch Cloud DNS. The domain stays yours at your registrar. If the registrar still points it to our nameservers, the domain stops resolving, so change its nameservers there first.
 
-<Note>
-  **Need help?** Contact our [support team](mailto:cloud@strettch.com) or visit [cloud.strettch.com](https://cloud.strettch.com).
-</Note>
+1. Go to **Domains**.
+2. On the row of the domain, open the menu and click **Remove Domain**.
+3. In the dialog, click **Remove Domain**.
